@@ -168,6 +168,21 @@ app.get("/scores", async function (req, res) {
   }
 });
 
+app.get("/scores/:scoreID", async function (req, res) {
+  try {
+    let user = await model.Score.findOne({ _id: req.params.scoreID }).populate(
+      "user"
+    );
+    if (!user) {
+      res.status(404).send("Score not found.");
+      return;
+    }
+    res.send(user);
+  } catch (error) {
+    res.status(404).send("Score not found");
+  }
+});
+
 app.post("/scores", async function (req, res) {
   try {
     let newScore = await new model.Score({

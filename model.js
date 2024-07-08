@@ -15,7 +15,7 @@ const scoreSchema = Schema({
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: "Score",
+    ref: "User",
     required: [true, "Score must have user."],
   },
 });
