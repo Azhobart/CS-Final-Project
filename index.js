@@ -97,6 +97,52 @@ app.post("/users", async function (req, res) {
   }
 });
 
+app.put("/users/:userID", AuthMiddleware, async function (req, res) {
+  try {
+    let user = await model.User.findOne({ _id: req.params.userID });
+    if (!user) {
+      res.status(404).send("User not found.");
+      return;
+    }
+    user.name = req.body.name;
+    user.username = req.body.username;
+    user.region = req.body.region;
+    user.authQuestion = req.body.authQuestion;
+    user.authAnswer = req.body.authAnswer;
+    user.favoriteGame = req.body.favoriteGame;
+    user.scores = req.body.scores;
+
+    const error = await user.validateSync();
+
+    if (error) {
+      res.status(422).send(error);
+      console.log(error);
+      return;
+    }
+
+    await user.save();
+    res.status(204).send();
+  } catch (error) {
+    res.status(422).send(error);
+  }
+});
+
+app.delete("/users/:userID", AuthMiddleware, async function (req, res) {
+  try {
+    let isDeleted = await model.User.findOneAndDelete({
+      _id: req.params.userID,
+    });
+    if (!isDeleted) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+    res.status(204).send("Removed");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
 app.get("/scores", async function (req, res) {
   try {
     let scores = await model.Score.find();
