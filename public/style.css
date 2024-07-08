@@ -2,4 +2,100 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Ernest', sans-serif;
 }
+
+body {
+  background-color: #739072;
+}
+
+/* nav bar */
+nav {
+  padding: 20px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  justify-self: center;
+  font-family: '8BIT WONDER', sans-serif;
+  font-size: 40px;
+  background-color: #4F6F52;
+  color: #D2E3C8;
+}
+
+/* center the login field */
+#loginField, #authField, #registerField{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  justify-self: center;
+}
+
+/* style form contents */
+form {
+  margin-top: 200px;
+  height: 300px;
+  width: 350px;
+  border-radius: 10px;
+  background-color: #D2E3C8;
+  color: #4F6F52;
+  font-size: 20px;
+}
+
+#registerField form {
+  height: 600px;
+}
+
+/* set title */
+form h3 {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  font-size: 45px;
+}
+
+/* align form contents */
+.inputContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0px 10px 0px;
+}
+
+/* style <input> tag */
+.inputContainer input {
+  border: none;
+  background-color: #86A789;
+  margin-top: 10px;
+  height: 25px;
+  width: 150px;
+}
+
+/* style form button */
+.inputContainer button {
+  display: inline-block;
+  background-color: #4F6F52;
+  color:#D2E3C8;
+  width: 80px;
+  height: 30px;
+  margin: 0px 0px 30px 0px;
+  transition: width .5s, height .5s;
+}
+
+
+/* reponsive button and <span> tag */
+.inputContainer button:hover {
+  background-color:#86A789;
+  color: #4F6F52;
+}
+
+
+.inputContainer p span:hover{
+  cursor: pointer;
+  color: #739072;
+}
+
+
+
+
+

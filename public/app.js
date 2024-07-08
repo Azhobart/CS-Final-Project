@@ -1,9 +1,17 @@
 const URL = "http://localhost:8080";
 Vue.createApp({
   data() {
-    return {};
+    return {
+      page: "login"
+    };
   },
-  methods: {},
+  methods: {
+    setPage: function(newPage) {
+      this.page = newPage;
+      
+    }
+
+  },
 
   created: function () {},
 }).mount("#app");
