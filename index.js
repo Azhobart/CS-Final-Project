@@ -68,6 +68,21 @@ app.get("/users", async function (req, res) {
   }
 });
 
+app.get("/users/:userID", async function (req, res) {
+  try {
+    let user = await model.User.findOne({ _id: req.params.userID }).populate(
+      "scores"
+    );
+    if (!user) {
+      res.status(404).send("User not found.");
+      return;
+    }
+    res.send(user);
+  } catch (error) {
+    res.status(404).send("User not found");
+  }
+});
+
 app.post("/users", async function (req, res) {
   try {
     let newUser = await new model.User({
