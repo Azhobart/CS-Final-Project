@@ -9,6 +9,55 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.static("public"));
 
+app.use(
+  session({
+    secret: "qwertyuiopasdfghjklzxcvbnm12345678909uytrewqasdfvbnnhtresdcv",
+    saveUninitialized: true,
+    resave: false,
+  })
+);
+
+async function AuthMiddleware(req, res, next) {
+  if (req.session && req.session.userID) {
+    let user = await model.User.findOne({ _id: req.session.userID });
+
+    if (!user) {
+      return res.status(401).send("Authentification failure.");
+    }
+    req.user = user;
+
+    next();
+  } else {
+    return res
+      .status(401)
+      .send("Authentification failure (Could not find user cookie).");
+  }
+}
+
+app.post("/session", async function (req, res) {
+  try {
+    let user = await model.User.findOne({ username: req.body.username });
+    if (!user) {
+      return res.status(401).send("Authentification Failure.");
+    }
+
+    req.session.userID = user._id;
+    res.status(201).send(req.session);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Generic Error.");
+  }
+});
+
+app.get("/session", AuthMiddleware, async function (req, res) {
+  res.send(req.session);
+});
+
+app.delete("/session", function (req, res) {
+  req.session.userID = undefined;
+  res.status(204).send();
+});
+
 app.get("/users", async function (req, res) {
   try {
     let users = await model.User.find();
