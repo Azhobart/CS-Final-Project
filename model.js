@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 const { Schema } = mongoose;
 require("dotenv").config();
 
@@ -48,7 +47,9 @@ const userSchema = Schema({
 });
 
 const User = mongoose.model("User", userSchema);
+const Score = mongoose.model("Score", scoreSchema);
 
 module.exports = {
-  User: User,
+  User,
+  Score,
 };
