@@ -37,7 +37,10 @@ async function AuthMiddleware(req, res, next) {
 
 app.post("/session", async function (req, res) {
   try {
-    let user = await model.User.findOne({ username: req.body.username });
+    let user = await model.User.findOne({
+      username: req.body.username,
+      authAnswer: req.body.authAnswer,
+    });
     if (!user) {
       return res.status(401).send("Authentification Failure.");
     }
@@ -77,6 +80,22 @@ app.get("/users/:userID", async function (req, res) {
     );
     if (!user) {
       res.status(404).send("User not found.");
+      return;
+    }
+    res.send(user);
+  } catch (error) {
+    res.status(404).send("User not found");
+  }
+});
+
+app.get("/users/username/:username", async function (req, res) {
+  try {
+    let user = await model.User.findOne({
+      username: req.params.username,
+    }).populate("scores");
+    if (!user) {
+      res.status(404).send("User not found.");
+
       return;
     }
     res.send(user);

@@ -93,12 +93,23 @@ Vue.createApp({
         this.setPage("home");
       } else {
         console.log("Failed to log in.");
+        this.user = {};
+      }
+    },
+
+    getUserByUsername: async function () {
+      let response = await fetch(`${URL}/users/username/${this.user.username}`);
+      if (response.status === 200) {
+        let data = await response.json();
+        this.user.authQuestion = data.authQuestion;
+      } else {
+        this.user = {};
+        this.setPage("login");
       }
     },
 
     getSession: async function () {
       let response = await fetch(`${URL}/session`);
-      //console.log(response);
       if (response.status === 200) {
         let data = await response.json();
         this.currentUser = data;
