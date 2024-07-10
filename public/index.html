@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link href="https://fonts.cdnfonts.com/css/galactic-storm" rel="stylesheet">
-    
+
   </head>
   <body class="container">
     <div id="app">
@@ -59,7 +59,7 @@
 
       <!-- register page -->
       <div id="registerField" v-show="page === 'register'">
-        <form @submit.prevent="registerUser()">
+        <div class="sectionContainer">
           <h3>Register:</h3>
           <!-- name -->
           <div class="inputContainer">
@@ -71,11 +71,6 @@
             <p>Username:</p>
             <input v-model="user.username"/>
           </div>
-          <!-- user region -->
-          <div class="inputContainer">
-            <p>Region:</p>
-            <input v-model="user.region"/>
-          </div>
           <!-- authentication question -->
           <div class="inputContainer">
             <p>Authentication Question:</p>
@@ -86,15 +81,20 @@
             <p>Authentication Answer:</p>
             <input v-model="user.authAnswer"/>
           </div>
+          <!-- user region -->
+          <div class="inputContainer">
+            <p>Region:</p>
+            <input v-model="user.region"/>
+          </div>
           <!-- submit -->
           <div class="inputContainer">
-            <button>Register</button>
+            <button @click="setPage('login'); registerUser()">Register</button>
             <p>
               Already have an account?
-              <span @click="setPage('login')">Login!</span>
+              <span @click="setPage('login');">Login!</span>
             </p>
           </div>
-        </form>
+        </div>
       </div>
 
       <div class="page" v-if="page === 'home'">
