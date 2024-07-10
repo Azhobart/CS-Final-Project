@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Ernest', sans-serif;
+  font-family: "Ernest", sans-serif;
 }
 
 body {
@@ -16,14 +16,16 @@ nav {
   flex-flow: row nowrap;
   justify-content: center;
   justify-self: center;
-  font-family: '8BIT WONDER', sans-serif;
+  font-family: "8BIT WONDER", sans-serif;
   font-size: 40px;
-  background-color: #4F6F52;
-  color: #D2E3C8;
+  background-color: #4f6f52;
+  color: #d2e3c8;
 }
 
 /* center the login field */
-#loginField, #authField, #registerField{
+#loginField,
+#authField,
+#registerField {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -36,8 +38,8 @@ form {
   height: 300px;
   width: 350px;
   border-radius: 10px;
-  background-color: #D2E3C8;
-  color: #4F6F52;
+  background-color: #d2e3c8;
+  color: #4f6f52;
   font-size: 20px;
 }
 
@@ -65,8 +67,7 @@ form h3 {
 /* style <input> tag */
 .inputContainer input {
   border: none;
-  background-color: #86A789;
-  margin-top: 10px;
+  background-color: #86a789;
   height: 25px;
   width: 150px;
 }
@@ -74,28 +75,99 @@ form h3 {
 /* style form button */
 .inputContainer button {
   display: inline-block;
-  background-color: #4F6F52;
-  color:#D2E3C8;
-  width: 80px;
-  height: 30px;
-  margin: 0px 0px 30px 0px;
-  transition: width .5s, height .5s;
+  background-color: #4f6f52;
+  color: #d2e3c8;
+  width: 65px;
+  height: 25px;
+  transition: width 0.5s, height 0.5s;
+  border: none;
 }
-
 
 /* reponsive button and <span> tag */
 .inputContainer button:hover {
-  background-color:#86A789;
-  color: #4F6F52;
+  background-color: #86a789;
+  color: #4f6f52;
 }
 
-
-.inputContainer p span:hover{
+.inputContainer p span:hover {
   cursor: pointer;
   color: #739072;
 }
 
+.page {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  justify-self: center;
+  flex-direction: column;
+}
 
+.sectionContainer {
+  margin: 50px 50px 50px 50px;
+  align-self: center;
+  border-radius: 10px;
+  background-color: #d2e3c8;
+  color: #4f6f52;
+  font-size: 20px;
+}
 
+.gameThumbnail {
+  margin: 20px 20px 20px 20px;
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  background-color: #4f6f52;
+  color: #d2e3c8;
+  font-size: 20px;
+  user-select: none;
 
+  background-size: 150px 150px;
+  &:hover {
+    background-color: #86a789;
+    color: #4f6f52;
+    cursor: pointer;
+  }
 
+  & div {
+    width: 150px;
+    height: 150px;
+    background-size: 150px 150px;
+    border-radius: 10px 10px 0px 0px;
+  }
+}
+
+.searchInput {
+  align-self: flex-start;
+  margin: 20px;
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.tictactoeCell {
+  margin: 20px 20px 20px 20px;
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  background-color: #4f6f52;
+  color: #d2e3c8;
+  font-size: 20px;
+  user-select: none;
+
+  &:hover {
+    background-color: #86a789;
+    color: #4f6f52;
+    cursor: pointer;
+  }
+}

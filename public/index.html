@@ -5,17 +5,16 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <link href="https://fonts.cdnfonts.com/css/ernest-borgnine" rel="stylesheet">
-                
+    <link
+      href="https://fonts.cdnfonts.com/css/ernest-borgnine"
+      rel="stylesheet"
+    />
   </head>
   <body class="container">
     <div id="app">
       <nav>
-        <h1>Online Arcade</h1>
+        <h1 @click="setPage('home')">Online Arcade</h1>
       </nav>
-
-
-
 
       <!-- log-in page (Username Field) -->
       <div id="loginField" v-if="page === 'login'">
@@ -23,75 +22,93 @@
           <h3>Login:</h3>
           <div class="inputContainer">
             <p>Username:</p>
-            <input>
+            <input v-model="this.user.username" />
           </div>
           <div class="inputContainer">
             <button @click="setPage('authentication')">Next</button>
-            <p>Don't have an account? <span @click="setPage('register')">Sign-up!</span></p>
+            <p>
+              Don't have an account?
+              <span @click="setPage('register')">Sign-up!</span>
+            </p>
           </div>
         </form>
       </div>
-
-
-
 
       <!-- log-in page (Authentication Field) -->
       <div id="authField" v-if="page === 'authentication'">
         <form>
           <h3>Authentication:</h3>
           <div class="inputContainer">
-            <p> <!--{{v-model to user's authentication question}}--> </p>
-            <input>
+            <p><!--{{v-model to user's authentication question}}--></p>
+            <input />
           </div>
           <div class="inputContainer">
-            <button>Login</button>
+            <button @click="loginUser()">Login</button>
           </div>
         </form>
       </div>
 
-
-
-
       <!-- register page -->
       <div id="registerField" v-show="page === 'register'">
-      <form>
-        <h3>Register:</h3>
-        <!-- name -->
-        <div class="inputContainer">
-          <p>Name:</p>
-          <input>
-        </div>
-        <!-- username -->
-        <div class="inputContainer">
-          <p>Username:</p>
-          <input>
-        </div>
-        <!-- authentication question -->
-        <div class="inputContainer">
-          <p>Authentication Question:</p>
-          <input>
-        </div>
-        <!-- authentication answer -->
-        <div class="inputContainer">
-          <p>Authentication Answer:</p>
-          <input>
-        </div>
-        <!-- user region -->
-        <div class="inputContainer">
-          <p>Region:</p>
-          <input>
-        </div>
-        <!-- submit -->
-        <div class="inputContainer">
-          <button>Register</button>
-          <p>Already have an account? <span @click="setPage('login')">Login!</span></p>
-        </div>
-      </form>
-    </div>
+        <form>
+          <h3>Register:</h3>
+          <!-- name -->
+          <div class="inputContainer">
+            <p>Name:</p>
+            <input />
+          </div>
+          <!-- username -->
+          <div class="inputContainer">
+            <p>Username:</p>
+            <input />
+          </div>
+          <!-- authentication question -->
+          <div class="inputContainer">
+            <p>Authentication Question:</p>
+            <input />
+          </div>
+          <!-- authentication answer -->
+          <div class="inputContainer">
+            <p>Authentication Answer:</p>
+            <input />
+          </div>
+          <!-- user region -->
+          <div class="inputContainer">
+            <p>Region:</p>
+            <input />
+          </div>
+          <!-- submit -->
+          <div class="inputContainer">
+            <button>Register</button>
+            <p>
+              Already have an account?
+              <span @click="setPage('login')">Login!</span>
+            </p>
+          </div>
+        </form>
+      </div>
 
+      <div class="page" v-if="page === 'home'">
+        <div class="sectionContainer">
+          <div class="column">
+            <div class="inputContainer row searchInput">
+              <input placeholder="Search..." />
+              <button>Search</button>
+            </div>
 
-
-
+            <div class="row" v-for="row in games">
+              <div v-for="game in row">
+                <div class="gameThumbnail column" @click="setPage(game.name)">
+                  <div
+                    v-bind:style="{backgroundImage: 'url(' + game.image + ')'}"
+                  ></div>
+                  <p>{{ game.name }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="app.js"></script>
   </body>
