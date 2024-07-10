@@ -14,8 +14,9 @@ app.use(
     secret: "qwertyuiopasdfghjklzxcvbnm12345678909uytrewqasdfvbnnhtresdcv",
     saveUninitialized: true,
     resave: false,
-  })
+  }),
 );
+
 
 async function AuthMiddleware(req, res, next) {
   if (req.session && req.session.userID) {
@@ -41,6 +42,7 @@ app.post("/session", async function (req, res) {
       return res.status(401).send("Authentification Failure.");
     }
 
+    req.session.name = user.name;
     req.session.userID = user._id;
     res.status(201).send(req.session);
   } catch (error) {
@@ -50,7 +52,7 @@ app.post("/session", async function (req, res) {
 });
 
 app.get("/session", AuthMiddleware, async function (req, res) {
-  res.send(req.session);
+  res.status(200).send(req.session);
 });
 
 app.delete("/session", function (req, res) {
