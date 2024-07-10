@@ -25,7 +25,9 @@
             <input v-model="this.user.username" />
           </div>
           <div class="inputContainer">
-            <button @click="setPage('authentication')">Next</button>
+            <button @click="setPage('authentication'); getUserByUsername()">
+              Next
+            </button>
             <p>
               Don't have an account?
               <span @click="setPage('register')">Sign-up!</span>
@@ -39,8 +41,8 @@
         <form>
           <h3>Authentication:</h3>
           <div class="inputContainer">
-            <p><!--{{v-model to user's authentication question}}--></p>
-            <input />
+            <p>{{this.user.authQuestion}}</p>
+            <input v-model="user.authAnswer" />
           </div>
           <div class="inputContainer">
             <button @click="loginUser()">Login</button>
