@@ -86,6 +86,7 @@ Vue.createApp({
 
       let response = await fetch(`${URL}/session`, requestOptions);
       let data = await response.json();
+      this.currentUser = data;
       if (response.status === 201) {
         console.log("Succesfully logged in");
 
