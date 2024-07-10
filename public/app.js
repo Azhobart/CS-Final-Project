@@ -4,6 +4,7 @@ Vue.createApp({
   data() {
     return {
       page: "login",
+      searchInput: "",
 
       currentUser: {},
 
@@ -14,8 +15,6 @@ Vue.createApp({
         authQuestion: "",
         authAnswer: "",
       },
-      
-      currentUser: "",
 
       games: [
         [
@@ -120,7 +119,19 @@ Vue.createApp({
     },
   },
 
+  computed: {
+    filteredGames: function() {
+      for (row in this.games) {
+        for (let i = 0; i < this.games.length; i++) {
+          console.log(this.games[row]);
+        }
+
+      }
+  }
+},
+
   created: function () {
-    this.getSession();
+    this.getSession();;
+
   },
 }).mount("#app");

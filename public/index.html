@@ -39,13 +39,8 @@
         <form @submit.prevent="loginUser()">
           <h3>Authentication:</h3>
           <div class="inputContainer">
-<<<<<<< HEAD
-            <p>{{ user.authQuestion }}</p>
-            <input />
-=======
             <p>{{this.user.authQuestion}}</p>
             <input v-model="user.authAnswer" />
->>>>>>> 13268e6486a32ff8fa1ae415877686588e9587a1
           </div>
           <div class="inputContainer">
             <button @click="loginUser()">Login</button>
@@ -101,7 +96,7 @@
               <button>Search</button>
             </div>
 
-            <div class="row" v-for="row in games">
+            <div class="row" v-for="(row, index) in filteredGames">
               <div v-for="game in row">
                 <div class="gameThumbnail column" @click="setPage(game.name)">
                   <div
