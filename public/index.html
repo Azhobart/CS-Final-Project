@@ -24,7 +24,7 @@
 
       <!-- log-in page (Username Field) -->
       <div id="loginField" v-if="page === 'login'">
-        <form>
+        <div class="sectionContainer">
           <h3>Login:</h3>
           <div class="inputContainer">
             <p>Username:</p>
@@ -39,7 +39,8 @@
               <span @click="setPage('register')">Sign-up!</span>
             </p>
           </div>
-        </form>
+        </div>
+        
       </div>
 
       <!-- log-in page (Authentication Field) -->
