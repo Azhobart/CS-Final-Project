@@ -13,7 +13,15 @@
   <body class="container">
     <div id="app">
       <nav>
-        <h1 @click="setPage('home')">Online Arcade</h1>
+        <h1>Online Arcade</h1>
+      </nav>
+      <nav
+        v-if="page != 'login' && page != 'register' && page != 'authentication'"
+      >
+        <h3>{{currentUser.username}}hi</h3>
+        <button @click="setPage('home')">Games</button>
+        <button @click="setPage('leaderboard')">Leaderboard</button>
+        <button @click="setPage('profile')">Profile</button>
       </nav>
 
       <!-- log-in page (Username Field) -->
@@ -38,7 +46,7 @@
 
       <!-- log-in page (Authentication Field) -->
       <div id="authField" v-if="page === 'authentication'">
-        <form>
+        <div class="sectionContainer">
           <h3>Authentication:</h3>
           <div class="inputContainer">
             <p>{{this.user.authQuestion}}</p>
@@ -47,6 +55,7 @@
           <div class="inputContainer">
             <button @click="loginUser()">Login</button>
           </div>
+        </div>
         </form>
       </div>
 

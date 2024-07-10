@@ -71,6 +71,16 @@ Vue.createApp({
       }
     },
 
+    getUser: async function (id) {
+      let response = await fetch(`${URL}/users/${id}`);
+      if (response.status === 200) {
+        let data = await response.json();
+        return data;
+      } else {
+        return {};
+      }
+    },
+
     loginUser: async function () {
       let newHeaders = new Headers();
       newHeaders.append("Content-Type", "application/json");
@@ -83,9 +93,11 @@ Vue.createApp({
 
       let response = await fetch(`${URL}/session`, requestOptions);
       let data = await response.json();
-      if (response.status === 201) {
-        console.log("Succesfully logged in");
 
+      if (response.status === 201) {
+        this.currentUser = await this.getUser(data.userID);
+
+        console.log("Succesfully logged in");
         this.setPage("home");
       } else {
         console.log("Failed to log in.");
@@ -108,7 +120,7 @@ Vue.createApp({
       let response = await fetch(`${URL}/session`);
       if (response.status === 200) {
         let data = await response.json();
-        this.currentUser = data;
+
         this.setPage("home");
       } else {
         this.setPage("login");
