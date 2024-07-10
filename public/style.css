@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Ernest', sans-serif;
+  font-family: 'Galactic Storm', sans-serif;
 }
 
 body {
@@ -20,6 +20,7 @@ nav {
   font-size: 40px;
   background-color: #4F6F52;
   color: #D2E3C8;
+  position: sticky;
 }
 
 /* center the login field */
@@ -65,7 +66,9 @@ form h3 {
 /* style <input> tag */
 .inputContainer input {
   border: none;
+  color: white;
   background-color: #86A789;
+  padding: 0px 5px;
   margin-top: 10px;
   height: 25px;
   width: 150px;
