@@ -123,7 +123,7 @@ Vue.createApp({
     filteredGames: function() {
       for (row in this.games) {
         for (let i = 0; i < this.games.length; i++) {
-          console.log(this.games[row]);
+          console.log(this.games[row][i]);
         }
 
       }

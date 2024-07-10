@@ -96,7 +96,7 @@
               <button>Search</button>
             </div>
 
-            <div class="row" v-for="(row, index) in filteredGames">
+            <div class="row" v-for="row in games">
               <div v-for="game in row">
                 <div class="gameThumbnail column" @click="setPage(game.name)">
                   <div
