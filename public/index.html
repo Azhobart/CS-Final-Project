@@ -61,42 +61,42 @@
 
       <!-- register page -->
       <div id="registerField" v-show="page === 'register'">
-        <form>
+        <div class="sectionContainer">
           <h3>Register:</h3>
           <!-- name -->
           <div class="inputContainer">
             <p>Name:</p>
-            <input />
+            <input v-model="user.name"/>
           </div>
           <!-- username -->
           <div class="inputContainer">
             <p>Username:</p>
-            <input />
+            <input v-model="user.username"/>
           </div>
           <!-- authentication question -->
           <div class="inputContainer">
             <p>Authentication Question:</p>
-            <input />
+            <input v-model="user.authQuestion"/>
           </div>
           <!-- authentication answer -->
           <div class="inputContainer">
             <p>Authentication Answer:</p>
-            <input />
+            <input v-model="user.authAnswer"/>
           </div>
           <!-- user region -->
           <div class="inputContainer">
             <p>Region:</p>
-            <input />
+            <input v-model="user.region"/>
           </div>
           <!-- submit -->
           <div class="inputContainer">
-            <button>Register</button>
+            <button @click="setPage('login'); registerUser()">Register</button>
             <p>
               Already have an account?
-              <span @click="setPage('login')">Login!</span>
+              <span @click="setPage('login');">Login!</span>
             </p>
           </div>
-        </form>
+        </div>
       </div>
 
       <div class="page" v-if="page === 'home'">
