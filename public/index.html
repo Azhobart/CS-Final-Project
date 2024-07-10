@@ -6,21 +6,29 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link href="https://fonts.cdnfonts.com/css/galactic-storm" rel="stylesheet">
-
+    
   </head>
   <body class="container">
     <div id="app">
       <nav>
-        <h1 @click="setPage('home')">Online Arcade</h1>
+        <h1>Online Arcade</h1>
+      </nav>
+      <nav
+        v-if="page != 'login' && page != 'register' && page != 'authentication'"
+      >
+        <h3>{{currentUser.username}}</h3>
+        <button @click="setPage('home')">Games</button>
+        <button @click="setPage('leaderboard')">Leaderboard</button>
+        <button @click="setPage('profile')">Profile</button>
       </nav>
 
       <!-- log-in page (Username Field) -->
       <div id="loginField" v-if="page === 'login'">
-        <form @submit.prevent="loginUser()">
+        <form>
           <h3>Login:</h3>
           <div class="inputContainer">
             <p>Username:</p>
-            <input v-model="user.username" />
+            <input v-model="this.user.username" />
           </div>
           <div class="inputContainer">
             <button @click="setPage('authentication'); getUserByUsername()">
@@ -36,7 +44,7 @@
 
       <!-- log-in page (Authentication Field) -->
       <div id="authField" v-if="page === 'authentication'">
-        <form @submit.prevent="loginUser()">
+        <div class="sectionContainer">
           <h3>Authentication:</h3>
           <div class="inputContainer">
             <p>{{this.user.authQuestion}}</p>
@@ -45,6 +53,7 @@
           <div class="inputContainer">
             <button @click="loginUser()">Login</button>
           </div>
+        </div>
         </form>
       </div>
 
