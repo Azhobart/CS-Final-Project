@@ -26,37 +26,107 @@ Vue.createApp({
         favoriteGame: "",
       },
 
+      regions: [
+        {
+          code: "AF",
+          name: "Africa",
+        },
+        {
+          code: "AN",
+          name: "Antarctica",
+        },
+        {
+          code: "AS",
+          name: "Asia",
+        },
+        {
+          code: "EU",
+          name: "Europe",
+        },
+        {
+          code: "NA",
+          name: "North America",
+        },
+        {
+          code: "OC",
+          name: "Oceania",
+        },
+        {
+          code: "SA",
+          name: "South America",
+        },
+      ],
+
+      scores: [
+        {
+          game: "Tic Tac Toe",
+          value: 10,
+          user: {
+            _id: "668ec93e2668a3a86d6afbb3",
+            name: "g",
+            username: "g",
+            region: "g",
+            authQuestion: "g",
+            authAnswer: "g",
+            scores: [],
+            __v: 0,
+          },
+        },
+        {
+          game: "Tic Tac Toe",
+          value: 5,
+          user: {
+            _id: "668ec93e2668a3a86d6afbb3",
+            name: "g",
+            username: "g",
+            region: "USA",
+            authQuestion: "g",
+            authAnswer: "g",
+            scores: [],
+            __v: 0,
+          },
+        },
+        {
+          game: "battleship",
+          value: 1000,
+          user: {
+            _id: "668ec93e2668a3a86d6afbb3",
+            name: "g",
+            username: "g",
+            region: "CAN",
+            authQuestion: "g",
+            authAnswer: "g",
+            scores: [],
+            __v: 0,
+          },
+        },
+      ],
+
       games: [
-        [
-          {
-            name: "Tic Tac Toe",
-            image:
-              "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcQdR5hPxiKG7MuJFuIe1lbrqandKE2QP5JzdrE4Dt6gnzu6Xnc0dCyK97yTeghVzkok",
-          },
-          {
-            name: "BATTLESHIP",
-            image:
-              "https://www.hasbro.com/common/productimages/en_US/54D1C85ECFBE46259A9E53C36F4D136C/c386e8608f9409166a4409b11ace173f5f504449.jpg",
-          },
-          { name: 2, image: "" },
-        ],
-        [
-          { name: 3, image: "" },
-          { name: 4, image: "" },
-          {
-            name: "CAT",
-            image: "",
-          },
-        ],
-        [
-          { name: 6, image: "" },
-          { name: "Test Test TEst teTredgrsegsr", image: "" },
-          { name: 8, image: "" },
-        ],
-        [
-          { name: 9, image: "" },
-          { name: "10", image: "" },
-        ],
+        {
+          name: "Tic Tac Toe",
+          image:
+            "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcQdR5hPxiKG7MuJFuIe1lbrqandKE2QP5JzdrE4Dt6gnzu6Xnc0dCyK97yTeghVzkok",
+        },
+        {
+          name: "BATTLESHIP",
+          image:
+            "https://www.hasbro.com/common/productimages/en_US/54D1C85ECFBE46259A9E53C36F4D136C/c386e8608f9409166a4409b11ace173f5f504449.jpg",
+        },
+        { name: 2, image: "" },
+
+        { name: 3, image: "" },
+        { name: 4, image: "" },
+        {
+          name: "CAT",
+          image: "",
+        },
+        { name: 6, image: "" },
+        { name: "Test Test TEst teTredgrsegsr", image: "" },
+        { name: 8, image: "" },
+
+        { name: 9, image: "" },
+        { name: "10", image: "" },
       ],
     };
   },

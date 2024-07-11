@@ -57,6 +57,13 @@ nav {
   width: 150px;
 }
 
+.inputContainer select {
+  border: none;
+  background-color: #86a789;
+  height: 25px;
+  width: 150px;
+}
+
 /* style form button */
 .inputContainer button {
   display: inline-block;
@@ -126,7 +133,6 @@ nav {
 
 .searchInput {
   align-self: flex-start;
-  margin: 20px;
 }
 
 .row {
@@ -141,6 +147,24 @@ nav {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+}
+
+.gameListDiv {
+  display: grid;
+  background-color: RGBA(0, 0, 0, 0);
+  grid-template-columns: 200px 200px 200px;
+  align-self: start;
+}
+
+.scoreTableRow {
+  display: grid;
+
+  grid-template-columns: 50px 200px 200px 200px 50px;
+  align-self: start;
+
+  &:nth-child(2n) {
+    background-color: #86a789;
+  }
 }
 
 .tictactoeCell {
