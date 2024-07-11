@@ -107,9 +107,8 @@
               <input placeholder="Search..." />
               <button>Search</button>
             </div>
-
-            <div class="row" v-for="row in games">
-              <div v-for="game in row">
+            <div class="gameListDiv">
+              <div class="row" v-for="game in games">
                 <div class="gameThumbnail column" @click="setPage(game.name)">
                   <div
                     v-bind:style="{backgroundImage: 'url(' + game.image + ')'}"
@@ -117,6 +116,31 @@
                   <p>{{ game.name }}</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" v-if="page === 'leaderboard'">
+        <div class="sectionContainer">
+          <div class="column">
+            <div class="inputContainer row searchInput">
+              <input placeholder="Search..." />
+
+              <select>
+                <option v-for="game in games" value="game.name">{{game.name}}</option>
+              </select>
+              <select>
+                <option v-for="region in regions" value="region">{{region}}</option>
+              </select>
+            </div>
+
+            <div class="scoreTableRow" v-for="(score, indx) in scores">
+              <p>{{indx}}.</p>
+              <p>{{score.user.username}}</p>
+              <p>{{score.value}}</p>
+              <p>{{score.game}}</p>
+              <p>{{score.user.region}}</p>
             </div>
           </div>
         </div>
