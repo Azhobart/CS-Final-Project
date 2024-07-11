@@ -15,8 +15,6 @@ Vue.createApp({
 
       currentUser: {},
 
-
-
       user: {
         name: "",
         username: "",
@@ -171,9 +169,7 @@ Vue.createApp({
       }
     },
 
-<<<<<<< HEAD
-
-    deleteSession: async function() {
+    deleteSession: async function () {
       let requestOptions = {
         method: "DELETE",
       };
@@ -186,38 +182,34 @@ Vue.createApp({
       }
     },
 
-    editProfile: function() {
+    editProfile: function () {
       this.newUser = this.currentUser;
       this.isEditing = true;
     },
 
-    saveProfile: async function() {
-      console.log(this.newUser)
+    saveProfile: async function () {
+      console.log(this.newUser);
       let myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-
-
 
       let requestOptions = {
         method: "PUT",
         headers: myHeaders,
         body: JSON.stringify(this.newUser),
-      }
+      };
 
-      let response = await fetch(`${URL}/users/${this.newUser._id}`, requestOptions);
+      let response = await fetch(
+        `${URL}/users/${this.newUser._id}`,
+        requestOptions
+      );
       if (response.status === 204) {
-        console.log(this.currentUser)
+        console.log(this.currentUser);
         this.isEditing = false;
       } else {
         console.log("failed to update user");
       }
-
-      
     },
 
-
-
-=======
     getScores: async function () {
       let response = await fetch(`${URL}/scores`);
 
@@ -239,16 +231,10 @@ Vue.createApp({
       });
       return byUser;
     },
->>>>>>> 3397184d8467740b84954da219e03605a84a78c1
   },
 
   created: function () {
     this.getSession();
-<<<<<<< HEAD
-    console.log(this.currentUser)
-
-=======
     this.getScores();
->>>>>>> 3397184d8467740b84954da219e03605a84a78c1
   },
 }).mount("#app");
