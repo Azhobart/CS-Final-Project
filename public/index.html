@@ -131,7 +131,7 @@
                 <option v-for="game in games" value="game.name">{{game.name}}</option>
               </select>
               <select>
-                <option v-for="region in regions" value="region">{{region}}</option>
+                <option v-for="region in regions" value="region.code">{{region.code}} - {{region.name}}</option>
               </select>
             </div>
 
