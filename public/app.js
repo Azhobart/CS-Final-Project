@@ -57,51 +57,6 @@ Vue.createApp({
         },
       ],
 
-      scores: [
-        {
-          game: "Tic Tac Toe",
-          value: 10,
-          user: {
-            _id: "668ec93e2668a3a86d6afbb3",
-            name: "g",
-            username: "g",
-            region: "g",
-            authQuestion: "g",
-            authAnswer: "g",
-            scores: [],
-            __v: 0,
-          },
-        },
-        {
-          game: "Tic Tac Toe",
-          value: 5,
-          user: {
-            _id: "668ec93e2668a3a86d6afbb3",
-            name: "g",
-            username: "g",
-            region: "USA",
-            authQuestion: "g",
-            authAnswer: "g",
-            scores: [],
-            __v: 0,
-          },
-        },
-        {
-          game: "battleship",
-          value: 1000,
-          user: {
-            _id: "668ec93e2668a3a86d6afbb3",
-            name: "g",
-            username: "g",
-            region: "CAN",
-            authQuestion: "g",
-            authAnswer: "g",
-            scores: [],
-            __v: 0,
-          },
-        },
-      ],
-
       games: [
         {
           name: "Tic Tac Toe",
@@ -109,7 +64,7 @@ Vue.createApp({
             "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcQdR5hPxiKG7MuJFuIe1lbrqandKE2QP5JzdrE4Dt6gnzu6Xnc0dCyK97yTeghVzkok",
         },
         {
-          name: "BATTLESHIP",
+          name: "Battleship",
           image:
             "https://www.hasbro.com/common/productimages/en_US/54D1C85ECFBE46259A9E53C36F4D136C/c386e8608f9409166a4409b11ace173f5f504449.jpg",
         },
@@ -128,6 +83,12 @@ Vue.createApp({
         { name: 9, image: "" },
         { name: "10", image: "" },
       ],
+
+      scores: [],
+
+      scoreRegionSearchInput: "",
+      scoreGameSearchInput: "Tic Tac Toe",
+      scoreUserSearchInput: "",
     };
   },
 
@@ -210,6 +171,7 @@ Vue.createApp({
       }
     },
 
+<<<<<<< HEAD
 
     deleteSession: async function() {
       let requestOptions = {
@@ -255,11 +217,38 @@ Vue.createApp({
 
 
 
+=======
+    getScores: async function () {
+      let response = await fetch(`${URL}/scores`);
+
+      let data = await response.json();
+      this.scores = data;
+    },
+  },
+
+  computed: {
+    filteredScores: function () {
+      let byRegion = this.scores.filter((score) => {
+        return score.user.region.includes(this.scoreRegionSearchInput);
+      });
+      let byGame = byRegion.filter((score) => {
+        return score.game.includes(this.scoreGameSearchInput);
+      });
+      let byUser = byGame.filter((score) => {
+        return score.user.username.includes(this.scoreUserSearchInput);
+      });
+      return byUser;
+    },
+>>>>>>> 3397184d8467740b84954da219e03605a84a78c1
   },
 
   created: function () {
     this.getSession();
+<<<<<<< HEAD
     console.log(this.currentUser)
 
+=======
+    this.getScores();
+>>>>>>> 3397184d8467740b84954da219e03605a84a78c1
   },
 }).mount("#app");

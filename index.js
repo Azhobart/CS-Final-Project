@@ -181,7 +181,7 @@ app.delete("/users/:userID", AuthMiddleware, async function (req, res) {
 
 app.get("/scores", async function (req, res) {
   try {
-    let scores = await model.Score.find();
+    let scores = await model.Score.find().populate("user");
 
     res.send(scores);
   } catch (error) {

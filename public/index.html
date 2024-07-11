@@ -169,17 +169,18 @@
         <div class="sectionContainer">
           <div class="column">
             <div class="inputContainer row searchInput">
-              <input placeholder="Search..." />
+              <input placeholder="Search..." v-model="scoreUserSearchInput"/>
 
-              <select>
-                <option v-for="game in games" value="game.name">{{game.name}}</option>
+              <select v-model="scoreGameSearchInput">
+                <option v-for="game in games" :value="game.name">{{game.name}}</option>
               </select>
-              <select>
-                <option v-for="region in regions" value="region.code">{{region.code}} - {{region.name}}</option>
+              <select v-model="scoreRegionSearchInput" >
+                <option value="" selected>Any</option>
+                <option v-for="region in regions" :value="region.code ">{{region.code}} - {{region.name}}</option>
               </select>
             </div>
 
-            <div class="scoreTableRow" v-for="(score, indx) in scores">
+            <div class="scoreTableRow" v-for="(score, indx) in filteredScores">
               <p>{{indx}}.</p>
               <p>{{score.user.username}}</p>
               <p>{{score.value}}</p>
