@@ -122,7 +122,6 @@
         </div>
       </div>
 
-<<<<<<< HEAD
 
       <div v-if="page === 'profile'">
         <div class="sectionContainer">
@@ -131,26 +130,26 @@
           <div class="profileData">
 
 
-            <p>Name:</p> <input placeholder="name" v-show="isEditing" v-model="newUser.name">
+            <p>Name:</p> <input placeholder="name" v-show="isEditing" v-model="currentUser.name">
             <span v-show="!isEditing">{{ currentUser.name }}</span>
 
-            <p>Username:</p> <input placeholder="username" v-show="isEditing" v-model="newUser.username">
+            <p>Username:</p> <input placeholder="username" v-show="isEditing" v-model="currentUser.username">
             <span v-show="!isEditing">{{ currentUser.username }}</span>
 
-            <p>Region:</p> <input placeholder="region" v-show="isEditing" v-model="newUser.region">
+            <p>Region:</p> <input placeholder="region" v-show="isEditing" v-model="currentUser.region">
             <span v-show="!isEditing">{{ currentUser.region }}</span>
 
-            <p>Authentication Question:</p> <input placeholder="question" v-show="isEditing" v-model="newUser.authQuestion">
+            <p>Authentication Question:</p> <input placeholder="question" v-show="isEditing" v-model="currentUser.authQuestion">
             <span v-show="!isEditing">{{ currentUser.authQuestion }}</span>
 
-            <p>Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="newUser.authAnswer">
+            <p>Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="currentUser.authAnswer">
             <span v-show="!isEditing">{{ currentUser.authAnswer }}</span>
 
 
           </div>
           <h2 class="userTitle">Game Data:</h2>
           <div class="profileData">
-            <p>Favorite Game:</p> <input placeholder="favorite game" v-show="isEditing" v-model="newUser.favoriteGame">
+            <p>Favorite Game:</p> <input placeholder="favorite game" v-show="isEditing" v-model="currentUser.favoriteGame">
             <span v-show="!isEditing">{{ currentUser.favoriteGame }}</span>
 
             <p>Highscores:</p>
@@ -166,7 +165,6 @@
       </div>
 
 
-=======
       <div class="page" v-if="page === 'leaderboard'">
         <div class="sectionContainer">
           <div class="column">
@@ -191,7 +189,6 @@
           </div>
         </div>
       </div>
->>>>>>> 000788f00c4c63921c42be4ce9100c1a8d047010
     </div>
     <script src="app.js"></script>
   </body>

@@ -203,7 +203,7 @@ Vue.createApp({
       let response = await fetch(`${URL}/session`);
       if (response.status === 200) {
         let data = await response.json();
-
+        this.currentUser = await this.getUser(data.userID);
         this.setPage("home");
       } else {
         this.setPage("login");
@@ -230,6 +230,7 @@ Vue.createApp({
     },
 
     saveProfile: async function() {
+      console.log(this.newUser)
       let myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -243,6 +244,7 @@ Vue.createApp({
 
       let response = await fetch(`${URL}/users/${this.newUser._id}`, requestOptions);
       if (response.status === 204) {
+        console.log(this.currentUser)
         this.isEditing = false;
       } else {
         console.log("failed to update user");
@@ -257,6 +259,7 @@ Vue.createApp({
 
   created: function () {
     this.getSession();
-    
+    console.log(this.currentUser)
+
   },
 }).mount("#app");
