@@ -15,8 +15,6 @@ Vue.createApp({
 
       currentUser: {},
 
-
-
       user: {
         name: "",
         username: "",
@@ -171,8 +169,12 @@ Vue.createApp({
       }
     },
 
+<<<<<<< HEAD
 
     deleteSession: async function() {
+=======
+    deleteSession: async function () {
+>>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
       let requestOptions = {
         method: "DELETE",
       };
@@ -185,42 +187,59 @@ Vue.createApp({
       }
     },
 
-    editProfile: function() {
+    editProfile: function () {
       this.newUser = this.currentUser;
       this.isEditing = true;
     },
 
-    saveProfile: async function() {
-      console.log(this.newUser)
+    saveProfile: async function () {
+      console.log(this.newUser);
       let myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-
-
 
       let requestOptions = {
         method: "PUT",
         headers: myHeaders,
         body: JSON.stringify(this.newUser),
-      }
+      };
 
-      let response = await fetch(`${URL}/users/${this.newUser._id}`, requestOptions);
+      let response = await fetch(
+        `${URL}/users/${this.newUser._id}`,
+        requestOptions
+      );
       if (response.status === 204) {
-        console.log(this.currentUser)
+        console.log(this.currentUser);
         this.isEditing = false;
       } else {
         console.log("failed to update user");
       }
-
-      
     },
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
     getScores: async function () {
       let response = await fetch(`${URL}/scores`);
 
       let data = await response.json();
       this.scores = data;
+      this.sortScores();
+    },
+
+    sortScores: function () {
+      function compare(a, b) {
+        if (parseInt(a.value) > parseInt(b.value)) {
+          return -1;
+        }
+        if (parseInt(a.value) < parseInt(b.value)) {
+          return 1;
+        }
+        return 0;
+      }
+
+      this.filteredScores.sort(compare);
     },
   },
 
@@ -241,8 +260,11 @@ Vue.createApp({
 
   created: function () {
     this.getSession();
+<<<<<<< HEAD
     console.log(this.currentUser)
 
+=======
+>>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
     this.getScores();
   },
 }).mount("#app");
