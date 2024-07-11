@@ -171,7 +171,6 @@ Vue.createApp({
       }
     },
 
-<<<<<<< HEAD
 
     deleteSession: async function() {
       let requestOptions = {
@@ -217,7 +216,6 @@ Vue.createApp({
 
 
 
-=======
     getScores: async function () {
       let response = await fetch(`${URL}/scores`);
 
@@ -239,16 +237,12 @@ Vue.createApp({
       });
       return byUser;
     },
->>>>>>> 3397184d8467740b84954da219e03605a84a78c1
   },
 
   created: function () {
     this.getSession();
-<<<<<<< HEAD
     console.log(this.currentUser)
 
-=======
     this.getScores();
->>>>>>> 3397184d8467740b84954da219e03605a84a78c1
   },
 }).mount("#app");

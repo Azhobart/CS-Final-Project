@@ -10,7 +10,7 @@ body {
 }
 
 /* nav bar */
-nav {
+#titleNav  {
   padding: 20px;
   display: flex;
   flex-flow: row nowrap;
@@ -22,6 +22,50 @@ nav {
   color: #D2E3C8;
   position: sticky;
 }
+
+#subNav {
+  padding: 0px 0px 20px 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-family: "8BIT WONDER", sans-serif;
+  font-size: 40px;
+  background-color: #4F6F52;
+  color: #D2E3C8;
+  position: sticky;
+
+}
+
+#subNav h4 {
+  grid-column: 1;
+  margin: 0px 0px 0px 40px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: left;
+  align-items: center;
+}
+
+#subNav div {
+  grid-column: 2;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#subNav div button {
+  display: inline-block;
+  background-color:#739072;
+  color: #d2e3c8;
+  width: 100px;
+  height: 45px;
+  border: none;
+}
+
+#subNav div button:hover {
+  background-color: #86a789;
+  color: #4f6f52;
+}
+
 
 /* center the login field */
 #loginField,
@@ -83,6 +127,10 @@ nav {
 .inputContainer p span:hover {
   cursor: pointer;
   color: #739072;
+}
+
+.accountMessage {
+  padding-top: 10px;
 }
 
 .page {

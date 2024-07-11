@@ -10,16 +10,20 @@
   </head>
   <body class="container">
     <div id="app">
-      <nav>
+      <nav id="titleNav">
         <h1>Online Arcade</h1>
       </nav>
-      <nav
+      <nav id="subNav"
         v-if="page != 'login' && page != 'register' && page != 'authentication'"
       >
-        <h3>{{currentUser.username}}</h3>
-        <button @click="setPage('home')">Games</button>
-        <button @click="setPage('leaderboard')">Leaderboard</button>
-        <button @click="setPage('profile')">Profile</button>
+        <h4>Welcome: {{currentUser.username}}</h4>
+
+        <div>
+          <button @click="setPage('home')">Games</button>
+          <button @click="setPage('leaderboard')">Leaderboard</button>
+          <button @click="setPage('profile')">Profile</button>
+        </div>
+
       </nav>
 
       <!-- log-in page (Username Field) -->
@@ -34,7 +38,7 @@
             <button @click="setPage('authentication'); getUserByUsername()">
               Next
             </button>
-            <p>
+            <p class="accountMessage">
               Don't have an account?
               <span @click="setPage('register')">Sign-up!</span>
             </p>
@@ -90,7 +94,7 @@
           <!-- submit -->
           <div class="inputContainer">
             <button @click="setPage('login'); registerUser()">Register</button>
-            <p>
+            <p class="accountMessage">
               Already have an account?
               <span @click="setPage('login');">Login!</span>
             </p>
