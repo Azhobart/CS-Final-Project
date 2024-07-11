@@ -3,8 +3,19 @@ Vue.createApp({
   data() {
     return {
       page: "login",
+      isEditing: false,
+      newUser: {
+        name: "",
+        username: "",
+        region: "",
+        authQuestion: "",
+        authAnswer: "",
+        favoriteGame: "",
+      },
 
       currentUser: {},
+
+
 
       user: {
         name: "",
@@ -12,6 +23,7 @@ Vue.createApp({
         region: "",
         authQuestion: "",
         authAnswer: "",
+        favoriteGame: "",
       },
 
       games: [
@@ -48,6 +60,7 @@ Vue.createApp({
       ],
     };
   },
+
   methods: {
     setPage: function (newPage) {
       this.page = newPage;
@@ -126,9 +139,54 @@ Vue.createApp({
         this.setPage("login");
       }
     },
+
+
+    deleteSession: async function() {
+      let requestOptions = {
+        method: "DELETE",
+      };
+
+      let response = await fetch(`${URL}/session`, requestOptions);
+      if (response.status === 204) {
+        this.isEditing = false;
+        this.page = "login";
+        this.currentUser = null;
+      }
+    },
+
+    editProfile: function() {
+      this.newUser = this.currentUser;
+      this.isEditing = true;
+    },
+
+    saveProfile: async function() {
+      let myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+
+
+      let requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: JSON.stringify(this.newUser),
+      }
+
+      let response = await fetch(`${URL}/users/${this.newUser._id}`, requestOptions);
+      if (response.status === 204) {
+        this.isEditing = false;
+      } else {
+        console.log("failed to update user");
+      }
+
+      
+    },
+
+
+
   },
 
   created: function () {
     this.getSession();
+    
   },
 }).mount("#app");

@@ -64,7 +64,6 @@ nav {
   color: #d2e3c8;
   width: 65px;
   height: 25px;
-  transition: width 0.5s, height 0.5s;
   border: none;
 }
 
@@ -160,3 +159,52 @@ nav {
     cursor: pointer;
   }
 }
+
+
+/* user page */
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userTitle {
+  margin: 15px 0px 15px 5px;
+}
+
+.profileData p {
+  margin: 5px 0px 5px 0px;
+}
+.profileData input {
+  color: white;
+  background-color: #86A789;
+}
+
+::placeholder {
+  color:#4f6f52;
+}
+
+.profileData span {
+  color:#739072
+}
+
+#profileActions {
+  padding: 20px 0px 20px 0px;
+  }
+
+#profileActions button {
+  display: inline-block;
+  background-color: #4f6f52;
+  color: #d2e3c8;
+  width: 65px;
+  height: 25px;
+  border: none;
+}
+  
+  /* reponsive button and <span> tag */
+#profileActions button:hover {
+  background-color: #86a789;
+  color: #4f6f52;
+}
+

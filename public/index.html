@@ -25,7 +25,7 @@
       <!-- log-in page (Username Field) -->
       <div id="loginField" v-if="page === 'login'">
         <div class="sectionContainer">
-          <h3>Login:</h3>
+          <h3 class="title">Login:</h3>
           <div class="inputContainer">
             <p>Username:</p>
             <input v-model="this.user.username" />
@@ -46,7 +46,7 @@
       <!-- log-in page (Authentication Field) -->
       <div id="authField" v-if="page === 'authentication'">
         <div class="sectionContainer">
-          <h3>Authentication:</h3>
+          <h3 class="title">Authentication:</h3>
           <div class="inputContainer">
             <p>{{this.user.authQuestion}}</p>
             <input v-model="user.authAnswer" />
@@ -61,7 +61,7 @@
       <!-- register page -->
       <div id="registerField" v-show="page === 'register'">
         <div class="sectionContainer">
-          <h3>Register:</h3>
+          <h3 class="title">Register:</h3>
           <!-- name -->
           <div class="inputContainer">
             <p>Name:</p>
@@ -126,10 +126,43 @@
 
       <div v-if="page === 'profile'">
         <div class="sectionContainer">
-          hello
+          <h1 class="title">{{currentUser.username}}'s Profile</h1>
+          <h2 class="userTitle">User Data:</h2>
+          <div class="profileData">
+
+
+            <p>Name:</p> <input placeholder="name" v-show="isEditing" v-model="newUser.name">
+            <span v-show="!isEditing">{{ currentUser.name }}</span>
+
+            <p>Username:</p> <input placeholder="username" v-show="isEditing" v-model="newUser.username">
+            <span v-show="!isEditing">{{ currentUser.username }}</span>
+
+            <p>Region:</p> <input placeholder="region" v-show="isEditing" v-model="newUser.region">
+            <span v-show="!isEditing">{{ currentUser.region }}</span>
+
+            <p>Authentication Question:</p> <input placeholder="question" v-show="isEditing" v-model="newUser.authQuestion">
+            <span v-show="!isEditing">{{ currentUser.authQuestion }}</span>
+
+            <p>Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="newUser.authAnswer">
+            <span v-show="!isEditing">{{ currentUser.authAnswer }}</span>
+
+
+          </div>
+          <h2 class="userTitle">Game Data:</h2>
+          <div class="profileData">
+            <p>Favorite Game:</p> <input placeholder="favorite game" v-show="isEditing" v-model="newUser.favoriteGame">
+            <span v-show="!isEditing">{{ currentUser.favoriteGame }}</span>
+
+            <p>Highscores:</p>
+          </div>
+          <div id="profileActions">
+            <button @click="editProfile()">Edit</button>
+            <button v-if="isEditing" @click="saveProfile()">Save</button>
+            <button @click="deleteSession()">Logout</button>
+          </div>
+
+  
         </div>
-
-
       </div>
 
 
