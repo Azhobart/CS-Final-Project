@@ -215,6 +215,21 @@ Vue.createApp({
 
       let data = await response.json();
       this.scores = data;
+      this.sortScores();
+    },
+
+    sortScores: function () {
+      function compare(a, b) {
+        if (parseInt(a.value) > parseInt(b.value)) {
+          return -1;
+        }
+        if (parseInt(a.value) < parseInt(b.value)) {
+          return 1;
+        }
+        return 0;
+      }
+
+      this.filteredScores.sort(compare);
     },
   },
 
