@@ -72,7 +72,7 @@ Vue.createApp({
         {
           name: "Prisoner's Dilemma",
           image:
-            "https://pnghq.com/wp-content/uploads/jail-bars-png-images-free-png-image-downloads-26441-1536x1229.png",
+            "https://www.clipartkey.com/mpngs/m/324-3244570_transparent-clipart-prisoner-behind-bars-cartoon.png",
         },
         { name: 4, image: "" },
         {

@@ -138,9 +138,6 @@ body {
   justify-content: center;
   justify-self: center;
   flex-direction: column;
-  & * {
-    margin: 10px;
-  }
 }
 
 .page button {
@@ -150,6 +147,7 @@ body {
   width: 85px;
   height: 45px;
   border: none;
+  margin: 10px;
 
   &:hover {
     background-color: #86a789;
