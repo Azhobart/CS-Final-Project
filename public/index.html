@@ -205,10 +205,14 @@
 
         <!-- colors game -->
       
+        
+      <div v-if="page === 'Colors'">
         <button v-if="!gameOver" @click="getColor(); cycleColors()">Start Game</button>
-      <div id="colorWrapper" v-if="page === 'Colors'">
-        <div v-if="!gameOver" id="colorField" v-bind:style="{ backgroundColor: randomColor }">
-      </div>
+        <div id="colorWrapper">
+          <div v-if="!gameOver" id="colorField" v-bind:style="{ backgroundColor: randomColor }">
+        </div>
+        
+      
 
         </div>
 
@@ -222,7 +226,7 @@
         <div v-if="gameOver">
             <p>Game Over | Score: {{ finalScore }}</p>
         </div>
-
+      </div>
 
     </div>
     <script src="app.js"></script>
