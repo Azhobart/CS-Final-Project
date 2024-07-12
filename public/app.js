@@ -69,7 +69,11 @@ Vue.createApp({
         },
         { name: "Colors", image: "" },
 
-        { name: 3, image: "" },
+        {
+          name: "Prisoner's Dilemma",
+          image:
+            "https://pnghq.com/wp-content/uploads/jail-bars-png-images-free-png-image-downloads-26441-1536x1229.png",
+        },
         { name: "Draw!", image: "" },
         {
           name: "CAT",
@@ -84,6 +88,7 @@ Vue.createApp({
       ],
 
       scores: [],
+      lastAchievedScore: {},
 
       scoreRegionSearchInput: "",
       scoreGameSearchInput: "Tic Tac Toe",
@@ -104,6 +109,12 @@ Vue.createApp({
       clickedTime: null,
       createdTime: null,
       reactionTime: null,
+      
+      //prisoners dilemma game variables
+      prisonerScore: 0,
+      prisonerTurn: 0,
+      prisonerDisplay: "",
+      prisonerGameLength: 10 + Math.floor(Math.random() * 3),
     };
   },
 
@@ -227,8 +238,6 @@ Vue.createApp({
       }
     },
 
-
-
     getScores: async function () {
       let response = await fetch(`${URL}/scores`);
 
@@ -319,6 +328,11 @@ Vue.createApp({
       this.getScores();
     },
 
+    finishGame: async function (score) {
+      this.setPage("finished game");
+      this.lastAchievedScore = score;
+    },
+
     // color game methods:
     getColor: function () {
       let ranIndex = Math.floor(Math.random() * this.colors.length);
@@ -352,7 +366,6 @@ Vue.createApp({
           }
         }
       }
-      
     },
 
     cycleColors: function () {
@@ -377,20 +390,47 @@ Vue.createApp({
       }, 1000);
     },
 
+    //prisoners dillemma game methods
+    incrementPrisonerTurn: function (choice) {
+      let opponentChoice = Math.floor(Math.random() * 2);
+      let prisonerOptions = ["Cooperate", "Defect"];
+      let payoffMatrix = [
+        [
+          [3, 3],
+          [0, 5],
+        ],
+        [
+          [5, 0],
+          [1, 1],
+        ],
+      ];
+      let x = choice;
+      let y = opponentChoice;
 
+      this.prisonerScore += payoffMatrix[x][y][0];
 
-  // draw reaction game
-    calculateReaction: function() {
-      let time = (Math.random() * 3000);
-  
-      setTimeout(() => {
-        this.createdTime = new Date.now()
-      }, time);
-  
-  
-      this.clickedTime = new Date.now();
-      this.reactionTime = (this.clickedTime - this.createdTime /1000)
+      this.prisonerDisplay =
+        "Your Opponent Chose " +
+        prisonerOptions[opponentChoice] +
+        "! +" +
+        payoffMatrix[x][y][0];
+
+      this.prisonerTurn += 1;
+      if (this.prisonerTurn > this.prisonerGameLength) {
+        let newScore = {
+          game: this.page,
+          value: this.prisonerScore,
+          user: this.currentUser._id,
+        };
+
+        this.prisonerTurn = 0;
+        this.prisonerDisplay = "";
+        this.prisonerScore = 0;
+        this.finishGame(newScore);
+      }
     },
+
+
   },
 
 
@@ -421,7 +461,7 @@ Vue.createApp({
 
   created: function () {
     this.getSession();
-    console.log(this.currentUser)
+    console.log(this.currentUser);
 
     this.getScores();
   },

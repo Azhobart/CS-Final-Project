@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Galactic Storm', sans-serif;
+  font-family: "Galactic Storm", sans-serif;
 }
 
 body {
@@ -10,7 +10,7 @@ body {
 }
 
 /* nav bar */
-#titleNav  {
+#titleNav {
   padding: 20px;
   display: flex;
   flex-flow: row nowrap;
@@ -18,8 +18,8 @@ body {
   justify-self: center;
   font-family: "8BIT WONDER", sans-serif;
   font-size: 40px;
-  background-color: #4F6F52;
-  color: #D2E3C8;
+  background-color: #4f6f52;
+  color: #d2e3c8;
   position: sticky;
 }
 
@@ -29,10 +29,9 @@ body {
   grid-template-columns: 1fr 1fr;
   font-family: "8BIT WONDER", sans-serif;
   font-size: 40px;
-  background-color: #4F6F52;
-  color: #D2E3C8;
+  background-color: #4f6f52;
+  color: #d2e3c8;
   position: sticky;
-
 }
 
 #subNav h4 {
@@ -54,7 +53,7 @@ body {
 
 #subNav div button {
   display: inline-block;
-  background-color:#739072;
+  background-color: #739072;
   color: #d2e3c8;
   width: 100px;
   height: 45px;
@@ -65,7 +64,6 @@ body {
   background-color: #86a789;
   color: #4f6f52;
 }
-
 
 /* center the login field */
 #loginField,
@@ -94,7 +92,7 @@ body {
 .inputContainer input {
   border: none;
   color: white;
-  background-color: #86A789;
+  background-color: #86a789;
   padding: 0px 5px;
   margin-top: 10px;
   height: 25px;
@@ -133,12 +131,34 @@ body {
   padding-top: 10px;
 }
 
+/* page class styling */
 .page {
   display: flex;
   align-items: start;
   justify-content: center;
   justify-self: center;
   flex-direction: column;
+  & * {
+    margin: 10px;
+  }
+}
+
+.page button {
+  display: inline-block;
+  background-color: #4f6f52;
+  color: #d2e3c8;
+  width: 85px;
+  height: 45px;
+  border: none;
+
+  &:hover {
+    background-color: #86a789;
+    color: #4f6f52;
+  }
+}
+
+.page img {
+  margin: 10px;
 }
 
 .sectionContainer {
@@ -232,7 +252,6 @@ body {
   }
 }
 
-
 /* user page */
 
 .title {
@@ -250,20 +269,20 @@ body {
 }
 .profileData input {
   color: white;
-  background-color: #86A789;
+  background-color: #86a789;
 }
 
 ::placeholder {
-  color:#4f6f52;
+  color: #4f6f52;
 }
 
 .profileData span {
-  color:#739072
+  color: #739072;
 }
 
 #profileActions {
   padding: 20px 0px 20px 0px;
-  }
+}
 
 #profileActions button {
   display: inline-block;
@@ -273,28 +292,21 @@ body {
   height: 25px;
   border: none;
 }
-  
-  /* reponsive button and <span> tag */
+
+/* reponsive button and <span> tag */
 #profileActions button:hover {
   background-color: #86a789;
   color: #4f6f52;
 }
 
-
-
-
-
-
-
 /* color game styling */
 
 #colorStart {
   cursor: pointer;
-  color: #D2E3C8;
-  background-color:#4F6F52;
+  color: #d2e3c8;
+  background-color: #4f6f52;
   padding: 5px;
   border-radius: 5px;
-  
 }
 
 #colorWrapper {
@@ -315,7 +327,7 @@ body {
   border-radius: 100%;
   border-width: 10px;
   border-style: solid;
-  border-color: #4F6F52;
+  border-color: #4f6f52;
 }
 
 #inputField {
@@ -329,12 +341,12 @@ body {
 #inputField div {
   width: 75px;
   height: 75px;
-  color: #4F6F52;
+  color: #4f6f52;
   border-radius: 100%;
   border-width: 5px;
   border-style: solid;
-  border-color: #4F6F52;
-  transition: filter .5s;
+  border-color: #4f6f52;
+  transition: filter 0.5s;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -343,7 +355,7 @@ body {
 
 #inputField div:hover {
   cursor: pointer;
-  filter: brightness(75%)
+  filter: brightness(75%);
 }
 
 
