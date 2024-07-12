@@ -11,6 +11,7 @@ Vue.createApp({
         authQuestion: "",
         authAnswer: "",
         favoriteGame: "",
+        scores: [],
       },
 
       currentUser: {},
@@ -169,12 +170,7 @@ Vue.createApp({
       }
     },
 
-<<<<<<< HEAD
-
-    deleteSession: async function() {
-=======
     deleteSession: async function () {
->>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
       let requestOptions = {
         method: "DELETE",
       };
@@ -215,19 +211,6 @@ Vue.createApp({
       }
     },
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
-    getScores: async function () {
-      let response = await fetch(`${URL}/scores`);
-
-      let data = await response.json();
-      this.scores = data;
-      this.sortScores();
-    },
-
     sortScores: function () {
       function compare(a, b) {
         if (parseInt(a.value) > parseInt(b.value)) {
@@ -239,7 +222,75 @@ Vue.createApp({
         return 0;
       }
 
-      this.filteredScores.sort(compare);
+      this.scores.sort(compare);
+    },
+
+    getScores: async function () {
+      let response = await fetch(`${URL}/scores`);
+
+      let data = await response.json();
+      this.scores = data;
+      this.sortScores();
+    },
+
+    addScore: async function (score) {
+      let myHeaders = new Headers();
+      myHeaders.append("content-type", "application/json");
+
+      let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(score),
+      };
+
+      let response = await fetch(`${URL}/scores`, requestOptions);
+      let data = await response.json();
+
+      //add score to user
+      this.currentUser.scores.push(data._id);
+      this.newUser = this.currentUser;
+
+      this.isEditing = true;
+      this.saveProfile();
+    },
+    updateScore: async function (score) {
+      let myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      let requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: JSON.stringify(score),
+      };
+
+      let response = await fetch(`${URL}/scores/${score._id}`, requestOptions);
+    },
+
+    setScore: async function (score) {
+      score.value += 1;
+      let scoreExists = false;
+      let scoreIsHigher = false;
+      this.scores.forEach((currentScore) => {
+        if (
+          currentScore.game.includes(score.game) &&
+          currentScore.user._id === this.currentUser._id
+        ) {
+          scoreExists = true;
+          if (score.value >= currentScore.value) {
+            scoreIsHigher = true;
+            score._id = currentScore._id;
+          }
+        }
+      });
+
+      if (!scoreExists) {
+        console.log("added score");
+        this.addScore(score);
+      } else if (scoreIsHigher) {
+        console.log("updating score");
+        this.updateScore(score);
+      }
+      this.getScores();
     },
   },
 
@@ -260,11 +311,6 @@ Vue.createApp({
 
   created: function () {
     this.getSession();
-<<<<<<< HEAD
-    console.log(this.currentUser)
-
-=======
->>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
     this.getScores();
   },
 }).mount("#app");
