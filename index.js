@@ -14,9 +14,8 @@ app.use(
     secret: "qwertyuiopasdfghjklzxcvbnm12345678909uytrewqasdfvbnnhtresdcv",
     saveUninitialized: true,
     resave: false,
-  }),
+  })
 );
-
 
 async function AuthMiddleware(req, res, next) {
   if (req.session && req.session.userID) {
@@ -222,10 +221,52 @@ app.post("/scores", async function (req, res) {
 
     await newScore.save();
 
-    res.status(201).send("New score created.");
+    res.status(201).send(newScore);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
+  }
+});
+
+app.put("/scores/:scoreID", AuthMiddleware, async function (req, res) {
+  try {
+    let score = await model.Score.findOne({ _id: req.params.scoreID });
+    if (!score) {
+      res.status(404).send("Score not found.");
+      return;
+    }
+    score.user = req.body.user;
+    score.game = req.body.game;
+    score.value = req.body.value;
+
+    const error = await score.validateSync();
+
+    if (error) {
+      res.status(422).send(error);
+      console.log(error);
+      return;
+    }
+
+    await score.save();
+    res.status(204).send();
+  } catch (error) {
+    res.status(422).send(error);
+  }
+});
+
+app.delete("/scores/:scoreID", AuthMiddleware, async function (req, res) {
+  try {
+    let isDeleted = await model.Score.findOneAndDelete({
+      _id: req.params.scoreID,
+    });
+    if (!isDeleted) {
+      res.status(404).send("Score Not Found");
+      return;
+    }
+    res.status(204).send("Removed");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 });
 
