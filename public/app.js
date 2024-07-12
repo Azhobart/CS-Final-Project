@@ -105,10 +105,10 @@ Vue.createApp({
       colorGameStart: false,
 
       //prisoners dilemma game variables
-      prisonerScore: 0,
-      prisonerTurn: 0,
-      prisonerDisplay: "",
+      prisonerScores: [0, 0],
+
       prisonerGameLength: 10 + Math.floor(Math.random() * 3),
+      prisonHistory: [],
     };
   },
 
@@ -390,37 +390,37 @@ Vue.createApp({
       let prisonerOptions = ["Cooperate", "Defect"];
       let payoffMatrix = [
         [
-          [3, 3],
-          [0, 5],
+          [2, 2],
+          [0, 3],
         ],
         [
-          [5, 0],
+          [3, 0],
           [1, 1],
         ],
       ];
       let x = choice;
       let y = opponentChoice;
 
-      this.prisonerScore += payoffMatrix[x][y][0];
+      this.prisonerScores[0] += payoffMatrix[x][y][0];
+      this.prisonerScores[1] += payoffMatrix[x][y][1];
 
-      this.prisonerDisplay =
-        "Your Opponent Chose " +
-        prisonerOptions[opponentChoice] +
-        "! +" +
-        payoffMatrix[x][y][0];
+      this.prisonHistory = [
+        {
+          scores: payoffMatrix[x][y],
+          choices: [x, y],
+        },
+      ].concat(this.prisonHistory);
 
-      this.prisonerTurn += 1;
-      if (this.prisonerTurn > this.prisonerGameLength) {
-        let newScore = {
+      if (this.prisonHistory.length > this.prisonerGameLength) {
+        let newPrisonerScore = {
           game: this.page,
-          value: this.prisonerScore,
+          value: this.prisonerScores[0],
           user: this.currentUser._id,
         };
-
-        this.prisonerTurn = 0;
         this.prisonerDisplay = "";
-        this.prisonerScore = 0;
-        this.finishGame(newScore);
+        this.prisonerScores = [0, 0];
+        this.prisonHistory = [];
+        this.finishGame(newPrisonerScore);
       }
     },
   },
