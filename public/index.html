@@ -212,6 +212,19 @@
       <!-- prisoners dilemma game -->
       <div class="page" v-if="page === 'Prisoner\'s Dilemma'">
         <div class="sectionContainer">
+          <div class="row">
+            <p>Play Against</p>
+            <select v-model="prisonBot">
+              <option value="Random">Random</option>
+              <option value="All Defects">All Defects</option>
+              <option value="All Cooperations">All Cooperations</option>
+              <option value="Tit For Tat">Tit For Tat</option>
+            </select>
+          </div>
+          <div class="row">
+            <p>Number Of Rounds</p>
+            <input type="Number" v-model="prisonerGameLength">
+          </div>
           <p>Your Score: {{prisonerScores[0]}}</p>
           <div class="row">
             <button @click="incrementPrisonerTurn(0)">Cooperate</button>
@@ -219,6 +232,7 @@
           </div>
           <br>
           <div class="prisonerHistoryGrid">
+           
             <p>{{prisonerScores[0]}}</p>
             <p>You</p>
             <p>Opponent</p>

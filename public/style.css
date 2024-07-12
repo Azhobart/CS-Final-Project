@@ -172,6 +172,17 @@ body {
   margin: 0px 10px;
 }
 
+.sectionContainer select,
+.sectionContainer input {
+  display: inline-block;
+  background-color: #4f6f52;
+  color: #d2e3c8;
+  width: 100px;
+  height: 25px;
+  border: none;
+  margin: 10px;
+}
+
 .gameThumbnail {
   margin: 20px 20px 20px 20px;
   width: 150px;

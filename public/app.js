@@ -106,7 +106,7 @@ Vue.createApp({
 
       //prisoners dilemma game variables
       prisonerScores: [0, 0],
-
+      prisonBot: "Random",
       prisonerGameLength: 10 + Math.floor(Math.random() * 3),
       prisonHistory: [],
     };
@@ -386,7 +386,6 @@ Vue.createApp({
 
     //prisoners dillemma game methods
     incrementPrisonerTurn: function (choice) {
-      let opponentChoice = Math.floor(Math.random() * 2);
       let prisonerOptions = ["Cooperate", "Defect"];
       let payoffMatrix = [
         [
@@ -398,6 +397,26 @@ Vue.createApp({
           [1, 1],
         ],
       ];
+      let opponentChoice;
+
+      if (this.prisonBot === "All Defects") {
+        opponentChoice = 1;
+      }
+      if (this.prisonBot === "All Cooperations") {
+        opponentChoice = 0;
+      }
+      if (this.prisonBot === "Random") {
+        opponentChoice = Math.floor(Math.random() * 2);
+      }
+      if (this.prisonBot === "Tit For Tat") {
+        opponentChoice = 0;
+        if (this.prisonHistory.length > 1) {
+          if (this.prisonHistory[0].choices[0] === 1) {
+            opponentChoice = 1;
+          }
+        }
+      }
+
       let x = choice;
       let y = opponentChoice;
 
