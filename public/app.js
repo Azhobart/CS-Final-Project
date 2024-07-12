@@ -222,7 +222,6 @@ Vue.createApp({
       }
     },
 
-<<<<<<< HEAD
 
 
     getScores: async function () {
@@ -233,8 +232,6 @@ Vue.createApp({
       this.sortScores();
     },
 
-=======
->>>>>>> 36817817ffe21f622516685210c5b41e8d1e19f6
     sortScores: function () {
       function compare(a, b) {
         if (parseInt(a.value) > parseInt(b.value)) {
@@ -406,11 +403,8 @@ Vue.createApp({
 
   created: function () {
     this.getSession();
-<<<<<<< HEAD
     console.log(this.currentUser)
 
-=======
->>>>>>> 36817817ffe21f622516685210c5b41e8d1e19f6
     this.getScores();
   },
 }).mount("#app");

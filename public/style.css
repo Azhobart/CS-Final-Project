@@ -307,7 +307,7 @@ body {
 }
 
 #inputField {
-  position: relative;
+  position: absolute;
   width: 1fr;
   display: flex;
   flex-flow: row nowrap;
