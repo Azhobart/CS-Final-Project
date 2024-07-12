@@ -207,24 +207,27 @@
       
         
       <div v-if="page === 'Colors'">
-        <button v-if="!gameOver" @click="getColor(); cycleColors()">Start Game</button>
+        
         <div id="colorWrapper">
-          <div v-if="!gameOver" id="colorField" v-bind:style="{ backgroundColor: randomColor }">
+          
+          <div v-if="!colorGameOver" id="colorField" v-bind:style="{ backgroundColor: randomColor }">
+            <div id="colorStart" v-if="!colorGameStart" @click="getColor(); cycleColors()">Start Game</div>
+          </div>
         </div>
         
       
 
-        </div>
+        
 
-        <div id="inputField" v-if="!gameOver">
+        <div id="inputField" v-if="!colorGameOver">
             <div v-bind:style="{ backgroundColor: '#FF0000' }" @click="addInput('#FF0000'); checkInput();">Red</div>
             <div v-bind:style="{ backgroundColor: '#0000FF' }" @click="addInput('#0000FF'); checkInput();">Blue</div>
             <div v-bind:style="{ backgroundColor: '#FFFF00' }" @click="addInput('#FFFF00'); checkInput();">Yellow</div>
             <div v-bind:style="{ backgroundColor: '#00FF00' }" @click="addInput('#00FF00'); checkInput();">Green</div>
         </div>
 
-        <div v-if="gameOver">
-            <p>Game Over | Score: {{ finalScore }}</p>
+        <div v-if="colorGameOver">
+            <p>Game Over | Score: {{ finalColorsScore }}</p>
         </div>
       </div>
 

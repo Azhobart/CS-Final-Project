@@ -288,6 +288,15 @@ body {
 
 /* color game styling */
 
+#colorStart {
+  cursor: pointer;
+  color: #D2E3C8;
+  background-color:#4F6F52;
+  padding: 5px;
+  border-radius: 5px;
+  
+}
+
 #colorWrapper {
   width: 100%;
   display: flex;
@@ -296,7 +305,7 @@ body {
 }
 
 #colorField {
-  margin: 30px 0px;
+  margin: 50px 0px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -304,10 +313,12 @@ body {
   height: 200px;
   width: 200px;
   border-radius: 100%;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #4F6F52;
 }
 
 #inputField {
-  position: absolute;
   width: 1fr;
   display: flex;
   flex-flow: row nowrap;
@@ -318,8 +329,12 @@ body {
 #inputField div {
   width: 75px;
   height: 75px;
+  color: #4F6F52;
   border-radius: 100%;
-  transition: width 1s, height 1s;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #4F6F52;
+  transition: filter .5s;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -327,8 +342,8 @@ body {
 }
 
 #inputField div:hover {
-  width: 85px;
-  height: 85px;
+  cursor: pointer;
+  filter: brightness(75%)
 }
 
 

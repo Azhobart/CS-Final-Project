@@ -94,9 +94,11 @@ Vue.createApp({
       userInput: [],
       randomColor: "",
       colorSequence: [],
-      activeScore: 0,
-      finalScore: 0,
-      gameOver: false,
+      activeColorsScore: 0,
+      finalColorsScore: 0,
+      colorGameOver: false,
+      colorGameStart: false,
+
     };
   },
 
@@ -324,32 +326,35 @@ Vue.createApp({
     },
 
     checkInput: function () {
-      if (this.gameOver === false) {
+      if (this.colorGameOver === false) {
         if (this.userInput.length === this.colorSequence.length) {
           if (
             JSON.stringify(this.colorSequence) ===
             JSON.stringify(this.userInput)
           ) {
             this.userInput = [];
-            this.activeScore++;
+            this.activeColorsScore++;
             this.getColor();
             this.cycleColors();
-            console.log(this.activeScore);
+            console.log(this.activeColorsScore);
           } else {
-            this.finalScore = this.activeScore;
-            this.gameOver = true;
+            this.finalColorsScore = this.activeColorsScore;
+            this.colorGameOver = true;
             this.userInput = [];
             this.randomColor = "";
             this.colorSequence = [];
-            this.activeScore = 0;
+            this.activeColorsScore = 0;
           }
         }
       }
+      
     },
 
     cycleColors: function () {
+      this.colorGameStart = true;
       let count = 0;
       var cycle = setInterval(() => {
+        this.userInput = [];
         console.log(this.colorSequence);
         this.randomColor = this.colorSequence[count];
         var transition = setInterval(() => {
