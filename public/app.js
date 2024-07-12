@@ -89,8 +89,6 @@ Vue.createApp({
       scoreGameSearchInput: "Tic Tac Toe",
       scoreUserSearchInput: "",
 
-
-
       // color game variables
       colors: ["#FF0000", "#0000FF", "#FFFF00", "#00FF00"],
       userInput: [],
@@ -222,19 +220,6 @@ Vue.createApp({
       }
     },
 
-<<<<<<< HEAD
-
-
-    getScores: async function () {
-      let response = await fetch(`${URL}/scores`);
-
-      let data = await response.json();
-      this.scores = data;
-      this.sortScores();
-    },
-
-=======
->>>>>>> 36817817ffe21f622516685210c5b41e8d1e19f6
     sortScores: function () {
       function compare(a, b) {
         if (parseInt(a.value) > parseInt(b.value)) {
@@ -317,76 +302,60 @@ Vue.createApp({
       this.getScores();
     },
 
+    // color game methods:
+    getColor: function () {
+      let ranIndex = Math.floor(Math.random() * this.colors.length);
+      this.colorSequence.push(this.colors[ranIndex]);
+    },
 
+    addInput: function (input) {
+      this.userInput.push(input);
+      return this.userInput;
+    },
 
+    checkInput: function () {
+      if (this.gameOver === false) {
+        if (this.userInput.length === this.colorSequence.length) {
+          if (
+            JSON.stringify(this.colorSequence) ===
+            JSON.stringify(this.userInput)
+          ) {
+            this.userInput = [];
+            this.activeScore++;
+            this.getColor();
+            this.cycleColors();
+            console.log(this.activeScore);
+          } else {
+            this.finalScore = this.activeScore;
+            this.gameOver = true;
+            this.userInput = [];
+            this.randomColor = "";
+            this.colorSequence = [];
+            this.activeScore = 0;
+          }
+        }
+      }
+    },
 
-
-
-
-
-
-
-
-
-
-  // color game methods:
-  getColor: function () {
-    let ranIndex = Math.floor(Math.random() * this.colors.length);
-    this.colorSequence.push(this.colors[ranIndex]);
-  },
-
-
-  addInput: function (input) {
-    this.userInput.push(input);
-    return this.userInput
-
-  },
-
-  checkInput: function () {
-    if (this.gameOver === false) {
-      if (this.userInput.length === this.colorSequence.length) {
-        if(JSON.stringify(this.colorSequence) === JSON.stringify(this.userInput)) {
-          this.userInput = [];
-          this.activeScore++;
-          this.getColor();
-          this.cycleColors();
-          console.log(this.activeScore);
-
-        } else {
-          this.finalScore = this.activeScore;
-          this.gameOver = true;
-          this.userInput = [];
-          this.randomColor = "";
-          this.colorSequence = [];
-          this.activeScore = 0;
-          
-
-        };
-      };  
-    };
-  },
-
-  cycleColors: function () {
-    let count = 0;
-    var cycle = setInterval(() => {
+    cycleColors: function () {
+      let count = 0;
+      var cycle = setInterval(() => {
         console.log(this.colorSequence);
         this.randomColor = this.colorSequence[count];
         var transition = setInterval(() => {
-            this.randomColor = "#739072"
-            clearInterval(transition)
-        }, 500)
+          this.randomColor = "#739072";
+          clearInterval(transition);
+        }, 500);
         console.log(this.randomColor);
 
         count++;
 
         if (count === this.colorSequence.length) {
-            count = 0;
-            clearInterval(cycle);
+          count = 0;
+          clearInterval(cycle);
         }
-    }, 1000);
-  },
-  
-
+      }, 1000);
+    },
   },
 
   computed: {
@@ -406,11 +375,8 @@ Vue.createApp({
 
   created: function () {
     this.getSession();
-<<<<<<< HEAD
-    console.log(this.currentUser)
+    console.log(this.currentUser);
 
-=======
->>>>>>> 36817817ffe21f622516685210c5b41e8d1e19f6
     this.getScores();
   },
 }).mount("#app");
