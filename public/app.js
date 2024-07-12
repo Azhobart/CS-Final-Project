@@ -66,7 +66,7 @@ Vue.createApp({
           image:
             "https://www.hasbro.com/common/productimages/en_US/54D1C85ECFBE46259A9E53C36F4D136C/c386e8608f9409166a4409b11ace173f5f504449.jpg",
         },
-        { name: 2, image: "" },
+        { name: "Colors", image: "" },
 
         { name: 3, image: "" },
         { name: 4, image: "" },
@@ -87,6 +87,17 @@ Vue.createApp({
       scoreRegionSearchInput: "",
       scoreGameSearchInput: "Tic Tac Toe",
       scoreUserSearchInput: "",
+
+
+
+      // color game variables
+      colors: ["#FF0000", "#0000FF", "#FFFF00", "#00FF00"],
+      userInput: [],
+      randomColor: "",
+      colorSequence: [],
+      activeScore: 0,
+      finalScore: 0,
+      gameOver: false,
     };
   },
 
@@ -169,12 +180,7 @@ Vue.createApp({
       }
     },
 
-<<<<<<< HEAD
-
-    deleteSession: async function() {
-=======
     deleteSession: async function () {
->>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
       let requestOptions = {
         method: "DELETE",
       };
@@ -215,11 +221,8 @@ Vue.createApp({
       }
     },
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
     getScores: async function () {
       let response = await fetch(`${URL}/scores`);
 
@@ -241,6 +244,77 @@ Vue.createApp({
 
       this.filteredScores.sort(compare);
     },
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // color game methods:
+  getColor: function () {
+    let ranIndex = Math.floor(Math.random() * this.colors.length);
+    this.colorSequence.push(this.colors[ranIndex]);
+  },
+
+
+  addInput: function (input) {
+    this.userInput.push(input);
+    return this.userInput
+
+  },
+
+  checkInput: function () {
+    if (this.gameOver === false) {
+      if (this.userInput.length === this.colorSequence.length) {
+        if(JSON.stringify(this.colorSequence) === JSON.stringify(this.userInput)) {
+          this.userInput = [];
+          this.activeScore++;
+          this.getColor();
+          this.cycleColors();
+          console.log(this.activeScore);
+
+        } else {
+          this.finalScore = this.activeScore;
+          this.gameOver = true;
+          this.userInput = [];
+          this.randomColor = "";
+          this.colorSequence = [];
+          this.activeScore = 0;
+          
+
+        };
+      };  
+    };
+  },
+
+  cycleColors: function () {
+    let count = 0;
+    var cycle = setInterval(() => {
+        console.log(this.colorSequence);
+        this.randomColor = this.colorSequence[count];
+        var transition = setInterval(() => {
+            this.randomColor = "#739072"
+            clearInterval(transition)
+        }, 500)
+        console.log(this.randomColor);
+
+        count++;
+
+        if (count === this.colorSequence.length) {
+            count = 0;
+            clearInterval(cycle);
+        }
+    }, 1000);
+  },
+  
+
   },
 
   computed: {
@@ -260,11 +334,8 @@ Vue.createApp({
 
   created: function () {
     this.getSession();
-<<<<<<< HEAD
     console.log(this.currentUser)
 
-=======
->>>>>>> 7768c9eaa9f1549bda0f0c397cba4cd4f986d6b0
     this.getScores();
   },
 }).mount("#app");

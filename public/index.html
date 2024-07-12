@@ -113,7 +113,7 @@
               <button>Search</button>
             </div>
             <div class="gameListDiv">
-              <div class="row" v-for="game in games">
+              <div class="row" v-for="(game, index) in games">
                 <div class="gameThumbnail column" @click="setPage(game.name)">
                   <div
                     v-bind:style="{backgroundImage: 'url(' + game.image + ')'}"
@@ -194,6 +194,32 @@
           </div>
         </div>
       </div>
+
+
+
+
+
+        <!-- colors game -->
+      
+        <button v-if="!gameOver" @click="getColor(); cycleColors()">Start Game</button>
+      <div id="colorWrapper" v-if="page === 'Colors'">
+        <div v-if="!gameOver" id="colorField" v-bind:style="{ backgroundColor: randomColor }">
+      </div>
+
+        </div>
+
+        <div id="inputField" v-if="!gameOver">
+            <div v-bind:style="{ backgroundColor: '#FF0000' }" @click="addInput('#FF0000'); checkInput();">Red</div>
+            <div v-bind:style="{ backgroundColor: '#0000FF' }" @click="addInput('#0000FF'); checkInput();">Blue</div>
+            <div v-bind:style="{ backgroundColor: '#FFFF00' }" @click="addInput('#FFFF00'); checkInput();">Yellow</div>
+            <div v-bind:style="{ backgroundColor: '#00FF00' }" @click="addInput('#00FF00'); checkInput();">Green</div>
+        </div>
+
+        <div v-if="gameOver">
+            <p>Game Over | Score: {{ finalScore }}</p>
+        </div>
+
+
     </div>
     <script src="app.js"></script>
   </body>

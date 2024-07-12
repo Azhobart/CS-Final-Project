@@ -280,3 +280,55 @@ body {
   color: #4f6f52;
 }
 
+
+
+
+
+
+
+/* color game styling */
+
+#colorWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#colorField {
+  margin: 30px 0px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 200px;
+  border-radius: 100%;
+}
+
+#inputField {
+  position: relative;
+  width: 1fr;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#inputField div {
+  width: 75px;
+  height: 75px;
+  border-radius: 100%;
+  transition: width 1s, height 1s;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#inputField div:hover {
+  width: 85px;
+  height: 85px;
+}
+
+
