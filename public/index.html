@@ -231,6 +231,16 @@
         </div>
       </div>
 
+
+      <div v-if="page === 'Draw!'">
+        <button @click="calculateReaction">Start</button>
+        <div id="box">
+
+        </div>
+        <p>{{ reactionTime }}</p>
+
+      </div>
+
     </div>
     <script src="app.js"></script>
   </body>

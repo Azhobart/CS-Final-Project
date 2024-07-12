@@ -347,3 +347,11 @@ body {
 }
 
 
+
+
+/* styling for reaction game */
+#box {
+  width: 200px;
+  height: 200px;
+  background-color: #D2E3C8;
+}

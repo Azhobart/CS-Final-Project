@@ -70,7 +70,7 @@ Vue.createApp({
         { name: "Colors", image: "" },
 
         { name: 3, image: "" },
-        { name: 4, image: "" },
+        { name: "Draw!", image: "" },
         {
           name: "CAT",
           image: "",
@@ -99,6 +99,11 @@ Vue.createApp({
       colorGameOver: false,
       colorGameStart: false,
 
+
+      // reaction game variables
+      clickedTime: null,
+      createdTime: null,
+      reactionTime: null,
     };
   },
 
@@ -371,7 +376,33 @@ Vue.createApp({
         }
       }, 1000);
     },
+
+
+
+  // draw reaction game
+    calculateReaction: function() {
+      let time = (Math.random() * 3000);
+  
+      setTimeout(() => {
+        this.createdTime = new Date.now()
+      }, time);
+  
+  
+      this.clickedTime = new Date.now();
+      this.reactionTime = (this.clickedTime - this.createdTime /1000)
+    },
   },
+
+
+
+
+
+
+
+
+
+
+
 
   computed: {
     filteredScores: function () {
