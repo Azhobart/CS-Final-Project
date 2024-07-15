@@ -378,3 +378,40 @@ body {
     background-color: #86a789;
   }
 }
+
+/* minesweeper styling */
+.minesweeperGridRow {
+  display: grid;
+
+  grid-template-columns: 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px;
+
+  & .minesweeperCell {
+    user-select: none;
+    transition: 200ms;
+
+    margin: 0px;
+    border: 2px solid grey;
+    color: black;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(0.9);
+    }
+  }
+}
+
+.minesweeperModal {
+  transition: 500ms;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}

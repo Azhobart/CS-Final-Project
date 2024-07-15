@@ -247,7 +247,41 @@
         </div>
       </div>
 
+      <div class="page" v-if="page === 'Minesweeper'">
+        <div class="sectionContainer">
+          <div class="row">
+            <p>Score: {{minesweeperScore}}</p>
+            <button @click="beginMinesweeperGame()">Retry</button>
+            <p>Mine Chance: 1/</p>
+            <input type="number" v-model="minesweeperMineChance">
+            <button @click="minesweeperMineChance = 8;">reset</button>
+          </div oncontextmenu="return false;">
+            <div class="minesweeperGridRow" v-for="(row, indx_x) in minesweeperBoard.cells">
+              <div class="minesweeperCell" v-for="(cell, indx_y) in row" :style="[cell.isHidden ? {backgroundColor: '#aaa'} : {backgroundColor: '#ddd'}]" v-on:click.right="toggleFlagMinesweeperCell(indx_x,indx_y)" @click.left="unhideMinesweeperCell(indx_x,indx_y)" oncontextmenu="return false;">
+                <div v-if="!cell.isHidden">
+                  <div v-if="!cell.isMine">
+                    {{cell.value}}
+                  </div>
+                  <div v-else>
+                    <img width="40px" height="40px" src="https://jaumesegarra.github.io/minesweeper/favicon.ico" alt="!">
+                  </div>
+                </div>
+                <div v-if="cell.isHidden && cell.isFlagged">
+                  <img width="40px" height="40px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_icon_orange_4.svg/729px-Flag_icon_orange_4.svg.png" alt="f">
+                </div>
+              </div>
+            </div>
+        </div>
 
+        <div class="sectionContainer minesweeperModal" v-if="minesweeperGameState != 'playing'">
+          <p>You Lose!</p>
+          <div class="row" v-if="minesweeperGameState === 'lost'">
+            
+            <button @click="beginMinesweeperGame()">Play Again</button>
+            <button @click="setPage('home'); beginMinesweeperGame()">Home</button>
+          </div>
+        </div>
+      </div>
 
         <!-- colors game -->
       
