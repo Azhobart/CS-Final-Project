@@ -72,12 +72,13 @@ Vue.createApp({
         {
           name: "Prisoner's Dilemma",
           image:
-            "https://pnghq.com/wp-content/uploads/jail-bars-png-images-free-png-image-downloads-26441-1536x1229.png",
+            "https://www.clipartkey.com/mpngs/m/324-3244570_transparent-clipart-prisoner-behind-bars-cartoon.png",
         },
         { name: "Draw!", image: "" },
         {
-          name: "CAT",
-          image: "",
+          name: "Minesweeper",
+          image:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_icon_orange_4.svg/729px-Flag_icon_orange_4.svg.png",
         },
         { name: 6, image: "" },
         { name: "Test Test TEst teTredgrsegsr", image: "" },
@@ -106,10 +107,10 @@ Vue.createApp({
 
 
       //prisoners dilemma game variables
-      prisonerScore: 0,
-      prisonerTurn: 0,
-      prisonerDisplay: "",
+      prisonerScores: [0, 0],
+      prisonBot: "Random",
       prisonerGameLength: 10 + Math.floor(Math.random() * 3),
+<<<<<<< HEAD
 
 
       // reaction game variables
@@ -124,6 +125,19 @@ Vue.createApp({
       bestReaction: [],
       reactions: [1, .8, .6, .4, .3, .26],
       index: 0,
+=======
+      prisonHistory: [],
+
+      //Minesweeper game variables
+      minesweeperBoard: {
+        width: 16,
+        height: 0,
+        cells: [],
+      },
+      minesweeperScore: 0,
+      minesweeperMineChance: 8,
+      minesweeperGameState: "playing",
+>>>>>>> 5dfb5fe18cffb7f34abb2fe1a3e4d6eb77b00efc
     };
   },
 
@@ -311,9 +325,9 @@ Vue.createApp({
     },
 
     setScore: async function (score) {
-      score.value += 1;
       let scoreExists = false;
       let scoreIsHigher = false;
+      this.getScores();
       this.scores.forEach((currentScore) => {
         if (
           currentScore.game.includes(score.game) &&
@@ -405,41 +419,60 @@ Vue.createApp({
 
     //prisoners dillemma game methods
     incrementPrisonerTurn: function (choice) {
-      let opponentChoice = Math.floor(Math.random() * 2);
       let prisonerOptions = ["Cooperate", "Defect"];
       let payoffMatrix = [
         [
-          [3, 3],
-          [0, 5],
+          [2, 2],
+          [0, 3],
         ],
         [
-          [5, 0],
+          [3, 0],
           [1, 1],
         ],
       ];
+      let opponentChoice;
+
+      if (this.prisonBot === "All Defects") {
+        opponentChoice = 1;
+      }
+      if (this.prisonBot === "All Cooperations") {
+        opponentChoice = 0;
+      }
+      if (this.prisonBot === "Random") {
+        opponentChoice = Math.floor(Math.random() * 2);
+      }
+      if (this.prisonBot === "Tit For Tat") {
+        opponentChoice = 0;
+        if (this.prisonHistory.length > 1) {
+          if (this.prisonHistory[0].choices[0] === 1) {
+            opponentChoice = 1;
+          }
+        }
+      }
+
       let x = choice;
       let y = opponentChoice;
 
-      this.prisonerScore += payoffMatrix[x][y][0];
+      this.prisonerScores[0] += payoffMatrix[x][y][0];
+      this.prisonerScores[1] += payoffMatrix[x][y][1];
 
-      this.prisonerDisplay =
-        "Your Opponent Chose " +
-        prisonerOptions[opponentChoice] +
-        "! +" +
-        payoffMatrix[x][y][0];
+      this.prisonHistory = [
+        {
+          scores: payoffMatrix[x][y],
+          choices: [x, y],
+        },
+      ].concat(this.prisonHistory);
 
-      this.prisonerTurn += 1;
-      if (this.prisonerTurn > this.prisonerGameLength) {
-        let newScore = {
+      if (this.prisonHistory.length > this.prisonerGameLength) {
+        let newPrisonerScore = {
           game: this.page,
-          value: this.prisonerScore,
+          value: this.prisonerScores[0],
           user: this.currentUser._id,
         };
-
-        this.prisonerTurn = 0;
         this.prisonerDisplay = "";
-        this.prisonerScore = 0;
-        this.finishGame(newScore);
+        this.prisonerScores = [0, 0];
+        this.prisonHistory = [];
+        this.finishGame(newPrisonerScore);
       }
     },
 
@@ -542,6 +575,232 @@ Vue.createApp({
     },
 
 
+    //Minesweeper game methods
+    addMinesweeperRow: function () {
+      this.minesweeperBoard.cells.push([]);
+      this.minesweeperBoard.height += 1;
+      for (let i = 0; i < this.minesweeperBoard.width; i += 1) {
+        let obj = {
+          isHidden: true,
+          isFlagged: false,
+          value: 0,
+          isMine: false,
+        };
+        if (Math.random() * this.minesweeperMineChance <= 1) {
+          obj.isMine = true;
+        }
+        this.minesweeperBoard.cells[
+          this.minesweeperBoard.cells.length - 1
+        ].push(obj);
+      }
+    },
+    resetMinesweeperBoard: function () {
+      this.minesweeperBoard.cells = [];
+      this.minesweeperBoard.height = 0;
+      for (let i = 0; i < this.minesweeperBoard.width; i += 1) {
+        this.addMinesweeperRow();
+      }
+    },
+    calculateMinesweeperValues: function () {
+      let hasWon = true;
+      for (let i = 0; i < this.minesweeperBoard.width; i += 1) {
+        for (let j = 0; j < this.minesweeperBoard.height; j += 1) {
+          //check for win
+          if (
+            this.minesweeperBoard.cells[i][j].isMine &&
+            !this.minesweeperBoard.cells[i][j].isFlagged
+          ) {
+            hasWon = false;
+          }
+          if (
+            !this.minesweeperBoard.cells[i][j].isMine &&
+            this.minesweeperBoard.cells[i][j].isHidden
+          ) {
+            hasWon = false;
+          }
+          let cellValue = 0;
+          //edges
+          if (i > 0) {
+            if (this.minesweeperBoard.cells[i - 1][j].isMine) {
+              cellValue += 1;
+            }
+          }
+          if (j > 0) {
+            if (this.minesweeperBoard.cells[i][j - 1].isMine) {
+              cellValue += 1;
+            }
+          }
+          if (i < this.minesweeperBoard.width - 1) {
+            if (this.minesweeperBoard.cells[i + 1][j].isMine) {
+              cellValue += 1;
+            }
+          }
+          if (j < this.minesweeperBoard.height - 1) {
+            if (this.minesweeperBoard.cells[i][j + 1].isMine) {
+              cellValue += 1;
+            }
+          }
+
+          //corners
+          if (i > 0 && j > 0) {
+            if (this.minesweeperBoard.cells[i - 1][j - 1].isMine) {
+              cellValue += 1;
+            }
+          }
+          if (i > 0 && j < this.minesweeperBoard.height - 1) {
+            if (this.minesweeperBoard.cells[i - 1][j + 1].isMine) {
+              cellValue += 1;
+            }
+          }
+          if (i < this.minesweeperBoard.width - 1 && j > 0) {
+            if (this.minesweeperBoard.cells[i + 1][j - 1].isMine) {
+              cellValue += 1;
+            }
+          }
+          if (
+            i < this.minesweeperBoard.width - 1 &&
+            j < this.minesweeperBoard.height - 1
+          ) {
+            if (this.minesweeperBoard.cells[i + 1][j + 1].isMine) {
+              cellValue += 1;
+            }
+          }
+
+          this.minesweeperBoard.cells[i][j].value = cellValue;
+        }
+      }
+
+      if (hasWon) {
+        this.resetMinesweeperBoard();
+      }
+    },
+    clearMinesweeperArea: function () {
+      let newCells = true;
+
+      while (newCells) {
+        newCells = false;
+        let prevBoard = this.minesweeperBoard;
+        for (let i = 0; i < this.minesweeperBoard.width; i += 1) {
+          for (let j = 0; j < this.minesweeperBoard.height; j += 1) {
+            if (
+              prevBoard.cells[i][j].isHidden &&
+              !prevBoard.cells[i][j].isFlagged
+            ) {
+              //edges
+              if (i > 0) {
+                if (
+                  prevBoard.cells[i - 1][j].value == 0 &&
+                  !prevBoard.cells[i - 1][j].isHidden
+                ) {
+                  newCells = true;
+                  this.minesweeperBoard.cells[i][j].isHidden = false;
+                }
+              }
+              if (j > 0) {
+                if (
+                  prevBoard.cells[i][j - 1].value == 0 &&
+                  !prevBoard.cells[i][j - 1].isHidden
+                ) {
+                  newCells = true;
+                  this.minesweeperBoard.cells[i][j].isHidden = false;
+                }
+              }
+              if (i < prevBoard.width - 1) {
+                if (
+                  prevBoard.cells[i + 1][j].value == 0 &&
+                  !prevBoard.cells[i + 1][j].isHidden
+                ) {
+                  newCells = true;
+                  this.minesweeperBoard.cells[i][j].isHidden = false;
+                }
+              }
+              if (j < prevBoard.height - 1) {
+                if (
+                  prevBoard.cells[i][j + 1].value == 0 &&
+                  !prevBoard.cells[i][j + 1].isHidden
+                ) {
+                  newCells = true;
+                  this.minesweeperBoard.cells[i][j].isHidden = false;
+                }
+              }
+
+              //corners
+              if (i > 0 && j > 0) {
+                if (
+                  prevBoard.cells[i - 1][j - 1].value == 0 &&
+                  !prevBoard.cells[i - 1][j - 1].isHidden
+                ) {
+                  newCells = true;
+                  this.minesweeperBoard.cells[i][j].isHidden = false;
+                }
+              }
+              if (i > 0 && j < prevBoard.height - 1) {
+                if (
+                  prevBoard.cells[i - 1][j + 1].value == 0 &&
+                  !prevBoard.cells[i - 1][j + 1].isHidden
+                ) {
+                  newCells = true;
+                  this.minesweeperBoard.cells[i][j].isHidden = false;
+                }
+              }
+              if (i < prevBoard.width - 1 && j > 0) {
+                if (
+                  prevBoard.cells[i + 1][j - 1].value == 0 &&
+                  !prevBoard.cells[i + 1][j - 1].isHidden
+                ) {
+                  newCells = true;
+                  this.minesweeperBoard.cells[i][j].isHidden = false;
+                }
+              }
+              if (i < prevBoard.width - 1 && j < prevBoard.height - 1) {
+                if (
+                  prevBoard.cells[i + 1][j + 1].value == 0 &&
+                  !prevBoard.cells[i + 1][j + 1].isHidden
+                ) {
+                  newCells = true;
+                  this.minesweeperBoard.cells[i][j].isHidden = false;
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    unhideMinesweeperCell: function (x, y) {
+      if (
+        !this.minesweeperBoard.cells[x][y].isFlagged &&
+        this.minesweeperGameState === "playing"
+      ) {
+        this.minesweeperBoard.cells[x][y].isHidden = false;
+
+        this.calculateMinesweeperValues();
+        this.clearMinesweeperArea();
+        if (this.minesweeperBoard.cells[x][y].isMine) {
+          this.minesweeperGameState = "lost";
+          let newMinesweeperScore = {
+            game: this.page,
+            value: this.minesweeperScore,
+            user: this.currentUser._id,
+          };
+          this.setScore(newMinesweeperScore);
+        } else {
+          this.minesweeperScore += 1;
+        }
+      }
+    },
+    toggleFlagMinesweeperCell: function (x, y) {
+      if (this.minesweeperGameState === "playing") {
+        this.minesweeperBoard.cells[x][y].isFlagged =
+          !this.minesweeperBoard.cells[x][y].isFlagged;
+      }
+
+      this.calculateMinesweeperValues();
+    },
+    beginMinesweeperGame: function () {
+      this.resetMinesweeperBoard();
+      this.minesweeperGameState = "playing";
+      this.minesweeperScore = 0;
+    },
   },
 
 
@@ -568,5 +827,7 @@ Vue.createApp({
     this.getSession();
     this.getScores();
 
+    //minesweeper setup
+    this.beginMinesweeperGame();
   },
 }).mount("#app");

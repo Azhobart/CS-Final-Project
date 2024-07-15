@@ -157,9 +157,9 @@
             <span v-show="!isEditing">{{ currentUser.favoriteGame }}</span>
 
             <p>Highscores:</p>
-            <div class="scoreTableRow" v-for="(score, indx) in currentUser.scores">
-              <p>{{score.value}}</p>
-              <p>{{score.game}}</p>
+            <div class="scoreTableRow" v-for="(score, indx) in scores">
+              <p v-if="score.user._id == currentUser._id">{{score.value}}</p>
+              <p v-if="score.user._id == currentUser._id">{{score.game}}</p>
             </div>
           </div>
           <div id="profileActions">
@@ -212,21 +212,76 @@
       <!-- prisoners dilemma game -->
       <div class="page" v-if="page === 'Prisoner\'s Dilemma'">
         <div class="sectionContainer">
-          <p>{{prisonerDisplay}}</p>
-          <p>Your Score: {{prisonerScore}}</p>
+          <div class="row">
+            <p>Play Against</p>
+            <select v-model="prisonBot">
+              <option value="Random">Random</option>
+              <option value="All Defects">All Defects</option>
+              <option value="All Cooperations">All Cooperations</option>
+              <option value="Tit For Tat">Tit For Tat</option>
+            </select>
+          </div>
+          <div class="row">
+            <p>Number Of Rounds</p>
+            <input type="Number" v-model="prisonerGameLength">
+          </div>
+          <p>Your Score: {{prisonerScores[0]}}</p>
           <div class="row">
             <button @click="incrementPrisonerTurn(0)">Cooperate</button>
             <button @click="incrementPrisonerTurn(1)">Defect</button>
           </div>
           <br>
-          <div class="row">
+          <div class="prisonerHistoryGrid">
+           
+            <p>{{prisonerScores[0]}}</p>
             <p>You</p>
-            <img src="https://www.researchgate.net/publication/2184338/figure/fig1/AS:671529209692164@1537116448235/The-pay-off-matrix-in-the-Prisoners-Dilemma-game-The-first-entry-refers-to-Alices.png" alt="Payoff Table">
+            <p>Opponent</p>
+            <p>{{prisonerScores[1]}}</p>
+          </div>
+          <div class="prisonerHistoryGrid" v-for="el in prisonHistory">
+            <p>{{el.scores[0]}}</p>
+            <div class="prisonerChoiceDiv" :style="[el.choices[0] === 1 ? {backgroundColor: '#f00'} : {backgroundColor: '#0f0'}]"></div>
+            <div class="prisonerChoiceDiv" :style="[el.choices[1] === 1 ? {backgroundColor: '#f00'} : {backgroundColor: '#0f0'}]"></div>
+            <p>{{el.scores[1]}}</p>
           </div>
         </div>
       </div>
 
+      <div class="page" v-if="page === 'Minesweeper'">
+        <div class="sectionContainer">
+          <div class="row">
+            <p>Score: {{minesweeperScore}}</p>
+            <button @click="beginMinesweeperGame()">Retry</button>
+            <p>Mine Chance: 1/</p>
+            <input type="number" v-model="minesweeperMineChance">
+            <button @click="minesweeperMineChance = 8;">reset</button>
+          </div oncontextmenu="return false;">
+            <div class="minesweeperGridRow" v-for="(row, indx_x) in minesweeperBoard.cells">
+              <div class="minesweeperCell" v-for="(cell, indx_y) in row" :style="[cell.isHidden ? {backgroundColor: '#aaa'} : {backgroundColor: '#ddd'}]" v-on:click.right="toggleFlagMinesweeperCell(indx_x,indx_y)" @click.left="unhideMinesweeperCell(indx_x,indx_y)" oncontextmenu="return false;">
+                <div v-if="!cell.isHidden">
+                  <div v-if="!cell.isMine">
+                    {{cell.value}}
+                  </div>
+                  <div v-else>
+                    <img width="40px" height="40px" src="https://jaumesegarra.github.io/minesweeper/favicon.ico" alt="!">
+                  </div>
+                </div>
+                <div v-if="cell.isHidden && cell.isFlagged">
+                  <img width="40px" height="40px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_icon_orange_4.svg/729px-Flag_icon_orange_4.svg.png" alt="f">
+                </div>
+              </div>
+            </div>
+        </div>
 
+        <div class="sectionContainer minesweeperModal" v-if="minesweeperGameState != 'playing'">
+          <p>You Lose!</p>
+          <div class="row" v-if="minesweeperGameState === 'lost'">
+            
+            <button @click="beginMinesweeperGame()">Play Again</button>
+            <button @click="setPage('home'); beginMinesweeperGame()">Home</button>
+          </div>
+        </div>
+      </div>
 
         <!-- colors game -->
       
