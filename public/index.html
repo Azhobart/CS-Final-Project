@@ -157,9 +157,9 @@
             <span v-show="!isEditing">{{ currentUser.favoriteGame }}</span>
 
             <p>Highscores:</p>
-            <div class="scoreTableRow" v-for="(score, indx) in currentUser.scores">
-              <p>{{score.value}}</p>
-              <p>{{score.game}}</p>
+            <div class="scoreTableRow" v-for="(score, indx) in scores">
+              <p v-if="score.user._id == currentUser._id">{{score.value}}</p>
+              <p v-if="score.user._id == currentUser._id">{{score.game}}</p>
             </div>
           </div>
           <div id="profileActions">

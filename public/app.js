@@ -307,9 +307,9 @@ Vue.createApp({
     },
 
     setScore: async function (score) {
-      score.value += 1;
       let scoreExists = false;
       let scoreIsHigher = false;
+      this.getScores();
       this.scores.forEach((currentScore) => {
         if (
           currentScore.game.includes(score.game) &&
