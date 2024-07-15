@@ -250,20 +250,19 @@
             <div v-bind:style="{ backgroundColor: '#FFFF00' }" @click="addInput('#FFFF00'); checkInput();">Yellow</div>
             <div v-bind:style="{ backgroundColor: '#00FF00' }" @click="addInput('#00FF00'); checkInput();">Green</div>
         </div>
-
-        <div v-if="colorGameOver">
-            <p>Game Over | Score: {{ finalColorsScore }}</p>
-        </div>
       </div>
 
 
+      
+
+      <!-- reaction game -->
       <div v-if="page === 'Draw!'">
-        <button @click="calculateReaction">Start</button>
-        <div id="box">
-
+        <div id="box" @click="countdown()">
+          <p v-if="ready">Ready</p>
+          <p v-if="getSet">Get Set</p>
+          <p v-if="draw">Draw!</p>
+          <p v-if="displayReaction">{{ reactionTime }}</p>
         </div>
-        <p>{{ reactionTime }}</p>
-
       </div>
 
     </div>
