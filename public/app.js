@@ -468,9 +468,10 @@ Vue.createApp({
       }
     },
 
+    //reaction game methods
     countdown: function () {
-      console.log(this.reactions);
-      console.log(this.reactionGameOver);
+      console.log("reactions:" + this.reactions);
+      console.log("reactionGameOver:" + this.reactionGameOver);
       if (this.reactionGameOver === false) {
         let countdownOne = 0;
         let countdownTwo = 0;
@@ -523,17 +524,17 @@ Vue.createApp({
 
     getReaction: function () {
       this.reactionTime = 0;
-      startTime = Date.now();
+      this.startTime = Date.now();
 
       addEventListener("keydown", (event) => {
         if (event.key === " " && this.draw) {
           const endTime = Date.now();
-          this.reactionTime = (endTime - startTime) / 1000;
+          this.reactionTime = (endTime - this.startTime) / 1000;
           this.displayReaction = true;
-          startTime = null;
-          console.log(this.reactionTime);
+          this.startTime = null;
+          console.log("reaction time: " + this.reactionTime);
           this.compareReaction();
-          console.log(this.reactionScore);
+          console.log("reaction Score: " + this.reactionScore);
           this.countdown();
         } else {
           console.log("Too early, try again!");
