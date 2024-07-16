@@ -367,16 +367,13 @@ body {
   filter: brightness(75%);
 }
 
-
-
-
 /* styling for reaction game */
 #box {
   width: 200px;
   height: 200px;
-  background-color: #D2E3C8;
+  background-color: #d2e3c8;
+}
 
-  
 /* prisoner game styling */
 .prisonerHistoryGrid {
   display: grid;
@@ -424,4 +421,30 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+}
+
+/* battleship styling */
+.battleshipGridRow {
+  display: grid;
+
+  grid-template-columns: 40px 40px 40px 40px 40px 40px 40px 40px;
+
+  & .battleshipCell {
+    user-select: none;
+    transition: 200ms;
+
+    margin: 0px;
+    border: 2px solid black;
+    color: black;
+    background-color: RGBA(0, 0, 0, 0);
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

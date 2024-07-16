@@ -133,6 +133,28 @@ Vue.createApp({
       minesweeperScore: 0,
       minesweeperMineChance: 8,
       minesweeperGameState: "playing",
+
+      //Minesweeper game variables
+      battleshipGameState: "placing",
+      battleshipBoards: {
+        width: 8,
+        height: 16,
+        opponent: [],
+        player: [],
+        opponentHoverGrid: [],
+        playerHoverGrid: [],
+      },
+      selectedBattleship: 0,
+      battleshipShips: [
+        [[true, true]],
+        [[true, true, true]],
+        [[true, true, true, true]],
+        [
+          [false, true, false],
+          [true, true, true],
+          [false, false, false],
+        ],
+      ],
     };
   },
 
@@ -792,6 +814,125 @@ Vue.createApp({
       this.resetMinesweeperBoard();
       this.minesweeperGameState = "playing";
       this.minesweeperScore = 0;
+    },
+
+    //Battleship game methods
+    resetBattleshipBoard: function () {
+      this.selectedBattleship = 0;
+      this.battleshipGameState = "placing";
+      this.battleshipBoards.player = [];
+      this.battleshipBoards.opponent = [];
+      let obj = {
+        isShip: false,
+      };
+      let oppArr = [];
+      let playArr = [];
+      for (let j = 0; j < this.battleshipBoards.width; j++) {
+        oppArr.push(structuredClone(obj));
+        playArr.push(structuredClone(obj));
+      }
+      for (let i = 0; i < this.battleshipBoards.height; i++) {
+        this.battleshipBoards.opponent.push(structuredClone(oppArr));
+        this.battleshipBoards.player.push(structuredClone(playArr));
+      }
+      //hover grids
+      this.battleshipBoards.playerHoverGrid = Array(
+        this.battleshipBoards.height
+      )
+        .fill()
+        .map(() => Array(this.battleshipBoards.width).fill(false));
+      this.battleshipBoards.opponentHoverGrid = Array(
+        this.battleshipBoards.height
+      )
+        .fill()
+        .map(() => Array(this.battleshipBoards.width).fill(false));
+    },
+
+    hoverBattleshipCell: function (board, x, y) {
+      this.battleshipBoards.playerHoverGrid = Array(
+        this.battleshipBoards.height
+      )
+        .fill()
+        .map(() => Array(this.battleshipBoards.width).fill(false));
+      this.battleshipBoards.opponentHoverGrid = Array(
+        this.battleshipBoards.height
+      )
+        .fill()
+        .map(() => Array(this.battleshipBoards.width).fill(false));
+
+      if (board === "player") {
+        if (this.battleshipGameState === "placing") {
+          let selShip = this.battleshipShips[this.selectedBattleship];
+          if (
+            x + selShip.length - 1 < this.battleshipBoards.height &&
+            y + selShip[0].length - 1 < this.battleshipBoards.width
+          ) {
+            for (let i = 0; i < selShip.length; i += 1) {
+              for (let j = 0; j < selShip[i].length; j += 1) {
+                this.battleshipBoards.playerHoverGrid[x + i][y + j] =
+                  selShip[i][j];
+              }
+            }
+          }
+        }
+      }
+      if (board === "opponent") {
+      }
+    },
+
+    placeBattleship: function (board, x, y) {
+      if (this.battleshipGameState === "placing") {
+        if (board === "player") {
+          let selShip = this.battleshipShips[this.selectedBattleship];
+          let isValid = true;
+          for (let i = 0; i < selShip[0].length; i += 1) {
+            for (let j = 0; j < selShip.length; j += 1) {
+              if (
+                this.battleshipBoards.player[x + i][y + j].isShip &&
+                selShip[i][j]
+              ) {
+                isValid = false;
+              }
+            }
+          }
+
+          if (
+            x + selShip.length - 1 < this.battleshipBoards.height &&
+            y + selShip[0].length - 1 < this.battleshipBoards.width &&
+            isValid
+          ) {
+            let placed = false;
+            for (let i = 0; i < selShip.length; i += 1) {
+              for (let j = 0; j < selShip[i].length; j += 1) {
+                if (
+                  selShip[i][j] &&
+                  !this.battleshipBoards.player[x + i][y + j].isShip
+                ) {
+                  this.battleshipBoards.player[x + i][y + j].isShip =
+                    selShip[i][j];
+                  placed = true;
+                }
+              }
+            }
+            if (placed) {
+              this.selectedBattleship += 1;
+            }
+            if (this.selectedBattleship > this.battleshipShips.length - 1) {
+              this.battleshipGameState = "playing";
+            }
+          }
+        }
+      }
+    },
+
+    clickBattleshipCell: function (btn, board, x, y) {
+      if (btn === 0) {
+        if (board === "player") {
+          if (this.battleshipGameState === "placing") {
+            this.placeBattleship(board, x, y);
+          }
+        }
+      }
     },
   },
 
