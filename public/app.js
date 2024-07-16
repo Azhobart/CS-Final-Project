@@ -105,12 +105,12 @@ Vue.createApp({
       colorGameOver: false,
       colorGameStart: false,
 
-
       //prisoners dilemma game variables
       prisonerScores: [0, 0],
       prisonBot: "Random",
       prisonerGameLength: 10 + Math.floor(Math.random() * 3),
 
+      prisonHistory: [],
 
       // reaction game variables
       reactionGameOver: false,
@@ -122,7 +122,7 @@ Vue.createApp({
       startTime: null,
       reactionScore: 0,
       bestReaction: [],
-      reactions: [1, .8, .6, .4, .3, .26],
+      reactions: [1, 0.8, 0.6, 0.4, 0.3, 0.26],
       index: 0,
       prisonHistory: [],
 
@@ -353,9 +353,6 @@ Vue.createApp({
       this.lastAchievedScore = score;
     },
 
-
-
-
     // color game methods:
     getColor: function () {
       let ranIndex = Math.floor(Math.random() * this.colors.length);
@@ -473,10 +470,10 @@ Vue.createApp({
       }
     },
 
-
-    countdown: function() {
-      console.log(this.reactions)
-      console.log(this.reactionGameOver)
+    //reaction game methods
+    countdown: function () {
+      console.log("reactions:" + this.reactions);
+      console.log("reactionGameOver:" + this.reactionGameOver);
       if (this.reactionGameOver === false) {
         let countdownOne = 0;
         let countdownTwo = 0;
@@ -486,11 +483,10 @@ Vue.createApp({
         this.getSet = false;
         this.draw = false;
 
-
         // display 'ready' for 2 sec
         var stageOne = setInterval(() => {
           this.displayReaction = false;
-          countdownOne++
+          countdownOne++;
           if (countdownOne === 1) {
             this.ready = true;
             countdownOne = 0;
@@ -499,78 +495,74 @@ Vue.createApp({
         }, 1000);
 
         // display 'get set' afterwards for 3 sec
-          var stageTwo = setInterval(() => {
-            countdownTwo++
-            if (countdownTwo === 5 && this.ready) {
-              this.ready = false;
-              this.getSet = true;
-              countdownTwo = 0;
-              clearInterval(stageTwo);
-            }
-          }, 1000) 
+        var stageTwo = setInterval(() => {
+          countdownTwo++;
+          if (countdownTwo === 5 && this.ready) {
+            this.ready = false;
+            this.getSet = true;
+            countdownTwo = 0;
+            clearInterval(stageTwo);
+          }
+        }, 1000);
 
-          // display 'draw!' and set timer (in milliseconds) 
-          // record time once the user presses the space key
-          var stageThree = setInterval(() => {
-            countdownThree++
-            if (countdownThree === 8 && this.getSet) {
-              this.getSet = false;
-              this.draw = true;
-              countdownThree = 0;
-              clearInterval(stageThree);
-              this.getReaction();
-            }
-          }, 1000)
-
+        // display 'draw!' and set timer (in milliseconds)
+        // record time once the user presses the space key
+        var stageThree = setInterval(() => {
+          countdownThree++;
+          if (countdownThree === 8 && this.getSet) {
+            this.getSet = false;
+            this.draw = true;
+            countdownThree = 0;
+            clearInterval(stageThree);
+            this.getReaction();
+          }
+        }, 1000);
       } else {
         this.reactionGameOver = true;
         this.finishGame(this.reactionScore);
         this.reactionScore = 0;
-
       }
     },
 
-
-    getReaction: function() {
+    getReaction: function () {
       this.reactionTime = 0;
-      startTime = Date.now()
+      this.startTime = Date.now();
 
       addEventListener("keydown", (event) => {
         if (event.key === " " && this.draw) {
-          const endTime = Date.now()
-          this.reactionTime = (endTime - startTime) / 1000;
-          this.displayReaction = true; 
-          startTime = null;
-          console.log(this.reactionTime)
+          const endTime = Date.now();
+          this.reactionTime = (endTime - this.startTime) / 1000;
+          this.displayReaction = true;
+          this.startTime = null;
+          console.log("reaction time: " + this.reactionTime);
           this.compareReaction();
-          console.log(this.reactionScore)
+          console.log("reaction Score: " + this.reactionScore);
           this.countdown();
         } else {
           console.log("Too early, try again!");
         }
-    });
+      });
     },
 
-    compareReaction: function() {
+    compareReaction: function () {
       console.log(`set score: ${this.reactions[this.index]}`);
-        if (this.reactionTime < this.reactions[this.index]) {
-          this.reactionScore++;
-          this.index++;
-        } else {
-          this.reactionGameOver = true;
-        };
-        if (this.reactions[this.index] === .26) {
-          while(this.reactionGameOver === false) {
-            if (this.reactionTime < this.reactions[this.index]) {
-              this.reactionScore++;
-              this.index ++;
-            } else {
-              this.reactionGameOver = true;
-            };
-          };
-        };
+      if (this.reactionTime < this.reactions[this.index]) {
+        this.reactionScore++;
+        this.index++;
+      } else {
+        this.reactionGameOver = true;
+      }
+      if (this.reactions[this.index] === 0.26) {
+        while (this.reactionGameOver === false) {
+          if (this.reactionTime < this.reactions[this.index]) {
+            this.reactionScore++;
+            this.index++;
+          } else {
+            this.reactionGameOver = true;
+          }
+        }
+      }
     },
-
 
     //Minesweeper game methods
     addMinesweeperRow: function () {
@@ -780,6 +772,11 @@ Vue.createApp({
             user: this.currentUser._id,
           };
           this.setScore(newMinesweeperScore);
+          for (let i = 0; i < this.minesweeperBoard.width; i += 1) {
+            for (let j = 0; j < this.minesweeperBoard.height; j += 1) {
+              this.minesweeperBoard.cells[i][j].isHidden = false;
+            }
+          }
         } else {
           this.minesweeperScore += 1;
         }
@@ -799,11 +796,6 @@ Vue.createApp({
       this.minesweeperScore = 0;
     },
   },
-
-
-
-
-
 
   computed: {
     filteredScores: function () {
