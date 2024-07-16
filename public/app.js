@@ -96,6 +96,12 @@ Vue.createApp({
       scoreUserSearchInput: "",
 
       // color game variables
+      redSound: new Audio('colorSounds/originalBeep.mp3'),
+      blueSound: new Audio('colorSounds/lowBeep.mp3'),
+      yellowSound: new Audio('colorSounds/highBeep.mp3'),
+      greenSound: new Audio('colorSounds/medBeep.mp3'),
+
+
       colors: ["#FF0000", "#0000FF", "#FFFF00", "#00FF00"],
       userInput: [],
       randomColor: "",
@@ -113,16 +119,20 @@ Vue.createApp({
       prisonHistory: [],
 
       // reaction game variables
+      reactionSound: new Audio('reactionSounds/ricochet.mp3'),
+
       reactionGameOver: false,
       ready: false,
       getSet: false,
       draw: false,
       displayReaction: false,
+      tooSlow: false,
+      tooEarly: false,
       reactionTime: 0,
       startTime: null,
-      reactionScore: 0,
-      bestReaction: [],
-      reactions: [1, 0.8, 0.6, 0.4, 0.3, 0.26],
+      userReactions: [],
+      averageReaction: 0,
+      reactions: [1, 0.8, 0.6, 0.6, 0.6, 0.4, 0.4, 0.35, 0.35, 0.3],
       index: 0,
       prisonHistory: [],
 
@@ -132,6 +142,7 @@ Vue.createApp({
         height: 0,
         cells: [],
       },
+
       minesweeperScore: 0,
       minesweeperMineChance: 8,
       minesweeperGameState: "playing",
@@ -353,6 +364,8 @@ Vue.createApp({
       this.lastAchievedScore = score;
     },
 
+
+
     // color game methods:
     getColor: function () {
       let ranIndex = Math.floor(Math.random() * this.colors.length);
@@ -396,6 +409,19 @@ Vue.createApp({
         this.userInput = [];
         console.log(this.colorSequence);
         this.randomColor = this.colorSequence[count];
+        if (this.randomColor === "#FF0000") {
+          this.redSound.play();
+        } 
+        if (this.randomColor ===  "#0000FF") {
+          this.blueSound.play()
+        } 
+        if (this.randomColor === "#FFFF00") {
+          this.yellowSound.play()
+        } 
+        if (this.randomColor === "#00FF00") {
+          this.greenSound.play();
+        };
+
         var transition = setInterval(() => {
           this.randomColor = "#739072";
           clearInterval(transition);
@@ -470,6 +496,10 @@ Vue.createApp({
       }
     },
 
+
+
+
+    
     //reaction game methods
     countdown: function () {
       console.log("reactions:" + this.reactions);
@@ -486,6 +516,8 @@ Vue.createApp({
         // display 'ready' for 2 sec
         var stageOne = setInterval(() => {
           this.displayReaction = false;
+          this.tooSlow = false;
+          this.tooEarly = false;
           countdownOne++;
           if (countdownOne === 1) {
             this.ready = true;
@@ -497,7 +529,7 @@ Vue.createApp({
         // display 'get set' afterwards for 3 sec
         var stageTwo = setInterval(() => {
           countdownTwo++;
-          if (countdownTwo === 5 && this.ready) {
+          if (countdownTwo === 2 && this.ready) {
             this.ready = false;
             this.getSet = true;
             countdownTwo = 0;
@@ -509,7 +541,7 @@ Vue.createApp({
         // record time once the user presses the space key
         var stageThree = setInterval(() => {
           countdownThree++;
-          if (countdownThree === 8 && this.getSet) {
+          if (countdownThree === 3 && this.getSet) {
             this.getSet = false;
             this.draw = true;
             countdownThree = 0;
@@ -518,9 +550,13 @@ Vue.createApp({
           }
         }, 1000);
       } else {
-        this.reactionGameOver = true;
-        this.finishGame(this.reactionScore);
-        this.reactionScore = 0;
+        // when the game is over, display the average reaction time for the user.
+        console.log(`User Reactions: ${this.userReactions}`)
+        this.calculateAverageReaction();
+        console.log(`Average Reaction: ${this.averageReaction}`)
+        this.finishGame(this.averageReaction);
+        this.userReactions = [];
+        this.averageReaction = 0;
       }
     },
 
@@ -532,38 +568,58 @@ Vue.createApp({
         if (event.key === " " && this.draw) {
           const endTime = Date.now();
           this.reactionTime = (endTime - this.startTime) / 1000;
+          this.reactionSound.play();
           this.displayReaction = true;
           this.startTime = null;
           console.log("reaction time: " + this.reactionTime);
           this.compareReaction();
-          console.log("reaction Score: " + this.reactionScore);
-          this.countdown();
         } else {
-          console.log("Too early, try again!");
+          this.displayReaction = false;
+          this.tooEarly = true;
+          this.userReactions.push((this.reactionTime + 10));
+          console.log(this.userReactions)
+          this.index++;
+          this.countdown();
         }
       });
     },
 
     compareReaction: function () {
-      console.log(`set score: ${this.reactions[this.index]}`);
+      console.log(`current time: ${this.reactions[this.index]}`);
       if (this.reactionTime < this.reactions[this.index]) {
-        this.reactionScore++;
+        this.userReactions.push(this.reactionTime);
+        console.log(this.userReactions)
         this.index++;
+        this.countdown();
       } else {
-        this.reactionGameOver = true;
+        // punish the user (10 second penalty) if their reaction is slower than the defined values in this.reactions
+        this.displayReaction = false;
+        this.tooSlow = true;
+        this.userReactions.push((this.reactionTime + 10));
+        console.log(this.userReactions)
+        this.index++;
+        this.countdown();
       }
-      if (this.reactions[this.index] === 0.26) {
-        while (this.reactionGameOver === false) {
-          if (this.reactionTime < this.reactions[this.index]) {
-            this.reactionScore++;
-            this.index++;
-          } else {
-            this.reactionGameOver = true;
-          }
-        }
+
+      // once the code iterates through this.reactions, end the game.
+      if (this.index >= this.reactions.length) {
+        this.reactionGameOver = true;
+        this.countdown();
       }
     },
 
+    calculateAverageReaction: function () {
+      for (let reaction of this.userReactions) {
+        this.averageReaction += reaction;
+      };
+      this.averageReaction = this.averageReaction / 10;
+    },
+
+
+
+
+
+    
     //Minesweeper game methods
     addMinesweeperRow: function () {
       this.minesweeperBoard.cells.push([]);

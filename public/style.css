@@ -371,10 +371,22 @@ body {
 
 
 /* styling for reaction game */
-#box {
+
+#reactionWrapper {
+  margin-top: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#reactionBox {
   width: 200px;
   height: 200px;
+  border-radius: 5px;
   background-color: #D2E3C8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 }
 
