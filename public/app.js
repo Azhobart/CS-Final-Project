@@ -110,7 +110,6 @@ Vue.createApp({
       prisonerScores: [0, 0],
       prisonBot: "Random",
       prisonerGameLength: 10 + Math.floor(Math.random() * 3),
-<<<<<<< HEAD
 
 
       // reaction game variables
@@ -125,7 +124,6 @@ Vue.createApp({
       bestReaction: [],
       reactions: [1, .8, .6, .4, .3, .26],
       index: 0,
-=======
       prisonHistory: [],
 
       //Minesweeper game variables
@@ -137,7 +135,6 @@ Vue.createApp({
       minesweeperScore: 0,
       minesweeperMineChance: 8,
       minesweeperGameState: "playing",
->>>>>>> 5dfb5fe18cffb7f34abb2fe1a3e4d6eb77b00efc
     };
   },
 

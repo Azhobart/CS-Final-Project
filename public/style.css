@@ -376,7 +376,8 @@ body {
   height: 200px;
   background-color: #D2E3C8;
 
-  
+}
+
 /* prisoner game styling */
 .prisonerHistoryGrid {
   display: grid;
