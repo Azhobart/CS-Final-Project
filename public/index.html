@@ -337,9 +337,11 @@
             <p v-if="ready">Ready</p>
             <p v-if="getSet">Get Set</p>
             <p v-if="draw">Draw!</p>
-            <p v-if="tooEarly">Too Early! +10 sec.</p>
-            <p v-if="tooSlow">Too Slow! +10 sec.</p>
             <p v-if="displayReaction">{{ reactionTime }}</p>
+            <p v-else-if="tooSlow">Too Slow! +10 sec.</p>
+            <p v-else-if="tooEarly">Too Early, Try Again.</p>
+            
+            
 
           </div>
         </div>

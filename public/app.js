@@ -121,19 +121,23 @@ Vue.createApp({
       // reaction game variables
       reactionSound: new Audio('reactionSounds/ricochet.mp3'),
 
+      
       reactionGameOver: false,
       ready: false,
       getSet: false,
       draw: false,
+
+
       displayReaction: false,
       tooSlow: false,
       tooEarly: false,
+
       reactionTime: 0,
       startTime: null,
       userReactions: [],
       averageReaction: 0,
       reactions: [1, 0.8, 0.6, 0.6, 0.6, 0.4, 0.4, 0.35, 0.35, 0.3],
-      index: 0,
+      timeIndex: 0,
       prisonHistory: [],
 
       //Minesweeper game variables
@@ -524,12 +528,14 @@ Vue.createApp({
     
     //reaction game methods
     countdown: function () {
-      console.log("reactions:" + this.reactions);
-      console.log("reactionGameOver:" + this.reactionGameOver);
+      window.addEventListener("keydown", this.getReaction);
+
       if (this.reactionGameOver === false) {
         let countdownOne = 0;
         let countdownTwo = 0;
         let countdownThree = 0;
+        let randomTime = Math.ceil(Math.random() * 3);
+
 
         this.ready = false;
         this.getSet = false;
@@ -562,20 +568,19 @@ Vue.createApp({
         // display 'draw!' and set timer (in milliseconds)
         // record time once the user presses the space key
         var stageThree = setInterval(() => {
+
           countdownThree++;
-          if (countdownThree === 3 && this.getSet) {
+          if (countdownThree === (randomTime + 2) && this.getSet) {
             this.getSet = false;
             this.draw = true;
             countdownThree = 0;
             clearInterval(stageThree);
-            this.getReaction();
+            this.startTime = Date.now();
           }
         }, 1000);
       } else {
         // when the game is over, display the average reaction time for the user.
-        console.log(`User Reactions: ${this.userReactions}`)
         this.calculateAverageReaction();
-        console.log(`Average Reaction: ${this.averageReaction}`)
         this.finishGame(this.averageReaction);
         this.userReactions = [];
         this.averageReaction = 0;
@@ -584,47 +589,44 @@ Vue.createApp({
 
     getReaction: function () {
       this.reactionTime = 0;
-      this.startTime = Date.now();
-
-      addEventListener("keydown", (event) => {
-        if (event.key === " " && this.draw) {
+      
+        if (this.draw) {
           const endTime = Date.now();
           this.reactionTime = (endTime - this.startTime) / 1000;
           this.reactionSound.play();
+          this.tooEarly = false;
           this.displayReaction = true;
           this.startTime = null;
-          console.log("reaction time: " + this.reactionTime);
+
           this.compareReaction();
-        } else {
-          this.displayReaction = false;
+
+        } 
+        if (!this.draw) {
           this.tooEarly = true;
-          this.userReactions.push((this.reactionTime + 10));
-          console.log(this.userReactions)
-          this.index++;
+
           this.countdown();
-        }
-      });
+        };
+
     },
 
     compareReaction: function () {
-      console.log(`current time: ${this.reactions[this.index]}`);
-      if (this.reactionTime < this.reactions[this.index]) {
+   
+      if (this.reactionTime < this.reactions[this.timeIndex]) {
         this.userReactions.push(this.reactionTime);
-        console.log(this.userReactions)
-        this.index++;
+        this.timeIndex++;
         this.countdown();
       } else {
         // punish the user (10 second penalty) if their reaction is slower than the defined values in this.reactions
         this.displayReaction = false;
+        this.tooEarly = true;
         this.tooSlow = true;
         this.userReactions.push((this.reactionTime + 10));
-        console.log(this.userReactions)
-        this.index++;
+        this.timeIndex++;
         this.countdown();
       }
 
       // once the code iterates through this.reactions, end the game.
-      if (this.index >= this.reactions.length) {
+      if (this.timeIndex >= this.reactions.length) {
         this.reactionGameOver = true;
         this.countdown();
       }
@@ -1012,6 +1014,7 @@ Vue.createApp({
   created: function () {
     this.getSession();
     this.getScores();
+    console.log(this.randomTime);
 
     //minesweeper setup
     this.beginMinesweeperGame();
