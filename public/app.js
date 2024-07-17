@@ -96,11 +96,10 @@ Vue.createApp({
       scoreUserSearchInput: "",
 
       // color game variables
-      redSound: new Audio('colorSounds/originalBeep.mp3'),
-      blueSound: new Audio('colorSounds/lowBeep.mp3'),
-      yellowSound: new Audio('colorSounds/highBeep.mp3'),
-      greenSound: new Audio('colorSounds/medBeep.mp3'),
-
+      redSound: new Audio("colorSounds/originalBeep.mp3"),
+      blueSound: new Audio("colorSounds/lowBeep.mp3"),
+      yellowSound: new Audio("colorSounds/highBeep.mp3"),
+      greenSound: new Audio("colorSounds/medBeep.mp3"),
 
       colors: ["#FF0000", "#0000FF", "#FFFF00", "#00FF00"],
       userInput: [],
@@ -119,7 +118,7 @@ Vue.createApp({
       prisonHistory: [],
 
       // reaction game variables
-      reactionSound: new Audio('reactionSounds/ricochet.mp3'),
+      reactionSound: new Audio("reactionSounds/ricochet.mp3"),
 
       reactionGameOver: false,
       ready: false,
@@ -151,17 +150,31 @@ Vue.createApp({
       battleshipGameState: "placing",
       battleshipBoards: {
         width: 8,
-        height: 16,
+        height: 8,
         opponent: [],
         player: [],
         opponentHoverGrid: [],
         playerHoverGrid: [],
       },
       selectedBattleship: 0,
+      opponentSelectedBattleship: 0,
+      battleshipValidHover: true,
       battleshipShips: [
-        [[true, true]],
-        [[true, true, true]],
-        [[true, true, true, true]],
+        [
+          [true, true],
+          [false, false],
+        ],
+        [
+          [true, true, true],
+          [false, false, false],
+          [false, false, false],
+        ],
+        [
+          [true, true, true, true],
+          [false, false, false, false],
+          [false, false, false, false],
+          [false, false, false, false],
+        ],
         [
           [false, true, false],
           [true, true, true],
@@ -386,7 +399,21 @@ Vue.createApp({
       this.lastAchievedScore = score;
     },
 
-
+    rotate2dArrayClockwise: function (arr) {
+      let newArr = [];
+      for (let i = 0; i < arr.length; i += 1) {
+        newArr.push([]);
+        for (let j = 0; j < arr[0].length; j += 1) {
+          newArr[i].push(arr[i][j]);
+        }
+      }
+      for (let i = 0; i < arr.length; i += 1) {
+        for (let j = 0; j < arr[0].length; j += 1) {
+          newArr[j][i] = arr[-i + arr.length - 1][j];
+        }
+      }
+      return newArr;
+    },
 
     // color game methods:
     getColor: function () {
@@ -433,16 +460,16 @@ Vue.createApp({
         this.randomColor = this.colorSequence[count];
         if (this.randomColor === "#FF0000") {
           this.redSound.play();
-        } 
-        if (this.randomColor ===  "#0000FF") {
-          this.blueSound.play()
-        } 
+        }
+        if (this.randomColor === "#0000FF") {
+          this.blueSound.play();
+        }
         if (this.randomColor === "#FFFF00") {
-          this.yellowSound.play()
-        } 
+          this.yellowSound.play();
+        }
         if (this.randomColor === "#00FF00") {
           this.greenSound.play();
-        };
+        }
 
         var transition = setInterval(() => {
           this.randomColor = "#739072";
@@ -518,10 +545,6 @@ Vue.createApp({
       }
     },
 
-
-
-
-    
     //reaction game methods
     countdown: function () {
       console.log("reactions:" + this.reactions);
@@ -573,9 +596,9 @@ Vue.createApp({
         }, 1000);
       } else {
         // when the game is over, display the average reaction time for the user.
-        console.log(`User Reactions: ${this.userReactions}`)
+        console.log(`User Reactions: ${this.userReactions}`);
         this.calculateAverageReaction();
-        console.log(`Average Reaction: ${this.averageReaction}`)
+        console.log(`Average Reaction: ${this.averageReaction}`);
         this.finishGame(this.averageReaction);
         this.userReactions = [];
         this.averageReaction = 0;
@@ -598,8 +621,8 @@ Vue.createApp({
         } else {
           this.displayReaction = false;
           this.tooEarly = true;
-          this.userReactions.push((this.reactionTime + 10));
-          console.log(this.userReactions)
+          this.userReactions.push(this.reactionTime + 10);
+          console.log(this.userReactions);
           this.index++;
           this.countdown();
         }
@@ -610,15 +633,15 @@ Vue.createApp({
       console.log(`current time: ${this.reactions[this.index]}`);
       if (this.reactionTime < this.reactions[this.index]) {
         this.userReactions.push(this.reactionTime);
-        console.log(this.userReactions)
+        console.log(this.userReactions);
         this.index++;
         this.countdown();
       } else {
         // punish the user (10 second penalty) if their reaction is slower than the defined values in this.reactions
         this.displayReaction = false;
         this.tooSlow = true;
-        this.userReactions.push((this.reactionTime + 10));
-        console.log(this.userReactions)
+        this.userReactions.push(this.reactionTime + 10);
+        console.log(this.userReactions);
         this.index++;
         this.countdown();
       }
@@ -633,15 +656,10 @@ Vue.createApp({
     calculateAverageReaction: function () {
       for (let reaction of this.userReactions) {
         this.averageReaction += reaction;
-      };
+      }
       this.averageReaction = this.averageReaction / 10;
     },
 
-
-
-
-
-    
     //Minesweeper game methods
     addMinesweeperRow: function () {
       this.minesweeperBoard.cells.push([]);
@@ -882,11 +900,24 @@ Vue.createApp({
       this.battleshipBoards.opponent = [];
       let obj = {
         isShip: false,
+        isHidden: false,
+        isHit: false,
+        isMiss: false,
+        backColor: "lightblue",
+        frontColor: "lightblue",
+      };
+      let objOpp = {
+        isShip: false,
+        isHidden: true,
+        isHit: false,
+        isMiss: false,
+        backColor: "blue",
+        frontColor: "blue",
       };
       let oppArr = [];
       let playArr = [];
       for (let j = 0; j < this.battleshipBoards.width; j++) {
-        oppArr.push(structuredClone(obj));
+        oppArr.push(structuredClone(objOpp));
         playArr.push(structuredClone(obj));
       }
       for (let i = 0; i < this.battleshipBoards.height; i++) {
@@ -904,6 +935,37 @@ Vue.createApp({
       )
         .fill()
         .map(() => Array(this.battleshipBoards.width).fill(false));
+
+      //opponent place ships
+      this.opponentSelectedBattleship = 0;
+      while (
+        this.opponentSelectedBattleship <=
+        this.battleshipShips.length - 1
+      ) {
+        let x = Math.round(Math.random() * this.battleshipBoards.height);
+        let y = Math.round(Math.random() * this.battleshipBoards.width);
+        for (let i = 0; i < Math.random() * 4; i += 1) {
+          this.battleshipShips[this.opponentSelectedBattleship] =
+            this.rotate2dArrayClockwise(
+              this.battleshipShips[this.opponentSelectedBattleship]
+            );
+        }
+        this.placeBattleship(this.opponentSelectedBattleship, "opponent", x, y);
+      }
+    },
+
+    battleshipFire: function (board, x, y) {
+      if (board === "player") {
+        this.battleshipBoards.player[x][y].isHit =
+          this.battleshipBoards.player[x][y].isShip;
+        this.battleshipBoards.player[x][y].isMiss =
+          !this.battleshipBoards.player[x][y].isShip;
+      } else {
+        this.battleshipBoards.opponent[x][y].isHit =
+          this.battleshipBoards.opponent[x][y].isShip;
+        this.battleshipBoards.opponent[x][y].isMiss =
+          !this.battleshipBoards.opponent[x][y].isShip;
+      }
     },
 
     hoverBattleshipCell: function (board, x, y) {
@@ -921,31 +983,148 @@ Vue.createApp({
       if (board === "player") {
         if (this.battleshipGameState === "placing") {
           let selShip = this.battleshipShips[this.selectedBattleship];
-          if (
-            x + selShip.length - 1 < this.battleshipBoards.height &&
-            y + selShip[0].length - 1 < this.battleshipBoards.width
-          ) {
+          let isValid = true;
+          this.battleshipValidHover = true;
+          for (let i = 0; i < selShip.length; i += 1) {
+            for (let j = 0; j < selShip[i].length; j += 1) {
+              if (
+                x + i > this.battleshipBoards.height - 1 ||
+                y + j > this.battleshipBoards.width - 1
+              ) {
+                if (selShip[i][j]) {
+                  isValid = false;
+                  break;
+                }
+              } else if (
+                this.battleshipBoards.player[x + i][y + j].isShip &&
+                selShip[i][j]
+              ) {
+                this.battleshipValidHover = false;
+              }
+            }
+          }
+
+          if (isValid) {
             for (let i = 0; i < selShip.length; i += 1) {
               for (let j = 0; j < selShip[i].length; j += 1) {
-                this.battleshipBoards.playerHoverGrid[x + i][y + j] =
-                  selShip[i][j];
+                if (selShip[i][j]) {
+                  this.battleshipBoards.playerHoverGrid[x + i][y + j] =
+                    selShip[i][j];
+                }
               }
             }
           }
         }
       }
       if (board === "opponent") {
+        this.battleshipBoards.opponentHoverGrid[x][y] = true;
+      }
+      let opponentAliveCells = 0;
+      let playerAliveCells = 0;
+      for (let i = 0; i < this.battleshipBoards.height; i += 1) {
+        for (let j = 0; j < this.battleshipBoards.width; j += 1) {
+          //check win
+          if (
+            this.battleshipBoards.opponent[i][j].isShip &&
+            !this.battleshipBoards.opponent[i][j].isHit
+          ) {
+            opponentAliveCells += 1;
+          }
+          if (
+            this.battleshipBoards.player[i][j].isShip &&
+            !this.battleshipBoards.player[i][j].isHit
+          ) {
+            playerAliveCells += 1;
+          }
+
+          this.battleshipBoards.opponent[i][j].backColor = "lightblue";
+          this.battleshipBoards.opponent[i][j].frontColor = "lightblue";
+
+          if (this.battleshipBoards.opponent[i][j].isShip) {
+            this.battleshipBoards.opponent[i][j].frontColor = "grey";
+          }
+          if (this.battleshipBoards.opponent[i][j].isHidden) {
+            this.battleshipBoards.opponent[i][j].backColor = "blue";
+            this.battleshipBoards.opponent[i][j].frontColor = "blue";
+          }
+          if (this.battleshipBoards.opponent[i][j].isHit) {
+            this.battleshipBoards.opponent[i][j].frontColor = "red";
+          }
+          if (this.battleshipBoards.opponent[i][j].isMiss) {
+            this.battleshipBoards.opponent[i][j].frontColor = "white";
+          }
+
+          if (this.battleshipBoards.opponentHoverGrid[i][j]) {
+            this.battleshipBoards.opponent[i][j].backColor =
+              "RGBA(100,100,100,0.3)";
+          }
+
+          //player
+          this.battleshipBoards.player[i][j].backColor = "lightblue";
+          this.battleshipBoards.player[i][j].frontColor = "lightblue";
+
+          if (this.battleshipBoards.player[i][j].isShip) {
+            this.battleshipBoards.player[i][j].frontColor = "grey";
+          }
+          if (this.battleshipBoards.player[i][j].isHidden) {
+            this.battleshipBoards.player[i][j].backColor = "blue";
+            this.battleshipBoards.player[i][j].frontColor = "blue";
+          }
+          if (this.battleshipBoards.player[i][j].isHit) {
+            this.battleshipBoards.player[i][j].frontColor = "red";
+          }
+          if (this.battleshipBoards.player[i][j].isMiss) {
+            this.battleshipBoards.player[i][j].frontColor = "white";
+          }
+
+          if (this.battleshipBoards.playerHoverGrid[i][j]) {
+            this.battleshipBoards.player[i][j].backColor =
+              "RGBA(100,100,100,0.3)";
+          }
+        }
+      }
+      if (this.battleshipGameState === "playing") {
+        if (opponentAliveCells == 0 && playerAliveCells > 0) {
+          this.battleshipGameState = "won";
+          let newBattleshipScore = {
+            game: this.page,
+            value: playerAliveCells,
+            user: this.currentUser._id,
+          };
+          this.setScore(newBattleshipScore);
+          for (let i = 0; i < this.battleshipBoards.height; i += 1) {
+            for (let j = 0; j < this.battleshipBoards.width; j += 1) {
+              this.battleshipBoards.opponent[i][j].isHidden = false;
+            }
+          }
+          this.hoverBattleshipCell("opponent", 5, 5);
+        }
+        if (opponentAliveCells > 0 && playerAliveCells == 0) {
+          this.battleshipGameState = "lost";
+          for (let i = 0; i < this.battleshipBoards.height; i += 1) {
+            for (let j = 0; j < this.battleshipBoards.width; j += 1) {
+              this.battleshipBoards.opponent[i][j].isHidden = false;
+            }
+          }
+        }
       }
     },
 
-    placeBattleship: function (board, x, y) {
+    placeBattleship: function (sel, board, x, y) {
       if (this.battleshipGameState === "placing") {
         if (board === "player") {
-          let selShip = this.battleshipShips[this.selectedBattleship];
+          let selShip = this.battleshipShips[sel];
           let isValid = true;
-          for (let i = 0; i < selShip[0].length; i += 1) {
-            for (let j = 0; j < selShip.length; j += 1) {
+          for (let i = 0; i < selShip.length; i += 1) {
+            for (let j = 0; j < selShip[0].length; j += 1) {
               if (
+                x + i > this.battleshipBoards.height - 1 ||
+                y + j > this.battleshipBoards.width - 1
+              ) {
+                if (selShip[i][j]) {
+                  isValid = false;
+                }
+              } else if (
                 this.battleshipBoards.player[x + i][y + j].isShip &&
                 selShip[i][j]
               ) {
@@ -954,11 +1133,7 @@ Vue.createApp({
             }
           }
 
-          if (
-            x + selShip.length - 1 < this.battleshipBoards.height &&
-            y + selShip[0].length - 1 < this.battleshipBoards.width &&
-            isValid
-          ) {
+          if (isValid) {
             let placed = false;
             for (let i = 0; i < selShip.length; i += 1) {
               for (let j = 0; j < selShip[i].length; j += 1) {
@@ -980,6 +1155,46 @@ Vue.createApp({
             }
           }
         }
+        if (board === "opponent") {
+          let selShip = this.battleshipShips[sel];
+          let isValid = true;
+          for (let i = 0; i < selShip.length; i += 1) {
+            for (let j = 0; j < selShip[0].length; j += 1) {
+              if (
+                x + i > this.battleshipBoards.height - 1 ||
+                y + j > this.battleshipBoards.width - 1
+              ) {
+                if (selShip[i][j]) {
+                  isValid = false;
+                }
+              } else if (
+                this.battleshipBoards.opponent[x + i][y + j].isShip &&
+                selShip[i][j]
+              ) {
+                isValid = false;
+              }
+            }
+          }
+
+          if (isValid) {
+            let placed = false;
+            for (let i = 0; i < selShip.length; i += 1) {
+              for (let j = 0; j < selShip[i].length; j += 1) {
+                if (
+                  selShip[i][j] &&
+                  !this.battleshipBoards.opponent[x + i][y + j].isShip
+                ) {
+                  this.battleshipBoards.opponent[x + i][y + j].isShip =
+                    selShip[i][j];
+                  placed = true;
+                }
+              }
+            }
+            if (placed) {
+              this.opponentSelectedBattleship += 1;
+            }
+          }
+        }
       }
     },
 
@@ -987,7 +1202,111 @@ Vue.createApp({
       if (btn === 0) {
         if (board === "player") {
           if (this.battleshipGameState === "placing") {
-            this.placeBattleship(board, x, y);
+            this.placeBattleship(this.selectedBattleship, board, x, y);
+          }
+        }
+        if (board === "opponent") {
+          if (this.battleshipGameState === "playing") {
+            if (
+              !this.battleshipBoards.opponent[x][y].isMiss &&
+              !this.battleshipBoards.opponent[x][y].isHit
+            ) {
+              this.battleshipFire("opponent", x, y);
+              this.hoverBattleshipCell("opponent", x, y);
+
+              //opponent fires
+
+              let v = 0;
+              let k = 0;
+              while (
+                this.battleshipBoards.player[v][k].isMiss ||
+                this.battleshipBoards.player[v][k].isHit
+              ) {
+                let found_x = -1;
+                let found_y = -1;
+                for (let i = 0; i < this.battleshipBoards.height; i += 1) {
+                  for (let j = 0; j < this.battleshipBoards.width; j += 1) {
+                    if (
+                      this.battleshipBoards.player[i][j].isHit &&
+                      Math.random() * 3 < 1
+                    ) {
+                      found_x = i;
+                      found_y = j;
+                    }
+                  }
+                }
+
+                if (found_x >= 0 && found_y >= 0) {
+                  console.log("found hit");
+                  if (found_x > 0) {
+                    if (
+                      !this.battleshipBoards.player[found_x - 1][found_y]
+                        .isHit &&
+                      !this.battleshipBoards.player[found_x - 1][found_y].isMiss
+                    ) {
+                      v = found_x - 1;
+                      k = found_y;
+                    }
+                  }
+                  if (found_y > 0) {
+                    if (
+                      !this.battleshipBoards.player[found_x][found_y - 1]
+                        .isHit &&
+                      !this.battleshipBoards.player[found_x][found_y - 1].isMiss
+                    ) {
+                      v = found_x;
+                      k = found_y - 1;
+                    }
+                  }
+                  if (found_x < this.battleshipBoards.height - 1) {
+                    if (
+                      !this.battleshipBoards.player[found_x + 1][found_y]
+                        .isHit &&
+                      !this.battleshipBoards.player[found_x + 1][found_y].isMiss
+                    ) {
+                      v = found_x + 1;
+                      k = found_y;
+                    }
+                  }
+                  if (found_y < this.battleshipBoards.width - 1) {
+                    if (
+                      !this.battleshipBoards.player[found_x][found_y + 1]
+                        .isHit &&
+                      !this.battleshipBoards.player[found_x][found_y + 1].isMiss
+                    ) {
+                      v = found_x;
+                      k = found_y + 1;
+                    }
+                  }
+                } else {
+                  v = Math.round(
+                    Math.random() * (this.battleshipBoards.height - 1)
+                  );
+                  k = Math.round(
+                    Math.random() * (this.battleshipBoards.width - 1)
+                  );
+                }
+              }
+              if (
+                !this.battleshipBoards.player[v][k].isMiss &&
+                !this.battleshipBoards.player[v][k].isHit
+              ) {
+                console.log(`enemy fired at ${v},${k}`);
+                this.battleshipFire("player", v, k);
+                this.hoverBattleshipCell("player", v, k);
+              }
+            }
+          }
+        }
+      }
+      if (btn === 1) {
+        if (board === "player") {
+          if (this.battleshipGameState === "placing") {
+            this.battleshipShips[this.selectedBattleship] =
+              this.rotate2dArrayClockwise(
+                this.battleshipShips[this.selectedBattleship]
+              );
+            this.hoverBattleshipCell("player", x, y);
           }
         }
       }
