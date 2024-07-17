@@ -380,11 +380,10 @@ body {
   width: 200px;
   height: 200px;
   border-radius: 5px;
-  background-color: #D2E3C8;
+  background-color: #d2e3c8;
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 /* prisoner game styling */
@@ -427,7 +426,7 @@ body {
   }
 }
 
-.minesweeperModal {
+.modal {
   transition: 500ms;
   position: absolute;
   display: flex;
@@ -455,9 +454,19 @@ body {
     height: 40px;
 
     display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
       cursor: pointer;
     }
+  }
+  & .battleshipToken {
+    width: 20px;
+    height: 20px;
+    border-radius: 100;
+    background-color: white;
+    align-self: center;
+    justify-self: center;
   }
 }

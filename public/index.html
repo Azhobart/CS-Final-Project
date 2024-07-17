@@ -273,7 +273,7 @@
             </div>
         </div>
 
-        <div class="sectionContainer minesweeperModal" v-if="minesweeperGameState != 'playing'">
+        <div class="sectionContainer modal" v-if="minesweeperGameState != 'playing'">
           <p>You Lose!</p>
           <div class="row" v-if="minesweeperGameState === 'lost'">
             
@@ -287,20 +287,35 @@
       <div class="page" v-if="page === 'Battleship'">
         <div class="sectionContainer">
           <div class="row">
+            <p v-if="battleshipGameState === 'placing'">Click to place your ships!</p>
             <button @click="resetBattleshipBoard()">Restart</button>
+            <p v-if="battleshipGameState === 'placing'">Right click to rotate</p>
           </div >
           <div class="row">
             <div class="column">
+              <p>Your Ocean</p>
               <div class="battleshipGridRow" v-for="(row, indx_x) in battleshipBoards.player" oncontextmenu="return false;">
-                <div class="battleshipCell" v-for="(cell, indx_y) in row" @mouseover="hoverBattleshipCell('player',indx_x,indx_y)" v-on:click.right="clickBattleshipCell(1,'player',indx_x,indx_y)" @click.left="clickBattleshipCell(0,'player',indx_x,indx_y)" oncontextmenu="return false;">
-                  <div v-if="battleshipBoards.player[indx_x][indx_y].isShip" class="battleshipCell" :style="{backgroundColor: '#888'}"></div>
-                  <div v-if="battleshipBoards.playerHoverGrid[indx_x][indx_y]" class="battleshipCell" :style="{backgroundColor: '#aaa6'}"></div>
+                <div class="battleshipCell" v-for="(cell, indx_y) in row" @mouseover="hoverBattleshipCell('player',indx_x,indx_y)" v-on:click.right="clickBattleshipCell(1,'player',indx_x,indx_y)" @click.left="clickBattleshipCell(0,'player',indx_x,indx_y)" :style="{backgroundColor: battleshipBoards.player[indx_x][indx_y].backColor}" oncontextmenu="return false;">
+                  <div :style="{backgroundColor: battleshipBoards.player[indx_x][indx_y].frontColor}" class="battleshipToken"></div>
                 </div>
               </div>
             </div>
-          
+            <div class="column">
+              <p>Enemy Ocean</p>
+              <div class="battleshipGridRow" v-for="(row, indx_x) in battleshipBoards.opponent" oncontextmenu="return false;">
+                <div class="battleshipCell" v-for="(cell, indx_y) in row" @mouseover="hoverBattleshipCell('opponent',indx_x,indx_y)" v-on:click.right="clickBattleshipCell(1,'opponent',indx_x,indx_y)" @click.left="clickBattleshipCell(0,'opponent',indx_x,indx_y)" :style="{backgroundColor: battleshipBoards.opponent[indx_x][indx_y].backColor}" oncontextmenu="return false;">
+                  <div :style="{backgroundColor: battleshipBoards.opponent[indx_x][indx_y].frontColor}" class="battleshipToken" ></div>
+                </div>
+              </div>
+            </div>
           </div>
-          
+        </div>
+        <div class="sectionContainer modal" v-if="battleshipGameState == 'won' || battleshipGameState == 'lost'">
+          <p v-if="battleshipGameState == 'lost'">You Lose!</p>
+          <p v-if="battleshipGameState == 'won'">You Win!</p>
+          <button @click="resetBattleshipBoard()">Play Again</button>
+          <button @click="setPage('home'); resetBattleshipBoard()">Home</button>
+
         </div>
       </div>
 
