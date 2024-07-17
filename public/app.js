@@ -120,12 +120,10 @@ Vue.createApp({
       // reaction game variables
       reactionSound: new Audio("reactionSounds/ricochet.mp3"),
 
-      
       reactionGameOver: false,
       ready: false,
       getSet: false,
       draw: false,
-
 
       displayReaction: false,
       tooSlow: false,
@@ -185,6 +183,14 @@ Vue.createApp({
           [false, false, false],
         ],
       ],
+
+      //Tic Tac Toe Game variable
+      tictactoeBoard: [
+        [" ", " ", " "],
+        [" ", " ", " "],
+        [" ", " ", " "],
+      ],
+      tictactoeScore: 0,
     };
   },
 
@@ -559,7 +565,6 @@ Vue.createApp({
         let countdownThree = 0;
         let randomTime = Math.ceil(Math.random() * 3);
 
-
         this.ready = false;
         this.getSet = false;
         this.draw = false;
@@ -591,9 +596,8 @@ Vue.createApp({
         // display 'draw!' and set timer (in milliseconds)
         // record time once the user presses the space key
         var stageThree = setInterval(() => {
-
           countdownThree++;
-          if (countdownThree === (randomTime + 2) && this.getSet) {
+          if (countdownThree === randomTime + 2 && this.getSet) {
             this.getSet = false;
             this.draw = true;
             countdownThree = 0;
@@ -612,27 +616,24 @@ Vue.createApp({
 
     getReaction: function () {
       this.reactionTime = 0;
-      
-        if (this.draw) {
-          const endTime = Date.now();
-          this.reactionTime = (endTime - this.startTime) / 1000;
-          this.reactionSound.play();
-          this.tooEarly = false;
-          this.displayReaction = true;
-          this.startTime = null;
 
-          this.compareReaction();
+      if (this.draw) {
+        const endTime = Date.now();
+        this.reactionTime = (endTime - this.startTime) / 1000;
+        this.reactionSound.play();
+        this.tooEarly = false;
+        this.displayReaction = true;
+        this.startTime = null;
 
-        } 
-        if (!this.draw) {
-          this.tooEarly = true;
-          this.countdown();
-        };
-
+        this.compareReaction();
+      }
+      if (!this.draw) {
+        this.tooEarly = true;
+        this.countdown();
+      }
     },
 
     compareReaction: function () {
-   
       if (this.reactionTime < this.reactions[this.timeIndex]) {
         this.userReactions.push(this.reactionTime);
         this.timeIndex++;
@@ -642,7 +643,7 @@ Vue.createApp({
         this.displayReaction = false;
         this.tooEarly = true;
         this.tooSlow = true;
-        this.userReactions.push((this.reactionTime + 10));
+        this.userReactions.push(this.reactionTime + 10);
         this.timeIndex++;
         this.countdown();
       }
@@ -1308,6 +1309,89 @@ Vue.createApp({
                 this.battleshipShips[this.selectedBattleship]
               );
             this.hoverBattleshipCell("player", x, y);
+          }
+        }
+      }
+    },
+    //tic tac toe methods
+    resetTictactoe: function () {
+      for (let i = 0; i < 3; i += 1) {
+        for (let j = 0; j < 3; j += 1) {
+          this.tictactoeBoard[i][j] = " ";
+        }
+      }
+    },
+    tictactoeCheckForWin: function (val) {
+      let b = this.tictactoeBoard;
+      //rows
+      if (b[0][0] === val && b[0][1] === val && b[0][2] === val) {
+        return true;
+      }
+      if (b[1][0] === val && b[1][1] === val && b[1][2] === val) {
+        return true;
+      }
+      if (b[2][0] === val && b[2][1] === val && b[2][2] === val) {
+        return true;
+      }
+
+      //columns
+      if (b[0][0] === val && b[1][0] === val && b[2][0] === val) {
+        return true;
+      }
+      if (b[0][1] === val && b[1][1] === val && b[2][1] === val) {
+        return true;
+      }
+      if (b[0][2] === val && b[1][2] === val && b[2][2] === val) {
+        return true;
+      }
+
+      //diagonals
+      if (b[0][0] === val && b[1][1] === val && b[2][2] === val) {
+        return true;
+      }
+      if (b[0][2] === val && b[1][1] === val && b[2][0] === val) {
+        return true;
+      }
+      return false;
+    },
+    tictactoeSet: function (val, x, y) {
+      this.tictactoeBoard[x][y] = val;
+    },
+    tictactoeTurn: function (val, x, y) {
+      if (this.tictactoeBoard[x][y] == " ") {
+        this.tictactoeSet(val, x, y);
+        if (this.tictactoeCheckForWin(val)) {
+          this.tictactoeScore += 1;
+          this.resetTictactoe();
+          console.log("you won!");
+          let newScore = {
+            game: this.page,
+            value: this.tictactoeScore,
+            user: this.currentUser._id,
+          };
+          this.setScore(newScore);
+        } else {
+          let filledBoard = true;
+          for (let i = 0; i < 3; i += 1) {
+            for (let j = 0; j < 3; j += 1) {
+              if (this.tictactoeBoard[i][j] == " ") {
+                filledBoard = false;
+              }
+            }
+          }
+          if (!filledBoard) {
+            let v = Math.round(Math.random() * 2);
+            let k = Math.round(Math.random() * 2);
+            while (this.tictactoeBoard[v][k] != " ") {
+              v = Math.round(Math.random() * 2);
+              k = Math.round(Math.random() * 2);
+            }
+            this.tictactoeSet("x", v, k);
+            if (this.tictactoeCheckForWin("x")) {
+              this.tictactoeScore = 0;
+              this.resetTictactoe();
+              console.log("you lost!");
+            }
           }
         }
       }
