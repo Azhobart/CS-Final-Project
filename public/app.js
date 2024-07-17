@@ -608,7 +608,12 @@ Vue.createApp({
       } else {
         // when the game is over, display the average reaction time for the user.
         this.calculateAverageReaction();
-        this.finishGame(this.averageReaction);
+        let newScore = {
+          game: this.page,
+          value: this.averageReaction,
+          user: this.currentUser._id,
+        };
+        this.finishGame(newScore);
         this.userReactions = [];
         this.averageReaction = 0;
       }
