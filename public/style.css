@@ -244,23 +244,6 @@ body {
   }
 }
 
-.tictactoeCell {
-  margin: 20px 20px 20px 20px;
-  width: 150px;
-  height: 150px;
-  border-radius: 10px;
-  background-color: #4f6f52;
-  color: #d2e3c8;
-  font-size: 20px;
-  user-select: none;
-
-  &:hover {
-    background-color: #86a789;
-    color: #4f6f52;
-    cursor: pointer;
-  }
-}
-
 /* user page */
 
 .title {
@@ -569,4 +552,25 @@ body {
   height: 350px;
   width: 80%;
 
+}
+/*Tic Tac Toe styling*/
+.tictactoeCell {
+  margin: 20px 20px 20px 20px;
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  background-color: #4f6f52;
+  color: #d2e3c8;
+  font-size: 150px;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #86a789;
+    color: #4f6f52;
+    cursor: pointer;
+  }
 }

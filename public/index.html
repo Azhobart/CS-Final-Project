@@ -282,6 +282,29 @@
           </div>
         </div>
       </div>
+
+      <div class="page" v-if="page === 'Tic Tac Toe'">
+        <div class="sectionContainer">
+          <button @click="resetTictactoe(); tictactoeScore = 0;">Reset</button>
+          <p>Score: {{tictactoeScore}}</p>
+          <div class="row">
+            <div class="tictactoeCell" @click="tictactoeTurn('o',0,0)">{{tictactoeBoard[0][0]}}</div>
+            <div class="tictactoeCell" @click="tictactoeTurn('o',0,1)">{{tictactoeBoard[0][1]}}</div>
+            <div class="tictactoeCell" @click="tictactoeTurn('o',0,2)">{{tictactoeBoard[0][2]}}</div>
+          </div>
+          <div class="row">
+            <div class="tictactoeCell" @click="tictactoeTurn('o',1,0)">{{tictactoeBoard[1][0]}}</div>
+            <div class="tictactoeCell" @click="tictactoeTurn('o',1,1)">{{tictactoeBoard[1][1]}}</div>
+            <div class="tictactoeCell" @click="tictactoeTurn('o',1,2)">{{tictactoeBoard[1][2]}}</div>
+          </div>
+          <div class="row">
+            <div class="tictactoeCell" @click="tictactoeTurn('o',2,0)">{{tictactoeBoard[2][0]}}</div>
+            <div class="tictactoeCell" @click="tictactoeTurn('o',2,1)">{{tictactoeBoard[2][1]}}</div>
+            <div class="tictactoeCell" @click="tictactoeTurn('o',2,2)">{{tictactoeBoard[2][2]}}</div>
+          </div>
+        </div>
+      </div>
+
       
       <!--battleship game -->
       <div class="page" v-if="page === 'Battleship'">
