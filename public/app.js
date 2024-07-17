@@ -80,7 +80,7 @@ Vue.createApp({
           image:
             "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_icon_orange_4.svg/729px-Flag_icon_orange_4.svg.png",
         },
-        { name: 6, image: "" },
+        { name: "groB", image: "" },
         { name: "Test Test TEst teTredgrsegsr", image: "" },
         { name: 8, image: "" },
 
@@ -185,6 +185,12 @@ Vue.createApp({
           [false, false, false],
         ],
       ],
+
+
+      // dungeon crawler variables
+      diceSpace: false,
+      dice: [],
+
     };
   },
 
@@ -1312,6 +1318,11 @@ Vue.createApp({
         }
       }
     },
+
+
+    viewDice: function () {
+      this.diceSpace = !this.diceSpace;
+    }
   },
 
   computed: {

@@ -349,6 +349,7 @@
 
         <div id="reactionWrapper">
           <div id="reactionBox" @click="countdown()">
+
             <p v-if="ready">Ready</p>
             <p v-if="getSet">Get Set</p>
             <p v-if="draw">Draw!</p>
@@ -356,12 +357,41 @@
             <p v-else-if="tooSlow">Too Slow! +10 sec.</p>
             <p v-else-if="tooEarly">Too Early, Try Again.</p>
             
-            
-
           </div>
         </div>
         
       </div>
+
+      <!-- dungeon crawler dice game -->
+       <div v-if="page === 'groB'">
+        <div id="grobWrapper">
+          <h1>Floor</h1>
+
+          <div id="grobLives">
+            <div class="grobHeart"></div>
+            <div class="grobHeart"></div>
+            <div class="grobHeart"></div>
+
+          </div>
+
+          <div id="doors">
+            <div class="grobDoor"></div>
+            <div class="grobDoor"></div>
+            <div class="grobDoor"></div>
+          </div>
+
+          <div id="diceSpace">
+            <h2 @click="viewDice()">Dice</h2>
+            <div id="dice" v-if="diceSpace">
+
+
+            </div>
+          </div>
+
+
+        </div>
+
+       </div>
 
     </div>
     <script src="app.js"></script>
