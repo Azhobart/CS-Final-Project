@@ -342,6 +342,53 @@
         </div>
       </div>
 
+      <div class="page" v-if="page === 'Sandbox'">
+        <div class="sectionContainer column">
+          <div class="row">
+            <div class="column">
+              <div class="row">
+                <button v-if="sandboxTime != null" @click="toggleSandboxSim('stop')">Stop</button>
+                <button v-else @click="toggleSandboxSim('start')">Start</button>
+                <button @click="resetSandboxBoard()">Reset</button>
+              </div>
+              
+            </div>
+            
+          </div>
+          <br>
+          <div class="sandboxGridRow" v-for="(row, indx_x) in sandboxBoard.cells" oncontextmenu="return false;">
+            <div class="sandboxCell" v-for="(cell, indx_y) in row" :style="{backgroundColor: sandboxColors[cell]}" v-on:click.left="clickSandboxCell(0,indx_x, indx_y)" v-on:click.right="clickSandboxCell(1,indx_x, indx_y)" oncontextmenu="return false;">
+            </div>
+          </div>
+          <br>
+
+          <div class="sandboxGridRow">
+            <div class="sandboxCell" v-for="(color, indx) in sandboxColors" @click="setSandboxColor(indx+1)" :style="{backgroundColor: sandboxColors[indx]}"></div>
+            <p>S:</p>
+            <br>
+            <div class="sandboxCell" :style="{backgroundColor: sandboxColors[selectedSandboxColor]}"></div>
+          </div>
+          <br>
+
+          <div class="sandboxRuleGrid">
+            <div class="sandboxRule" v-for="(rule,rule_indx) in sandboxRules" oncontextmenu="return false;">
+              <button @click="removeSandboxRule(rule_indx)">Remove</button>
+              <div class="sandboxRuleRow" v-for="(row,indx_x) in rule.start">
+                <div class="sandboxCell" v-for="(cell,indx_y) in row" @click.left="setSandboxRuleCell(0,rule_indx,'start',indx_x,indx_y)" @click.right="setSandboxRuleCell(1,rule_indx,'start',indx_x,indx_y)" :style="{backgroundColor: sandboxColors[cell]}">
+                </div>
+              </div>
+              <br>
+              <div class="sandboxRuleRow" v-for="(row,indx_x) in rule.end">
+                <div class="sandboxCell" v-for="(cell,indx_y) in row" @click.left="setSandboxRuleCell(0,rule_indx,'end',indx_x,indx_y)" @click.right="setSandboxRuleCell(1,rule_indx,'end',indx_x,indx_y)" :style="{backgroundColor: sandboxColors[cell]}">
+                </div>
+              </div>
+            </div>
+            <button @click="addSandboxRule()">Add Rule</button>
+            <button @click="console.log(sandboxRules)">Print rules to console</button>
+          </div>
+        </div>
+      </div>
+
       <!-- colors game -->
       <div v-if="page === 'Colors'">
         

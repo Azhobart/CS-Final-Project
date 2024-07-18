@@ -81,7 +81,11 @@ Vue.createApp({
             "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_icon_orange_4.svg/729px-Flag_icon_orange_4.svg.png",
         },
         { name: "groB", image: "" },
-        { name: "Test Test TEst teTredgrsegsr", image: "" },
+        {
+          name: "Sandbox",
+          image:
+            "https://th.bing.com/th/id/R.dc26bf85d855a70b5bfcdcf586e78bf6?rik=tU2N%2fq3klWAb0w&pid=ImgRaw&r=0",
+        },
         { name: 8, image: "" },
 
         { name: 9, image: "" },
@@ -148,7 +152,7 @@ Vue.createApp({
       minesweeperMineChance: 8,
       minesweeperGameState: "playing",
 
-      //Minesweeper game variables
+      //Battleship game variables
       battleshipGameState: "placing",
       battleshipBoards: {
         width: 8,
@@ -234,6 +238,136 @@ Vue.createApp({
         [" ", " ", " "],
       ],
       tictactoeScore: 0,
+
+      //sandbox life variables
+      sandboxBoard: {
+        width: 32,
+        height: 32,
+        cells: [],
+      },
+      sandboxTime: null,
+      selectedSandboxColor: 1,
+      sandboxColors: [
+        "BLACK",
+        "WHITE",
+        "RED",
+        "BLUE",
+        "GREEN",
+        "ORANGE",
+        "PINK",
+        "PURPLE",
+      ],
+
+      sandboxRules: [
+        {
+          start: [
+            [-1, -1, -1],
+            [-1, 1, -1],
+            [-1, 0, -1],
+          ],
+          end: [
+            [-1, -1, -1],
+            [-1, 0, -1],
+            [-1, 1, -1],
+          ],
+        },
+        {
+          start: [
+            [-1, -1, -1],
+            [-1, 1, -1],
+            [0, 1, -1],
+          ],
+          end: [
+            [-1, -1, -1],
+            [-1, 0, -1],
+            [1, -1, -1],
+          ],
+        },
+        {
+          start: [
+            [-1, -1, -1],
+            [-1, 1, -1],
+            [-1, 1, 0],
+          ],
+          end: [
+            [-1, -1, -1],
+            [-1, 0, -1],
+            [-1, -1, 1],
+          ],
+        },
+        {
+          start: [
+            [0, 1, 0],
+            [-1, 4, -1],
+            [-1, -1, -1],
+          ],
+          end: [
+            [-1, 4, -1],
+            [-1, 4, -1],
+            [-1, -1, -1],
+          ],
+        },
+        {
+          start: [
+            [1, -1, -1],
+            [0, 4, -1],
+            [-1, -1, -1],
+          ],
+          end: [
+            [4, -1, -1],
+            [-1, -1, -1],
+            [-1, -1, -1],
+          ],
+        },
+        {
+          start: [
+            [-1, -1, 1],
+            [-1, 4, 0],
+            [-1, -1, -1],
+          ],
+          end: [
+            [-1, -1, 4],
+            [-1, -1, -1],
+            [-1, -1, -1],
+          ],
+        },
+        {
+          start: [
+            [-1, -1, -1],
+            [-1, 4, -1],
+            [0, 0, 0],
+          ],
+          end: [
+            [-1, -1, -1],
+            [-1, 0, -1],
+            [-1, 4, -1],
+          ],
+        },
+        {
+          start: [
+            [0, 0, 0],
+            [0, 4, 0],
+            [4, 0, 0],
+          ],
+          end: [
+            [-1, -1, -1],
+            [-1, 7, -1],
+            [4, -1, -1],
+          ],
+        },
+        {
+          start: [
+            [-1, -1, -1],
+            [-1, 7, -1],
+            [0, 0, 0],
+          ],
+          end: [
+            [-1, -1, -1],
+            [-1, 0, -1],
+            [-1, 7, -1],
+          ],
+        },
+      ],
     };
   },
 
@@ -1363,6 +1497,10 @@ Vue.createApp({
     },
 
     
+    viewDice: function () {
+      this.diceSpace = !this.diceSpace;
+    },
+
     //tic tac toe methods
     resetTictactoe: function () {
       for (let i = 0; i < 3; i += 1) {
@@ -1616,7 +1754,162 @@ Vue.createApp({
     setCurrentDice: function (index) {
       this.currentDice = this.dice[index];
       console.log(this.currentDice);
+
     },
+    //sandbox methods
+
+    resetSandboxBoard: function () {
+      this.sandboxBoard.cells = [];
+      for (let i = 0; i < this.sandboxBoard.height; i += 1) {
+        this.sandboxBoard.cells.push([]);
+        for (let j = 0; j < this.sandboxBoard.width; j += 1) {
+          if (i < 4) {
+            this.sandboxBoard.cells[this.sandboxBoard.cells.length - 1].push(1);
+          } else {
+            this.sandboxBoard.cells[this.sandboxBoard.cells.length - 1].push(0);
+          }
+        }
+      }
+    },
+    simulateSandbox: function () {
+      for (let b = 0; b < 64; b += 1) {
+        let x = Math.round(Math.random() * (this.sandboxBoard.width - 1));
+        let y = Math.round(Math.random() * (this.sandboxBoard.height - 1));
+        let validRule = null;
+        let targetX;
+        let targetY;
+        for (let r = 0; r < this.sandboxRules.length; r += 1) {
+          let rule = this.sandboxRules[r];
+          if (rule.start[1][1] == this.sandboxBoard.cells[x][y]) {
+            validRule = rule;
+            targetX = x;
+            targetY = y;
+          }
+
+          if (validRule != null) {
+            let go = true;
+            for (let i = 0; i < validRule.start.length; i += 1) {
+              for (let j = 0; j < validRule.start[i].length; j += 1) {
+                if (validRule.start[i][j] != -1) {
+                  let calcX = targetX + (i - 1);
+                  let calcY = targetY + (j - 1);
+                  if (
+                    calcX > -1 &&
+                    calcY > -1 &&
+                    calcX <= this.sandboxBoard.width - 1 &&
+                    calcY <= this.sandboxBoard.height - 1
+                  ) {
+                    if (
+                      validRule.start[i][j] !=
+                      this.sandboxBoard.cells[calcX][calcY]
+                    ) {
+                      go = false;
+                    }
+                  } else {
+                    if (validRule.start[i][j] != -1) {
+                      go = false;
+                    }
+                  }
+                }
+              }
+            }
+            if (go) {
+              for (let i = 0; i < validRule.end.length; i += 1) {
+                for (let j = 0; j < validRule.end[i].length; j += 1) {
+                  if (validRule.end[i][j] != -1) {
+                    let calcX = targetX + (i - 1);
+                    let calcY = targetY + (j - 1);
+                    if (
+                      calcX > -1 &&
+                      calcY > -1 &&
+                      calcX <= this.sandboxBoard.width - 1 &&
+                      calcY <= this.sandboxBoard.height - 1
+                    ) {
+                      this.sandboxBoard.cells[calcX][calcY] =
+                        validRule.end[i][j];
+                    }
+                  }
+                }
+              }
+              break;
+            }
+          }
+        }
+      }
+    },
+    toggleSandboxSim: function (type) {
+      if (type === "start") {
+        this.sandboxTime = setInterval(() => {
+          this.simulateSandbox();
+        }, 0);
+      } else {
+        clearInterval(this.sandboxTime);
+        this.sandboxTime = null;
+      }
+    },
+    addSandboxRule: function () {
+      let obj = {
+        start: [
+          [-1, -1, -1],
+          [-1, -1, -1],
+          [-1, -1, -1],
+        ],
+        end: [
+          [-1, -1, -1],
+          [-1, -1, -1],
+          [-1, -1, -1],
+        ],
+      };
+      this.sandboxRules.push(obj);
+    },
+    removeSandboxRule: function (indx) {
+      this.sandboxRules.splice(indx, 1);
+    },
+    setSandboxRuleCell: function (btn, indx, time, x, y) {
+      if (btn == 0) {
+        if (time == "start") {
+          this.sandboxRules[indx].start[x][y] = this.selectedSandboxColor;
+        }
+        if (time == "end") {
+          this.sandboxRules[indx].end[x][y] = this.selectedSandboxColor;
+        }
+      }
+      if (btn == 1) {
+        if (time == "start") {
+          this.sandboxRules[indx].start[x][y] = -1;
+        }
+        if (time == "end") {
+          this.sandboxRules[indx].end[x][y] = -1;
+        }
+      }
+    },
+    setSandboxColor: function (indx) {
+      this.selectedSandboxColor = indx - 1;
+    },
+    clickSandboxCell(btn, x, y) {
+      for (let i = 0; i < 3; i += 1) {
+        for (let j = 0; j < 3; j += 1) {
+          let calcX = x + (i - 1);
+          let calcY = y + (j - 1);
+          if (
+            calcX > -1 &&
+            calcY > -1 &&
+            calcX <= this.sandboxBoard.width - 1 &&
+            calcY <= this.sandboxBoard.height - 1
+          ) {
+            if (btn == 1) {
+              this.sandboxBoard.cells[calcX][calcY] = 0;
+            } else {
+              if (this.sandboxBoard.cells[calcX][calcY] <= 0) {
+                this.sandboxBoard.cells[calcX][calcY] =
+                  this.selectedSandboxColor;
+              }
+            }
+          }
+        }
+      }
+    },
+    
   },
 
 
@@ -1644,5 +1937,8 @@ Vue.createApp({
 
     //minesweeper setup
     this.beginMinesweeperGame();
+
+    //sandbox setup
+    this.resetSandboxBoard();
   },
 }).mount("#app");
