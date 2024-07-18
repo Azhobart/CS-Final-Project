@@ -470,9 +470,7 @@ body {
   border-radius: 10px;
   margin: 10px 0px;
   padding: 10px;
-
 }
-
 
 #grobLives {
   width: 1fr;
@@ -492,7 +490,6 @@ body {
   border-style: solid;
   border-color: #4f6f52;
 }
-
 
 #doors {
   width: 2fr;
@@ -528,7 +525,6 @@ body {
   align-items: center;
 }
 
-
 #diceSpace h2 {
   color: #d2e3c8;
   background-color: #4f6f52;
@@ -551,8 +547,8 @@ body {
   border-style: solid;
   height: 350px;
   width: 80%;
-
 }
+
 /*Tic Tac Toe styling*/
 .tictactoeCell {
   margin: 20px 20px 20px 20px;
@@ -573,4 +569,68 @@ body {
     color: #4f6f52;
     cursor: pointer;
   }
+}
+
+/* sandbox styling */
+.sandboxGridRow {
+  display: grid;
+
+  grid-template-columns: 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px;
+
+  & .sandboxCell {
+    user-select: none;
+    transition: 150ms;
+
+    margin: 0px;
+    border: 1px solid BLACK;
+    border-radius: 2px;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.sandboxRuleRow {
+  display: grid;
+
+  grid-template-columns: 20px 20px 20px;
+
+  & .sandboxCell {
+    user-select: none;
+    transition: 150ms;
+
+    margin: 0px;
+    align-items: center;
+    border: 1px solid BLACK;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.sandboxRule {
+  background-color: #4f6f52;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.sandboxRuleGrid {
+  display: grid;
+
+  grid-template-columns: 150px 150px 150px 150px;
 }
