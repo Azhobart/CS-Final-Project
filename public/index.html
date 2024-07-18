@@ -360,7 +360,7 @@
             <div class="sandboxCell" v-for="(cell, indx_y) in row" :style="{backgroundColor: sandboxColors[cell]}" v-on:click.left="clickSandboxCell(0,indx_x, indx_y)" v-on:click.right="clickSandboxCell(1,indx_x, indx_y)" oncontextmenu="return false;">
             </div>
           </div>
-
+          <br>
 
           <div class="sandboxGridRow">
             <div class="sandboxCell" v-for="(color, indx) in sandboxColors" @click="setSandboxColor(indx+1)" :style="{backgroundColor: sandboxColors[indx]}"></div>
@@ -368,6 +368,7 @@
             <br>
             <div class="sandboxCell" :style="{backgroundColor: sandboxColors[selectedSandboxColor]}"></div>
           </div>
+          <br>
 
           <div class="sandboxRuleGrid">
             <div class="sandboxRule" v-for="(rule,rule_indx) in sandboxRules" oncontextmenu="return false;">
