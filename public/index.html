@@ -386,26 +386,27 @@
       </div>
 
       <!-- dungeon crawler dice game -->
-       <div v-if="page === 'groB'">
+      <div v-if="page === 'groB'">
         <div id="grobWrapper">
-          <h1>Floor</h1>
+          <h1>Floor {{ floorLevel }}</h1>
+          <h2>Current Dice: {{ currentDice.name }}</h2>
 
-          <div id="grobLives">
-            <div class="grobHeart"></div>
-            <div class="grobHeart"></div>
-            <div class="grobHeart"></div>
-
-          </div>
 
           <div id="doors">
-            <div class="grobDoor"></div>
-            <div class="grobDoor"></div>
-            <div class="grobDoor"></div>
+            <div class="grobDoor" @click="getDoorItem()"></div>
+            <div class="grobDoor" @click="getDoorItem()"></div>
+            <div class="grobDoor" @click="getDoorItem()"></div>
           </div>
 
           <div id="diceSpace">
             <h2 @click="viewDice()">Dice</h2>
-            <div id="dice" v-if="diceSpace">
+            <div id="diceBag" v-if="diceBox">
+              
+              <div class="grobDice" 
+              v-for="(die, index) in dice" 
+              @click="setCurrentDice(index)">
+                {{ die.name }}
+              </div>
 
 
             </div>
@@ -413,8 +414,32 @@
 
 
         </div>
+      </div>
 
-       </div>
+      <div id="battlePage" v-if="page === 'battle'">
+        <div id="battleField">
+
+          <div class="spriteField">
+            <h1>User:</h1>
+            <div class="battleDice">
+              {{ currentDice.rollValue }}
+            </div>
+          </div>
+
+          <div class="spriteField">
+            <h1>{{ randomEnemy }}:</h1>
+            <div class="battleDice">
+              {{ enemyDice.rollValue }}
+            </div>
+          </div>
+
+
+          
+        </div>
+        <div id="battleButton" @click="battleEnemy()">Battle!</div>
+       
+
+      </div>
 
     </div>
     <script src="app.js"></script>

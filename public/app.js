@@ -185,9 +185,47 @@ Vue.createApp({
       ],
 
 
+
       // dungeon crawler variables
-      diceSpace: false,
-      dice: [],
+      floorLevel: 1,
+      diceBox: false,
+
+      // first value within dice is the user's starting dice.
+      dice: [
+        {
+          name: "Dice",
+          sides: 6,
+          values: [1, 2, 3, 4, 5, 6],
+          rollValue: 0,
+        },
+      ],
+      doorItems: {
+        // dice 6: 6, 2, 3, 2, 6
+        // dice10: 0, 10
+        // dice2: 2, 3
+        // dice7: 0, 0, 0, 0, 7, 7, 7
+        dice: ["dice6", "dice2", "dice7", "dice2", "dice6", "dice2", "dice7", "dice10", ],
+        // enemy dice:
+        // rat - 1, 2, 3
+        // slime - 2, 2, 4, 4
+        // goblin - 1, 2, 3, 5, 5
+        // spider - 2, 2, 2, 2, 2, 8, 8, 8
+        // dragon - 0, 5, 5, 5, 10, 10
+        enemy: ["slime", "rat", "goblin", "rat",  "slime", "goblin", "rat", "spider", "goblin", "spider", "rat", "dragon"],
+      },
+      randomDice: null,
+      randomEnemy: null,
+      // set the current dice to the default starting dice when the game is opened.
+      currentDice: {
+        name: "Dice",
+        sides: 6,
+        values: [1, 2, 3, 4, 5, 6],
+        rollValue: 0,
+      },
+      isActive: false,
+      enemyDice: null,
+
+
 
       //Tic Tac Toe Game variable
       tictactoeBoard: [
@@ -1324,11 +1362,6 @@ Vue.createApp({
       }
     },
 
-
-    viewDice: function () {
-      this.diceSpace = !this.diceSpace;
-    },
-
     
     //tic tac toe methods
     resetTictactoe: function () {
@@ -1413,7 +1446,182 @@ Vue.createApp({
         }
       }
     },
+
+
+
+    // dice game methods
+    viewDice: function () {
+      this.diceBox = !this.diceBox;
+    },
+
+
+    getDoorItem: function () {
+      let item = ["dice", "enemy"];
+      let randomItem = item[Math.round(Math.random())];
+      let diceIndex = Math.floor(Math.random() * this.doorItems.dice.length);
+      let enemyIndex = Math.floor(Math.random() * this.doorItems.enemy.length);
+
+
+      if (randomItem === "dice") {
+        this.randomDice = this.doorItems.dice[diceIndex]
+        console.log(this.randomDice);
+        this.createDice();
+      } else {
+        this.randomEnemy = this.doorItems.enemy[enemyIndex]
+        console.log(this.randomEnemy);
+        this.setUpBattle();
+      };
+
+    },
+
+    createDice: function () {
+      if (this.randomDice === "dice2") {
+        let dice2 = {
+          name: "2 Dice",
+          sides: 2,
+          values: [2, 3],
+          rollValue: 0,
+        };
+        this.dice.push(dice2);
+        this.floorLevel++;
+      };
+
+      if (this.randomDice === "dice6") {
+        let dice6 = {
+          name: "6 Dice",
+          sides: 6,
+          values: [6, 2, 3, 2, 6],
+          rollValue: 0,
+        };
+        this.dice.push(dice6);
+        this.floorLevel++;
+      };
+
+      if (this.randomDice === "dice7") {
+        let dice7 = {
+          name: "7 Dice",
+          sides: 7,
+          values: [0, 7, 0, 7, 0, 7, 0],
+          rollValue: 0,
+        };
+        this.dice.push(dice7);
+        this.floorLevel++;
+      };
+
+      if (this.randomDice === "dice10") {
+        let dice10 = {
+          name: "10 Dice",
+          sides: 2,
+          values: [0, 10],
+          rollValue: 0,
+        }
+        this.dice.push(dice10);
+        this.floorLevel++;
+      };
+    },
+
+
+    setUpBattle: function () {
+      this.page = "battle";
+      if (this.randomEnemy === "rat") {
+        this.enemyDice = {
+          name: "rat Dice",
+          sides: 3,
+          values: [1, 2, 3],
+          rollValue: 0,
+        };
+        console.log(this.enemyDice.name)
+      };
+
+      if (this.randomEnemy === "slime") {
+        this.enemyDice = {
+          name: "slime Dice",
+          sides: 4,
+          values: [2, 2, 4, 4],
+          rollValue: 0,
+        }
+        console.log(this.enemyDice.name)
+      };
+
+      if (this.randomEnemy === "goblin") {
+        this.enemyDice = {
+          name: "goblin Dice",
+          sides: 5,
+          values: [1, 2, 3, 5, 5],
+          rollValue: 0,
+        }
+        console.log(this.enemyDice.name)
+      };
+
+      if (this.randomEnemy === "spider") {
+        this.enemyDice = {
+          name: "spider Dice",
+          sides: 8,
+          values: [2, 2, 2, 2, 2, 8, 8, 8,],
+          rollValue: 0,
+        }
+        console.log(this.enemyDice.name)
+      };
+
+      if (this.randomEnemy === "dragon") {
+        this.enemyDice = {
+          name: "dragon Dice",
+          sides: 6,
+          values: [0, 5, 5, 5, 10, 10],
+          rollValue: 0,
+        }
+      };
+
+
+    },
+
+
+    battleEnemy: function () {
+      let userRoll = Math.floor(Math.random() * this.currentDice.values.length);
+      let enemyRoll = Math.floor(Math.random() * this.enemyDice.values.length);
+
+      let rollCount = 0;
+
+      let rollInterval = setInterval(() => {
+          this.currentDice.rollValue = this.currentDice.values[userRoll]
+          this.enemyDice.rollValue = this.enemyDice.values[enemyRoll]
+          if (rollCount > 10) {
+              clearInterval(rollInterval);
+          }
+          rollCount++;
+      }, 100);
+
+      // determine who wins and where to go from there.
+      if (this.currentDice.rollValue > this.enemyDice.rollValue) {
+        this.dice.push(this.enemyDice);
+        this.currentDice.rollValue = 0;
+        this.enemyDice.rollValue = 0;
+        this.page = "groB";
+        
+      } 
+      if (this.enemyDice.rollValue > this.currentDice.rollValue) {
+        this.removeDice();
+      };
+    },
+
+    removeDice: function () {
+      this.dice.splice(this.dice.indexOf(this.currentDice), 1);
+      this.currentDice.rollValue = 0;
+      this.enemyDice.rollValue = 0;
+      this.page = "groB";
+    },
+
+
+
+    setCurrentDice: function (index) {
+      this.currentDice = this.dice[index];
+      console.log(this.currentDice);
+    },
   },
+
+
+
+
 
   computed: {
     filteredScores: function () {
@@ -1433,7 +1641,6 @@ Vue.createApp({
   created: function () {
     this.getSession();
     this.getScores();
-    console.log(this.randomTime);
 
     //minesweeper setup
     this.beginMinesweeperGame();
