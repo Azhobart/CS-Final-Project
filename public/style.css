@@ -701,3 +701,30 @@ body {
 
   grid-template-columns: 150px 150px 150px 150px;
 }
+
+/* Slide game styling */
+.slideGridRow {
+  display: grid;
+
+  grid-template-columns: 40px 40px 40px 40px 40px 40px 40px;
+
+  & .slideCell {
+    user-select: none;
+    transition: 200ms;
+
+    margin: 0px;
+    border: 2px solid black;
+    color: black;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

@@ -86,7 +86,11 @@ Vue.createApp({
           image:
             "https://th.bing.com/th/id/R.dc26bf85d855a70b5bfcdcf586e78bf6?rik=tU2N%2fq3klWAb0w&pid=ImgRaw&r=0",
         },
-        { name: "", image: "" },
+        {
+          name: "Slide",
+          image:
+            "https://th.bing.com/th/id/R.4308644e731c4f56b19823c863b31a76?rik=7wUsOZfliw0Itg&riu=http%3a%2f%2fstatic1.mbtfiles.co.uk%2fmedia%2fdocs%2fnewdocs%2fgcse%2fmaths%2falgebra%2fnumber_stairs_grids_and_sequences%2f29098%2fhtml%2fimages%2fimage00.png&ehk=EtnoE9LetG1PN%2bxCv2yixJmtzoPQDj3c1233DrF2QG4%3d&risl=&pid=ImgRaw&r=0",
+        },
 
         { name: "", image: "" },
         { name: "10", image: "" },
@@ -388,6 +392,14 @@ Vue.createApp({
           ],
         },
       ],
+
+      //Slide game variables
+      slideTurns: 0,
+      lastSlideAction: "solve",
+      slideBoard: {
+        length: 5,
+        cells: [],
+      },
     };
   },
 
@@ -1926,6 +1938,129 @@ Vue.createApp({
         }
       }
     },
+
+    //Slide game methods
+    resetSlideGame: function () {
+      this.slideBoard.cells = [];
+      for (let i = 0; i < this.slideBoard.length * 7; i += 1) {
+        if (i == this.slideBoard.length * 7 - 1) {
+          this.slideBoard.cells.push({ value: -1, color: "#0000" });
+          break;
+        }
+        let clr = "#4f6f52";
+        if (i % 2 == 0) {
+          clr = "#86a789";
+        }
+        this.slideBoard.cells.push({ value: i, color: clr });
+      }
+      this.slideTurns = 0;
+      this.lastSlideAction == "solve";
+    },
+    moveSlideCell: function (indx) {
+      let currentCell = this.slideBoard.cells[indx];
+      let up = -1;
+      let down = -1;
+      let left = -1;
+      let right = -1;
+      if (currentCell.value != -1) {
+        if (indx - 7 > -1) {
+          up = indx - 7;
+        }
+        if (indx + 7 < this.slideBoard.length * 7) {
+          down = indx + 7;
+        }
+        if (indx % 7 > 0) {
+          left = indx - 1;
+        }
+        if (indx % 7 < 6) {
+          right = indx + 1;
+        }
+      }
+      if (up != -1) {
+        if (this.slideBoard.cells[up].value == -1) {
+          let tmp = this.slideBoard.cells[up];
+          this.slideBoard.cells[up] = currentCell;
+          this.slideBoard.cells[indx] = tmp;
+          this.slideTurns += 1;
+        }
+      }
+      if (down != -1) {
+        if (this.slideBoard.cells[down].value == -1) {
+          let tmp = this.slideBoard.cells[down];
+          this.slideBoard.cells[down] = currentCell;
+          this.slideBoard.cells[indx] = tmp;
+          this.slideTurns += 1;
+        }
+      }
+      if (left != -1) {
+        if (this.slideBoard.cells[left].value == -1) {
+          let tmp = this.slideBoard.cells[left];
+          this.slideBoard.cells[left] = currentCell;
+          this.slideBoard.cells[indx] = tmp;
+          this.slideTurns += 1;
+        }
+      }
+      if (right != -1) {
+        if (this.slideBoard.cells[right].value == -1) {
+          let tmp = this.slideBoard.cells[right];
+          this.slideBoard.cells[right] = currentCell;
+          this.slideBoard.cells[indx] = tmp;
+          this.slideTurns += 1;
+        }
+      }
+
+      //check for win
+      let isSolved = true;
+      if (this.lastSlideAction == "scramble" && this.slideTurns > 2) {
+        for (let i = 0; i < this.slideBoard.length * 7; i += 1) {
+          let iCell = this.slideBoard.cells[i];
+          if (iCell.value != i && iCell.value != -1) {
+            isSolved = false;
+          }
+        }
+      } else {
+        isSolved = false;
+      }
+
+      if (isSolved) {
+        let newScore = {
+          game: this.page,
+          value: -this.slideTurns * 50 + 50000,
+          user: this.currentUser._id,
+        };
+        this.setScore(newScore);
+
+        this.resetSlideGame();
+      }
+    },
+    scrambleSlideGame: function () {
+      let emptyIndx;
+      for (let i = 0; i < this.slideBoard.length * 7; i += 1) {
+        if (i == this.slideBoard.length * 7 - 1) {
+          emptyIndx = i;
+        }
+      }
+      for (let i = 0; i < 50000; i += 1) {
+        let randDir = Math.round(Math.random() * 3);
+        let newIndx = this.slideBoard.length * 7 - 1;
+        if (emptyIndx - 7 > -1 && randDir == 0) {
+          newIndx = emptyIndx - 7;
+        }
+        if (emptyIndx + 7 < this.slideBoard.length * 7 && randDir == 1) {
+          newIndx = emptyIndx + 7;
+        }
+        if (emptyIndx % 7 > 0 && randDir == 2) {
+          newIndx = emptyIndx - 1;
+        }
+        if (emptyIndx % 7 < 6 && randDir == 3) {
+          newIndx = emptyIndx + 1;
+        }
+        emptyIndx = newIndx;
+        this.moveSlideCell(emptyIndx);
+        this.slideTurns = 0;
+      }
+      this.lastSlideAction = "scramble";
+    },
   },
 
   computed: {
@@ -1963,5 +2098,8 @@ Vue.createApp({
 
     //sandbox setup
     this.resetSandboxBoard();
+
+    //slide game setup
+    this.resetSlideGame();
   },
 }).mount("#app");

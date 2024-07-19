@@ -305,6 +305,21 @@
         </div>
       </div>
 
+      <div class="page" v-if="page === 'Slide'">
+        <div class="sectionContainer">
+          <button @click="scrambleSlideGame()">Scramble</button>
+          <button @click="resetSlideGame()">Solve</button>
+          <p>Score: {{-slideTurns * 50 + 50000}}</p>
+          <p>Moves: {{slideTurns}}</p>
+          <div class="column">
+            <div class="slideGridRow">
+              <div class="slideCell" :style="{backgroundColor: cell.color}" v-for="(cell,indx) in slideBoard.cells" @click="moveSlideCell(indx)">
+                <p v-if="cell.value != -1">{{cell.value}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
       <!--battleship game -->
       <div class="page" v-if="page === 'Battleship'">
