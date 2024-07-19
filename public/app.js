@@ -1245,7 +1245,7 @@ Vue.createApp({
           this.battleshipBoards.opponent[i][j].frontColor = "lightblue";
 
           if (this.battleshipBoards.opponent[i][j].isShip) {
-            this.battleshipBoards.opponent[i][j].frontColor = "grey";
+            this.battleshipBoards.opponent[i][j].backColor = "grey";
           }
           if (this.battleshipBoards.opponent[i][j].isHidden) {
             this.battleshipBoards.opponent[i][j].backColor = "blue";
@@ -1261,6 +1261,9 @@ Vue.createApp({
           if (this.battleshipBoards.opponentHoverGrid[i][j]) {
             this.battleshipBoards.opponent[i][j].backColor =
               "RGBA(100,100,100,0.3)";
+            if (!this.battleshipValidHover) {
+              this.battleshipBoards.opponent[i][j].backColor = "RED";
+            }
           }
 
           //player
@@ -1268,7 +1271,7 @@ Vue.createApp({
           this.battleshipBoards.player[i][j].frontColor = "lightblue";
 
           if (this.battleshipBoards.player[i][j].isShip) {
-            this.battleshipBoards.player[i][j].frontColor = "grey";
+            this.battleshipBoards.player[i][j].backColor = "grey";
           }
           if (this.battleshipBoards.player[i][j].isHidden) {
             this.battleshipBoards.player[i][j].backColor = "blue";
@@ -1284,6 +1287,9 @@ Vue.createApp({
           if (this.battleshipBoards.playerHoverGrid[i][j]) {
             this.battleshipBoards.player[i][j].backColor =
               "RGBA(100,100,100,0.3)";
+            if (!this.battleshipValidHover) {
+              this.battleshipBoards.player[i][j].backColor = "RED";
+            }
           }
         }
       }
@@ -1441,7 +1447,6 @@ Vue.createApp({
                 }
 
                 if (found_x >= 0 && found_y >= 0) {
-                  console.log("found hit");
                   if (found_x > 0) {
                     if (
                       !this.battleshipBoards.player[found_x - 1][found_y]
@@ -1495,7 +1500,6 @@ Vue.createApp({
                 !this.battleshipBoards.player[v][k].isMiss &&
                 !this.battleshipBoards.player[v][k].isHit
               ) {
-                console.log(`enemy fired at ${v},${k}`);
                 this.battleshipFire("player", v, k);
                 this.hoverBattleshipCell("player", v, k);
               }
