@@ -652,7 +652,14 @@ Vue.createApp({
             this.randomColor = "";
             this.colorSequence = [];
             this.activeColorsScore = 0;
-            this.finishGame(this.finalColorsScore);
+
+            let newColorsScore = {
+              game: this.page,
+              value: this.finalColorsScore,
+              user: this.currentUser._id,
+            };
+
+            this.finishGame(newColorsScore);
           }
         }
       }
