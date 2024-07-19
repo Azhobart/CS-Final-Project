@@ -109,11 +109,11 @@
         <div class="sectionContainer">
           <div class="column">
             <div class="inputContainer row searchInput">
-              <input placeholder="Search..." />
-              <button>Search</button>
+              <p>Search</p>
+              <input placeholder="Search..." v-model="gameSearchInput"/>
             </div>
             <div class="gameListDiv">
-              <div class="row" v-for="(game, index) in games">
+              <div class="row" v-for="(game, index) in filteredGames">
                 <div class="gameThumbnail column" @click="setPage(game.name)">
                   <div
                     v-bind:style="{backgroundImage: 'url(' + game.image + ')'}"

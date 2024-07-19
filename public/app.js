@@ -86,9 +86,9 @@ Vue.createApp({
           image:
             "https://th.bing.com/th/id/R.dc26bf85d855a70b5bfcdcf586e78bf6?rik=tU2N%2fq3klWAb0w&pid=ImgRaw&r=0",
         },
-        { name: 8, image: "" },
+        { name: "", image: "" },
 
-        { name: 9, image: "" },
+        { name: "", image: "" },
         { name: "10", image: "" },
       ],
 
@@ -98,6 +98,8 @@ Vue.createApp({
       scoreRegionSearchInput: "",
       scoreGameSearchInput: "Tic Tac Toe",
       scoreUserSearchInput: "",
+
+      gameSearchInput: "",
 
       // color game variables
       redSound: new Audio("colorSounds/originalBeep.mp3"),
@@ -188,8 +190,6 @@ Vue.createApp({
         ],
       ],
 
-
-
       // dungeon crawler variables
       floorLevel: 1,
       diceBox: false,
@@ -208,14 +208,36 @@ Vue.createApp({
         // dice10: 0, 10
         // dice2: 2, 3
         // dice7: 0, 0, 0, 0, 7, 7, 7
-        dice: ["dice6", "dice2", "dice7", "dice2", "dice6", "dice2", "dice7", "dice10", ],
+        dice: [
+          "dice6",
+          "dice2",
+          "dice7",
+          "dice2",
+          "dice6",
+          "dice2",
+          "dice7",
+          "dice10",
+        ],
         // enemy dice:
         // rat - 1, 2, 3
         // slime - 2, 2, 4, 4
         // goblin - 1, 2, 3, 5, 5
         // spider - 2, 2, 2, 2, 2, 8, 8, 8
         // dragon - 0, 5, 5, 5, 10, 10
-        enemy: ["slime", "rat", "goblin", "rat",  "slime", "goblin", "rat", "spider", "goblin", "spider", "rat", "dragon"],
+        enemy: [
+          "slime",
+          "rat",
+          "goblin",
+          "rat",
+          "slime",
+          "goblin",
+          "rat",
+          "spider",
+          "goblin",
+          "spider",
+          "rat",
+          "dragon",
+        ],
       },
       randomDice: null,
       randomEnemy: null,
@@ -228,8 +250,6 @@ Vue.createApp({
       },
       isActive: false,
       enemyDice: null,
-
-
 
       //Tic Tac Toe Game variable
       tictactoeBoard: [
@@ -1496,7 +1516,6 @@ Vue.createApp({
       }
     },
 
-    
     viewDice: function () {
       this.diceSpace = !this.diceSpace;
     },
@@ -1585,13 +1604,10 @@ Vue.createApp({
       }
     },
 
-
-
     // dice game methods
     viewDice: function () {
       this.diceBox = !this.diceBox;
     },
-
 
     getDoorItem: function () {
       let item = ["dice", "enemy"];
@@ -1599,17 +1615,15 @@ Vue.createApp({
       let diceIndex = Math.floor(Math.random() * this.doorItems.dice.length);
       let enemyIndex = Math.floor(Math.random() * this.doorItems.enemy.length);
 
-
       if (randomItem === "dice") {
-        this.randomDice = this.doorItems.dice[diceIndex]
+        this.randomDice = this.doorItems.dice[diceIndex];
         console.log(this.randomDice);
         this.createDice();
       } else {
-        this.randomEnemy = this.doorItems.enemy[enemyIndex]
+        this.randomEnemy = this.doorItems.enemy[enemyIndex];
         console.log(this.randomEnemy);
         this.setUpBattle();
-      };
-
+      }
     },
 
     createDice: function () {
@@ -1622,7 +1636,7 @@ Vue.createApp({
         };
         this.dice.push(dice2);
         this.floorLevel++;
-      };
+      }
 
       if (this.randomDice === "dice6") {
         let dice6 = {
@@ -1633,7 +1647,7 @@ Vue.createApp({
         };
         this.dice.push(dice6);
         this.floorLevel++;
-      };
+      }
 
       if (this.randomDice === "dice7") {
         let dice7 = {
@@ -1644,7 +1658,7 @@ Vue.createApp({
         };
         this.dice.push(dice7);
         this.floorLevel++;
-      };
+      }
 
       if (this.randomDice === "dice10") {
         let dice10 = {
@@ -1652,12 +1666,11 @@ Vue.createApp({
           sides: 2,
           values: [0, 10],
           rollValue: 0,
-        }
+        };
         this.dice.push(dice10);
         this.floorLevel++;
-      };
+      }
     },
-
 
     setUpBattle: function () {
       this.page = "battle";
@@ -1668,8 +1681,8 @@ Vue.createApp({
           values: [1, 2, 3],
           rollValue: 0,
         };
-        console.log(this.enemyDice.name)
-      };
+        console.log(this.enemyDice.name);
+      }
 
       if (this.randomEnemy === "slime") {
         this.enemyDice = {
@@ -1677,9 +1690,9 @@ Vue.createApp({
           sides: 4,
           values: [2, 2, 4, 4],
           rollValue: 0,
-        }
-        console.log(this.enemyDice.name)
-      };
+        };
+        console.log(this.enemyDice.name);
+      }
 
       if (this.randomEnemy === "goblin") {
         this.enemyDice = {
@@ -1687,19 +1700,19 @@ Vue.createApp({
           sides: 5,
           values: [1, 2, 3, 5, 5],
           rollValue: 0,
-        }
-        console.log(this.enemyDice.name)
-      };
+        };
+        console.log(this.enemyDice.name);
+      }
 
       if (this.randomEnemy === "spider") {
         this.enemyDice = {
           name: "spider Dice",
           sides: 8,
-          values: [2, 2, 2, 2, 2, 8, 8, 8,],
+          values: [2, 2, 2, 2, 2, 8, 8, 8],
           rollValue: 0,
-        }
-        console.log(this.enemyDice.name)
-      };
+        };
+        console.log(this.enemyDice.name);
+      }
 
       if (this.randomEnemy === "dragon") {
         this.enemyDice = {
@@ -1707,12 +1720,9 @@ Vue.createApp({
           sides: 6,
           values: [0, 5, 5, 5, 10, 10],
           rollValue: 0,
-        }
-      };
-
-
+        };
+      }
     },
-
 
     battleEnemy: function () {
       let userRoll = Math.floor(Math.random() * this.currentDice.values.length);
@@ -1721,12 +1731,12 @@ Vue.createApp({
       let rollCount = 0;
 
       let rollInterval = setInterval(() => {
-          this.currentDice.rollValue = this.currentDice.values[userRoll]
-          this.enemyDice.rollValue = this.enemyDice.values[enemyRoll]
-          if (rollCount > 10) {
-              clearInterval(rollInterval);
-          }
-          rollCount++;
+        this.currentDice.rollValue = this.currentDice.values[userRoll];
+        this.enemyDice.rollValue = this.enemyDice.values[enemyRoll];
+        if (rollCount > 10) {
+          clearInterval(rollInterval);
+        }
+        rollCount++;
       }, 100);
 
       // determine who wins and where to go from there.
@@ -1735,11 +1745,10 @@ Vue.createApp({
         this.currentDice.rollValue = 0;
         this.enemyDice.rollValue = 0;
         this.page = "groB";
-        
-      } 
+      }
       if (this.enemyDice.rollValue > this.currentDice.rollValue) {
         this.removeDice();
-      };
+      }
     },
 
     removeDice: function () {
@@ -1749,12 +1758,9 @@ Vue.createApp({
       this.page = "groB";
     },
 
-
-
     setCurrentDice: function (index) {
       this.currentDice = this.dice[index];
       console.log(this.currentDice);
-
     },
     //sandbox methods
 
@@ -1909,12 +1915,7 @@ Vue.createApp({
         }
       }
     },
-    
   },
-
-
-
-
 
   computed: {
     filteredScores: function () {
@@ -1929,6 +1930,14 @@ Vue.createApp({
       });
       return byUser;
     },
+    filteredGames: function () {
+      let filteredGames = this.games.filter((currentGame) => {
+        return currentGame.name
+          .toLowerCase()
+          .includes(this.gameSearchInput.toLowerCase());
+      });
+      return filteredGames;
+    },
   },
 
   created: function () {
@@ -1937,6 +1946,9 @@ Vue.createApp({
 
     //minesweeper setup
     this.beginMinesweeperGame();
+
+    //battleship setup
+    this.resetBattleshipBoard();
 
     //sandbox setup
     this.resetSandboxBoard();
