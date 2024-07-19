@@ -193,6 +193,8 @@ Vue.createApp({
       // dungeon crawler variables
       floorLevel: 1,
       diceBox: false,
+      potionBox: false,
+      isBattling: false,
 
       // first value within dice is the user's starting dice.
       dice: [
@@ -203,6 +205,10 @@ Vue.createApp({
           rollValue: 0,
         },
       ],
+
+      potions: [],
+
+
       doorItems: {
         // dice 6: 6, 2, 3, 2, 6
         // dice10: 0, 10
@@ -216,9 +222,17 @@ Vue.createApp({
         // spider - 2, 2, 2, 2, 2, 8, 8, 8
         // dragon - 0, 5, 5, 5, 10, 10
         enemy: ["slime", "rat", "goblin", "rat",  "slime", "goblin", "rat", "spider", "goblin", "spider", "rat", "dragon"],
+        // attack2 - +2 to your dice roll
+        // secondChance - second chance to roll (if enemy previously beat you)
+        // double - double dice roll value
+        potion: ["attack2", "attack2", "attack2", "secondChance", "attack2", "attack2", "attack2", "secondChance", "attack2", "attack2", "attack2", "double", "attack2", "attack2"]
       },
+
+      
       randomDice: null,
       randomEnemy: null,
+      randomPotion: null,
+      enemyDice: null,
       // set the current dice to the default starting dice when the game is opened.
       currentDice: {
         name: "Dice",
@@ -226,8 +240,13 @@ Vue.createApp({
         values: [1, 2, 3, 4, 5, 6],
         rollValue: 0,
       },
-      isActive: false,
-      enemyDice: null,
+      
+      potionEffect: false,
+      // set the current potion to none when the game is opened.
+      currentPotion: {
+        name: "None",
+      },
+      
 
 
 
@@ -1496,10 +1515,6 @@ Vue.createApp({
       }
     },
 
-    
-    viewDice: function () {
-      this.diceSpace = !this.diceSpace;
-    },
 
     //tic tac toe methods
     resetTictactoe: function () {
@@ -1590,32 +1605,50 @@ Vue.createApp({
     // dice game methods
     viewDice: function () {
       this.diceBox = !this.diceBox;
+      this.potionBox = false;
+    },
+
+    viewPotion: function () {
+      this.potionBox = !this.potionBox;
+      this.diceBox = false;
     },
 
 
     getDoorItem: function () {
-      let item = ["dice", "enemy"];
-      let randomItem = item[Math.round(Math.random())];
+      let floorItem = ["dice", "enemy"];
       let diceIndex = Math.floor(Math.random() * this.doorItems.dice.length);
       let enemyIndex = Math.floor(Math.random() * this.doorItems.enemy.length);
+      let potionIndex = Math.floor(Math.random() * this.doorItems.potion.length);
 
+      if (this.floorLevel % 5 === 1) {
+        floorItem = "dice";
+      } else if (this.floorLevel % 5 === 2 || this.floorLevel % 5 === 0 || this.floorLevel % 5 === 4) {
+        floorItem = "enemy";
+      } else if (this.floorLevel % 5 === 3) {
+        floorItem = "potion";
+      }
 
-      if (randomItem === "dice") {
+      if (floorItem === "dice") {
         this.randomDice = this.doorItems.dice[diceIndex]
         console.log(this.randomDice);
         this.createDice();
-      } else {
+      } else if (floorItem === "enemy") {
         this.randomEnemy = this.doorItems.enemy[enemyIndex]
         console.log(this.randomEnemy);
         this.setUpBattle();
+      } else if (floorItem === "potion") {
+        this.randomPotion = this.doorItems.potion[potionIndex];
+        console.log(this.randomPotion);
+        this.getPotion();
       };
 
     },
 
+
     createDice: function () {
       if (this.randomDice === "dice2") {
         let dice2 = {
-          name: "2 Dice",
+          name: "Small Fry",
           sides: 2,
           values: [2, 3],
           rollValue: 0,
@@ -1626,7 +1659,7 @@ Vue.createApp({
 
       if (this.randomDice === "dice6") {
         let dice6 = {
-          name: "6 Dice",
+          name: "Revolver",
           sides: 6,
           values: [6, 2, 3, 2, 6],
           rollValue: 0,
@@ -1637,7 +1670,7 @@ Vue.createApp({
 
       if (this.randomDice === "dice7") {
         let dice7 = {
-          name: "7 Dice",
+          name: "Lucky 7",
           sides: 7,
           values: [0, 7, 0, 7, 0, 7, 0],
           rollValue: 0,
@@ -1648,7 +1681,7 @@ Vue.createApp({
 
       if (this.randomDice === "dice10") {
         let dice10 = {
-          name: "10 Dice",
+          name: "50 / 50",
           sides: 2,
           values: [0, 10],
           rollValue: 0,
@@ -1660,10 +1693,10 @@ Vue.createApp({
 
 
     setUpBattle: function () {
-      this.page = "battle";
+      this.isBattling = true;
       if (this.randomEnemy === "rat") {
         this.enemyDice = {
-          name: "rat Dice",
+          name: "Rat Dice",
           sides: 3,
           values: [1, 2, 3],
           rollValue: 0,
@@ -1673,7 +1706,7 @@ Vue.createApp({
 
       if (this.randomEnemy === "slime") {
         this.enemyDice = {
-          name: "slime Dice",
+          name: "Slime Dice",
           sides: 4,
           values: [2, 2, 4, 4],
           rollValue: 0,
@@ -1683,7 +1716,7 @@ Vue.createApp({
 
       if (this.randomEnemy === "goblin") {
         this.enemyDice = {
-          name: "goblin Dice",
+          name: "Goblin Dice",
           sides: 5,
           values: [1, 2, 3, 5, 5],
           rollValue: 0,
@@ -1693,7 +1726,7 @@ Vue.createApp({
 
       if (this.randomEnemy === "spider") {
         this.enemyDice = {
-          name: "spider Dice",
+          name: "Spider Dice",
           sides: 8,
           values: [2, 2, 2, 2, 2, 8, 8, 8,],
           rollValue: 0,
@@ -1703,7 +1736,7 @@ Vue.createApp({
 
       if (this.randomEnemy === "dragon") {
         this.enemyDice = {
-          name: "dragon Dice",
+          name: "Dragon Dice",
           sides: 6,
           values: [0, 5, 5, 5, 10, 10],
           rollValue: 0,
@@ -1713,40 +1746,136 @@ Vue.createApp({
 
     },
 
+    // gives a certain potion to the user
+    getPotion: function () {
+      if (this.randomPotion === "attack2") {
+        let attack2 = {
+          name: "Attack Up",
+
+        }
+        this.potions.push(attack2);
+        this.floorLevel++;
+      };
+
+      if (this.randomPotion === "secondChance") {
+        let secondChance = {
+          name: "Retake",
+
+        }
+        this.potions.push(secondChance);
+        this.floorLevel++;
+      };
+
+      if (this.randomPotion === "double") {
+        let double = {
+          name: "Double Up",
+        }
+        this.potions.push(double);
+        this.floorLevel++;
+      }
+    },
 
     battleEnemy: function () {
+
       let userRoll = Math.floor(Math.random() * this.currentDice.values.length);
       let enemyRoll = Math.floor(Math.random() * this.enemyDice.values.length);
 
+      
       let rollCount = 0;
 
       let rollInterval = setInterval(() => {
-          this.currentDice.rollValue = this.currentDice.values[userRoll]
-          this.enemyDice.rollValue = this.enemyDice.values[enemyRoll]
-          if (rollCount > 10) {
-              clearInterval(rollInterval);
-          }
-          rollCount++;
-      }, 100);
 
-      // determine who wins and where to go from there.
+        this.currentDice.rollValue = this.currentDice.values[userRoll]
+        this.enemyDice.rollValue = this.enemyDice.values[enemyRoll]
+
+        if (rollCount > 10) {
+          clearInterval(rollInterval);
+          // check to see if the user is using any potions for their roll and apply their effects accordingly.
+          console.log(`original roll: ${this.currentDice.rollValue}`);
+
+          if (this.currentPotion.name === "Attack Up") {
+            this.potionEffect = true;
+            this.currentDice.rollValue += 2;
+            let count = 0;
+
+            let displayPotion = setInterval(() => {
+              count++
+              if (count === 2) {
+                clearInterval(displayPotion);
+                this.potionEffect = false;
+                this.currentPotion = {
+                  name: "None",
+                }
+                this.compareRoll();
+              }
+            }, 500)
+              
+
+            } else if (this.currentPotion.name === "Double Up") {
+              this.potionEffect = true;
+              this.currentDice.rollValue *= 2;
+              let count = 0;
+
+              let displayPotion = setInterval(() => {
+                count++
+                if (count === 2) {
+                  clearInterval(displayPotion);
+                  this.potionEffect = false;
+                  this.currentPotion = {
+                    name: "None",
+                  }
+                  this.compareRoll();
+                }
+              }, 500)
+              
+            } else {
+              this.compareRoll();
+            }
+
+          
+        };
+          rollCount++;
+      }, 50);
+
+    },
+
+    compareRoll: function () {
       if (this.currentDice.rollValue > this.enemyDice.rollValue) {
         this.dice.push(this.enemyDice);
         this.currentDice.rollValue = 0;
         this.enemyDice.rollValue = 0;
-        this.page = "groB";
+        this.isBattling = false;
+        this.floorLevel++;
         
-      } 
-      if (this.enemyDice.rollValue > this.currentDice.rollValue) {
+      } else if (this.enemyDice.rollValue >= this.currentDice.rollValue && this.currentPotion.name !== "Retake") {
         this.removeDice();
+        this.currentDice = this.dice[0];
+      } else {
+        this.potionEffect = true;
+        let count = 0;
+        let displayPotion = setInterval(() => {
+          count++
+          if (count === 2) {
+            clearInterval(displayPotion);
+            this.potionEffect = false;
+            this.currentPotion = {
+              name: "None",
+            }
+          }
+        }, 500)
+        return;
       };
     },
 
     removeDice: function () {
       this.dice.splice(this.dice.indexOf(this.currentDice), 1);
-      this.currentDice.rollValue = 0;
-      this.enemyDice.rollValue = 0;
-      this.page = "groB";
+      if (this.dice.length === 0) {
+        console.log("Game Over!")
+      } else {
+        this.currentDice.rollValue = 0;
+        this.enemyDice.rollValue = 0;
+      }
+
     },
 
 
@@ -1756,8 +1885,16 @@ Vue.createApp({
       console.log(this.currentDice);
 
     },
-    //sandbox methods
 
+    setCurrentPotion: function (index) {
+      this.currentPotion = this.potions[index];
+      console.log(`Current Potion: ${this.currentPotion.name}`);
+    },
+
+
+
+
+    //sandbox methods
     resetSandboxBoard: function () {
       this.sandboxBoard.cells = [];
       for (let i = 0; i < this.sandboxBoard.height; i += 1) {
@@ -1934,6 +2071,7 @@ Vue.createApp({
   created: function () {
     this.getSession();
     this.getScores();
+    console.log(3 % 3)
 
     //minesweeper setup
     this.beginMinesweeperGame();

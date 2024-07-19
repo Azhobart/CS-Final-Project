@@ -435,59 +435,87 @@
       <!-- dungeon crawler dice game -->
       <div v-if="page === 'groB'">
         <div id="grobWrapper">
-          <h1>Floor {{ floorLevel }}</h1>
-          <h2>Current Dice: {{ currentDice.name }}</h2>
+          <div id="gameStats">
+            <h1>Current Dice: {{ currentDice.name }}</h1>
+            <h1>Floor {{ floorLevel }}</h1>
+            <h1>Current Potion: {{ currentPotion.name }}</h1>
+          </div>
 
 
-          <div id="doors">
+
+          <div id="doors" v-if="!isBattling">
             <div class="grobDoor" @click="getDoorItem()"></div>
             <div class="grobDoor" @click="getDoorItem()"></div>
             <div class="grobDoor" @click="getDoorItem()"></div>
           </div>
 
-          <div id="diceSpace">
-            <h2 @click="viewDice()">Dice</h2>
-            <div id="diceBag" v-if="diceBox">
-              
-              <div class="grobDice" 
-              v-for="(die, index) in dice" 
-              @click="setCurrentDice(index)">
-                {{ die.name }}
+          <div id="battleWrapper" v-if="isBattling">
+            <div id="battleField">
+              <div class="spriteField">
+                <h1>User:</h1>
+                <div class="battleDice">
+                  <p v-if="potionEffect">{{ currentPotion.name }}!</p>
+                  {{ currentDice.rollValue }}
+                </div>
+                <p>Dice: {{ currentDice.values }}</p>
               </div>
+              
+  
+              <div class="spriteField">
+                <h1>{{ randomEnemy }}:</h1>
+                <div class="battleDice">
+                  {{ enemyDice.rollValue }}
+                </div>
+                <p>Dice: {{ enemyDice.values }}</p>
+              </div>
+            </div>
+  
+            <h2 id="battleButton" @click="battleEnemy()">Battle!</h2>
+          </div>
+
+          <div id="userActions">
+            <div id="diceSpace">
+              <h2 @click="viewDice()">Dice</h2>
+            </div>
 
 
+            <div id="potionSpace">
+              <h2 @click="viewPotion()">Potions</h2>
             </div>
           </div>
+
+          <div id="diceBag" v-if="diceBox">
+                
+            <div class="grobDice" 
+            v-for="(die, index) in dice" 
+            @click="setCurrentDice(index)">
+              {{ die.name }}
+            </div>
+          </div>
+
+          <div id="potionBag" v-if="potionBox">
+            <div class="grobPotion" 
+            v-for="(potion, index) in potions" 
+            @click="setCurrentPotion(index)">
+              {{ potion.name }}
+            </div>
+          </div>
+
+
 
 
         </div>
       </div>
 
-      <div id="battlePage" v-if="page === 'battle'">
-        <div id="battleField">
-
-          <div class="spriteField">
-            <h1>User:</h1>
-            <div class="battleDice">
-              {{ currentDice.rollValue }}
-            </div>
-          </div>
-
-          <div class="spriteField">
-            <h1>{{ randomEnemy }}:</h1>
-            <div class="battleDice">
-              {{ enemyDice.rollValue }}
-            </div>
-          </div>
 
 
-          
-        </div>
-        <div id="battleButton" @click="battleEnemy()">Battle!</div>
-       
+
+
+
+
+
 
       </div>
-
     </div>
     <script src="app.js"></script>
   </body>
