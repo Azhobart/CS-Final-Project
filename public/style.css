@@ -445,9 +445,10 @@ body {
     }
   }
   & .battleshipToken {
+    border: 2px solid black;
     width: 20px;
     height: 20px;
-    border-radius: 100;
+    border-radius: 100%;
     background-color: white;
     align-self: center;
     justify-self: center;
@@ -467,7 +468,18 @@ body {
 #grobWrapper h1 {
   text-align: center;
   color: #d2e3c8;
+  background-color: #4f6f52;
+  border-radius: 10px;
+  margin: 10px 0px;
+  padding: 10px;
+}
 
+#grobWrapper h2 {
+  color: #d2e3c8;
+  background-color: #4f6f52;
+  border-radius: 10px;
+  margin: 10px 0px 20px 0px;
+  padding: 10px;
 }
 
 #gameStats {
@@ -535,9 +547,6 @@ body {
   transition: padding 1s;
 }
 
-
-
-
 #diceSpace h2:hover {
   padding: 15px;
   cursor: pointer;
@@ -556,9 +565,7 @@ body {
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
-
 }
-
 
 .grobDice {
   margin: 10px;
@@ -568,8 +575,7 @@ body {
   justify-content: center;
   align-items: center;
   background-color: #4f6f52;
-  color: #d2e3c8
-
+  color: #d2e3c8;
 }
 
 .grobDice:hover {
@@ -690,7 +696,6 @@ body {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-
 }
 
 .battleDice p {
@@ -801,4 +806,31 @@ body {
   display: grid;
 
   grid-template-columns: 150px 150px 150px 150px;
+}
+
+/* Slide game styling */
+.slideGridRow {
+  display: grid;
+
+  grid-template-columns: 40px 40px 40px 40px 40px 40px 40px;
+
+  & .slideCell {
+    user-select: none;
+    transition: 200ms;
+
+    margin: 0px;
+    border: 2px solid black;
+    color: black;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

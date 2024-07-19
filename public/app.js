@@ -86,9 +86,13 @@ Vue.createApp({
           image:
             "https://th.bing.com/th/id/R.dc26bf85d855a70b5bfcdcf586e78bf6?rik=tU2N%2fq3klWAb0w&pid=ImgRaw&r=0",
         },
-        { name: 8, image: "" },
+        {
+          name: "Slide",
+          image:
+            "https://th.bing.com/th/id/R.4308644e731c4f56b19823c863b31a76?rik=7wUsOZfliw0Itg&riu=http%3a%2f%2fstatic1.mbtfiles.co.uk%2fmedia%2fdocs%2fnewdocs%2fgcse%2fmaths%2falgebra%2fnumber_stairs_grids_and_sequences%2f29098%2fhtml%2fimages%2fimage00.png&ehk=EtnoE9LetG1PN%2bxCv2yixJmtzoPQDj3c1233DrF2QG4%3d&risl=&pid=ImgRaw&r=0",
+        },
 
-        { name: 9, image: "" },
+        { name: "", image: "" },
         { name: "10", image: "" },
       ],
 
@@ -98,6 +102,8 @@ Vue.createApp({
       scoreRegionSearchInput: "",
       scoreGameSearchInput: "Tic Tac Toe",
       scoreUserSearchInput: "",
+
+      gameSearchInput: "",
 
       // color game variables
       redSound: new Audio("colorSounds/originalBeep.mp3"),
@@ -188,8 +194,6 @@ Vue.createApp({
         ],
       ],
 
-
-
       // dungeon crawler variables
       floorLevel: 1,
       diceBox: false,
@@ -214,18 +218,44 @@ Vue.createApp({
         // dice10: 0, 10
         // dice2: 2, 3
         // dice7: 0, 0, 0, 0, 7, 7, 7
-        dice: ["dice6", "dice2", "dice7", "dice2", "dice6", "dice2", "dice7", "dice10", ],
+        dice: [
+          "dice6",
+          "dice2",
+          "dice7",
+          "dice2",
+          "dice6",
+          "dice2",
+          "dice7",
+          "dice10",
+        ],
         // enemy dice:
         // rat - 1, 2, 3
         // slime - 2, 2, 4, 4
         // goblin - 1, 2, 3, 5, 5
         // spider - 2, 2, 2, 2, 2, 8, 8, 8
         // dragon - 0, 5, 5, 5, 10, 10
+<<<<<<< HEAD
         enemy: ["slime", "rat", "goblin", "rat",  "slime", "goblin", "rat", "spider", "goblin", "spider", "rat", "dragon"],
         // attack2 - +2 to your dice roll
         // secondChance - second chance to roll (if enemy previously beat you)
         // double - double dice roll value
         potion: ["attack2", "attack2", "attack2", "secondChance", "attack2", "attack2", "attack2", "secondChance", "attack2", "attack2", "attack2", "double", "attack2", "attack2"]
+=======
+        enemy: [
+          "slime",
+          "rat",
+          "goblin",
+          "rat",
+          "slime",
+          "goblin",
+          "rat",
+          "spider",
+          "goblin",
+          "spider",
+          "rat",
+          "dragon",
+        ],
+>>>>>>> 433783806e3e68151ef0515bdb54162a01fbc3f1
       },
 
       
@@ -247,8 +277,6 @@ Vue.createApp({
         name: "None",
       },
       
-
-
 
       //Tic Tac Toe Game variable
       tictactoeBoard: [
@@ -387,6 +415,14 @@ Vue.createApp({
           ],
         },
       ],
+
+      //Slide game variables
+      slideTurns: 0,
+      lastSlideAction: "solve",
+      slideBoard: {
+        length: 5,
+        cells: [],
+      },
     };
   },
 
@@ -651,7 +687,14 @@ Vue.createApp({
             this.randomColor = "";
             this.colorSequence = [];
             this.activeColorsScore = 0;
-            this.finishGame(this.finalColorsScore);
+
+            let newColorsScore = {
+              game: this.page,
+              value: this.finalColorsScore,
+              user: this.currentUser._id,
+            };
+
+            this.finishGame(newColorsScore);
           }
         }
       }
@@ -1244,7 +1287,7 @@ Vue.createApp({
           this.battleshipBoards.opponent[i][j].frontColor = "lightblue";
 
           if (this.battleshipBoards.opponent[i][j].isShip) {
-            this.battleshipBoards.opponent[i][j].frontColor = "grey";
+            this.battleshipBoards.opponent[i][j].backColor = "grey";
           }
           if (this.battleshipBoards.opponent[i][j].isHidden) {
             this.battleshipBoards.opponent[i][j].backColor = "blue";
@@ -1260,6 +1303,9 @@ Vue.createApp({
           if (this.battleshipBoards.opponentHoverGrid[i][j]) {
             this.battleshipBoards.opponent[i][j].backColor =
               "RGBA(100,100,100,0.3)";
+            if (!this.battleshipValidHover) {
+              this.battleshipBoards.opponent[i][j].backColor = "RED";
+            }
           }
 
           //player
@@ -1267,7 +1313,7 @@ Vue.createApp({
           this.battleshipBoards.player[i][j].frontColor = "lightblue";
 
           if (this.battleshipBoards.player[i][j].isShip) {
-            this.battleshipBoards.player[i][j].frontColor = "grey";
+            this.battleshipBoards.player[i][j].backColor = "grey";
           }
           if (this.battleshipBoards.player[i][j].isHidden) {
             this.battleshipBoards.player[i][j].backColor = "blue";
@@ -1283,6 +1329,9 @@ Vue.createApp({
           if (this.battleshipBoards.playerHoverGrid[i][j]) {
             this.battleshipBoards.player[i][j].backColor =
               "RGBA(100,100,100,0.3)";
+            if (!this.battleshipValidHover) {
+              this.battleshipBoards.player[i][j].backColor = "RED";
+            }
           }
         }
       }
@@ -1440,7 +1489,6 @@ Vue.createApp({
                 }
 
                 if (found_x >= 0 && found_y >= 0) {
-                  console.log("found hit");
                   if (found_x > 0) {
                     if (
                       !this.battleshipBoards.player[found_x - 1][found_y]
@@ -1494,7 +1542,6 @@ Vue.createApp({
                 !this.battleshipBoards.player[v][k].isMiss &&
                 !this.battleshipBoards.player[v][k].isHit
               ) {
-                console.log(`enemy fired at ${v},${k}`);
                 this.battleshipFire("player", v, k);
                 this.hoverBattleshipCell("player", v, k);
               }
@@ -1600,8 +1647,6 @@ Vue.createApp({
       }
     },
 
-
-
     // dice game methods
     viewDice: function () {
       this.diceBox = !this.diceBox;
@@ -1612,7 +1657,6 @@ Vue.createApp({
       this.potionBox = !this.potionBox;
       this.diceBox = false;
     },
-
 
     getDoorItem: function () {
       let floorItem = ["dice", "enemy"];
@@ -1655,7 +1699,7 @@ Vue.createApp({
         };
         this.dice.push(dice2);
         this.floorLevel++;
-      };
+      }
 
       if (this.randomDice === "dice6") {
         let dice6 = {
@@ -1666,7 +1710,7 @@ Vue.createApp({
         };
         this.dice.push(dice6);
         this.floorLevel++;
-      };
+      }
 
       if (this.randomDice === "dice7") {
         let dice7 = {
@@ -1677,7 +1721,7 @@ Vue.createApp({
         };
         this.dice.push(dice7);
         this.floorLevel++;
-      };
+      }
 
       if (this.randomDice === "dice10") {
         let dice10 = {
@@ -1685,12 +1729,11 @@ Vue.createApp({
           sides: 2,
           values: [0, 10],
           rollValue: 0,
-        }
+        };
         this.dice.push(dice10);
         this.floorLevel++;
-      };
+      }
     },
-
 
     setUpBattle: function () {
       this.isBattling = true;
@@ -1701,8 +1744,8 @@ Vue.createApp({
           values: [1, 2, 3],
           rollValue: 0,
         };
-        console.log(this.enemyDice.name)
-      };
+        console.log(this.enemyDice.name);
+      }
 
       if (this.randomEnemy === "slime") {
         this.enemyDice = {
@@ -1710,9 +1753,9 @@ Vue.createApp({
           sides: 4,
           values: [2, 2, 4, 4],
           rollValue: 0,
-        }
-        console.log(this.enemyDice.name)
-      };
+        };
+        console.log(this.enemyDice.name);
+      }
 
       if (this.randomEnemy === "goblin") {
         this.enemyDice = {
@@ -1720,19 +1763,19 @@ Vue.createApp({
           sides: 5,
           values: [1, 2, 3, 5, 5],
           rollValue: 0,
-        }
-        console.log(this.enemyDice.name)
-      };
+        };
+        console.log(this.enemyDice.name);
+      }
 
       if (this.randomEnemy === "spider") {
         this.enemyDice = {
           name: "Spider Dice",
           sides: 8,
-          values: [2, 2, 2, 2, 2, 8, 8, 8,],
+          values: [2, 2, 2, 2, 2, 8, 8, 8],
           rollValue: 0,
-        }
-        console.log(this.enemyDice.name)
-      };
+        };
+        console.log(this.enemyDice.name);
+      }
 
       if (this.randomEnemy === "dragon") {
         this.enemyDice = {
@@ -1740,10 +1783,8 @@ Vue.createApp({
           sides: 6,
           values: [0, 5, 5, 5, 10, 10],
           rollValue: 0,
-        }
-      };
-
-
+        };
+      }
     },
 
     // gives a certain potion to the user
@@ -1878,12 +1919,9 @@ Vue.createApp({
 
     },
 
-
-
     setCurrentDice: function (index) {
       this.currentDice = this.dice[index];
       console.log(this.currentDice);
-
     },
 
     setCurrentPotion: function (index) {
@@ -2046,12 +2084,130 @@ Vue.createApp({
         }
       }
     },
-    
+
+    //Slide game methods
+    resetSlideGame: function () {
+      this.slideBoard.cells = [];
+      for (let i = 0; i < this.slideBoard.length * 7; i += 1) {
+        if (i == this.slideBoard.length * 7 - 1) {
+          this.slideBoard.cells.push({ value: -1, color: "#0000" });
+          break;
+        }
+        let clr = "#4f6f52";
+        if (i % 2 == 0) {
+          clr = "#86a789";
+        }
+        this.slideBoard.cells.push({ value: i, color: clr });
+      }
+      this.slideTurns = 0;
+      this.lastSlideAction = "solve";
+    },
+    moveSlideCell: function (indx) {
+      let currentCell = this.slideBoard.cells[indx];
+      let up = -1;
+      let down = -1;
+      let left = -1;
+      let right = -1;
+      if (currentCell.value != -1) {
+        if (indx - 7 > -1) {
+          up = indx - 7;
+        }
+        if (indx + 7 < this.slideBoard.length * 7) {
+          down = indx + 7;
+        }
+        if (indx % 7 > 0) {
+          left = indx - 1;
+        }
+        if (indx % 7 < 6) {
+          right = indx + 1;
+        }
+      }
+      if (up != -1) {
+        if (this.slideBoard.cells[up].value == -1) {
+          let tmp = this.slideBoard.cells[up];
+          this.slideBoard.cells[up] = currentCell;
+          this.slideBoard.cells[indx] = tmp;
+          this.slideTurns += 1;
+        }
+      }
+      if (down != -1) {
+        if (this.slideBoard.cells[down].value == -1) {
+          let tmp = this.slideBoard.cells[down];
+          this.slideBoard.cells[down] = currentCell;
+          this.slideBoard.cells[indx] = tmp;
+          this.slideTurns += 1;
+        }
+      }
+      if (left != -1) {
+        if (this.slideBoard.cells[left].value == -1) {
+          let tmp = this.slideBoard.cells[left];
+          this.slideBoard.cells[left] = currentCell;
+          this.slideBoard.cells[indx] = tmp;
+          this.slideTurns += 1;
+        }
+      }
+      if (right != -1) {
+        if (this.slideBoard.cells[right].value == -1) {
+          let tmp = this.slideBoard.cells[right];
+          this.slideBoard.cells[right] = currentCell;
+          this.slideBoard.cells[indx] = tmp;
+          this.slideTurns += 1;
+        }
+      }
+
+      //check for win
+      let isSolved = true;
+      if (this.lastSlideAction == "scramble" && this.slideTurns > 2) {
+        for (let i = 0; i < this.slideBoard.length * 7; i += 1) {
+          let iCell = this.slideBoard.cells[i];
+          if (iCell.value != i && iCell.value != -1) {
+            isSolved = false;
+          }
+        }
+      } else {
+        isSolved = false;
+      }
+
+      if (isSolved && this.lastSlideAction == "scramble") {
+        let newScore = {
+          game: this.page,
+          value: -this.slideTurns * 50 + 50000,
+          user: this.currentUser._id,
+        };
+        this.setScore(newScore);
+        console.log("win!");
+        this.resetSlideGame();
+      }
+    },
+    scrambleSlideGame: function () {
+      let emptyIndx;
+      for (let i = 0; i < this.slideBoard.length * 7; i += 1) {
+        if (i == this.slideBoard.length * 7 - 1) {
+          emptyIndx = i;
+        }
+      }
+      for (let i = 0; i < 50000; i += 1) {
+        let randDir = Math.round(Math.random() * 3);
+        let newIndx = this.slideBoard.length * 7 - 1;
+        if (emptyIndx - 7 > -1 && randDir == 0) {
+          newIndx = emptyIndx - 7;
+        }
+        if (emptyIndx + 7 < this.slideBoard.length * 7 && randDir == 1) {
+          newIndx = emptyIndx + 7;
+        }
+        if (emptyIndx % 7 > 0 && randDir == 2) {
+          newIndx = emptyIndx - 1;
+        }
+        if (emptyIndx % 7 < 6 && randDir == 3) {
+          newIndx = emptyIndx + 1;
+        }
+        emptyIndx = newIndx;
+        this.moveSlideCell(emptyIndx);
+        this.slideTurns = 0;
+      }
+      this.lastSlideAction = "scramble";
+    },
   },
-
-
-
-
 
   computed: {
     filteredScores: function () {
@@ -2066,6 +2222,14 @@ Vue.createApp({
       });
       return byUser;
     },
+    filteredGames: function () {
+      let filteredGames = this.games.filter((currentGame) => {
+        return currentGame.name
+          .toLowerCase()
+          .includes(this.gameSearchInput.toLowerCase());
+      });
+      return filteredGames;
+    },
   },
 
   created: function () {
@@ -2076,7 +2240,13 @@ Vue.createApp({
     //minesweeper setup
     this.beginMinesweeperGame();
 
+    //battleship setup
+    this.resetBattleshipBoard();
+
     //sandbox setup
     this.resetSandboxBoard();
+
+    //slide game setup
+    this.resetSlideGame();
   },
 }).mount("#app");
