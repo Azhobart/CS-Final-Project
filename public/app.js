@@ -1954,7 +1954,7 @@ Vue.createApp({
         this.slideBoard.cells.push({ value: i, color: clr });
       }
       this.slideTurns = 0;
-      this.lastSlideAction == "solve";
+      this.lastSlideAction = "solve";
     },
     moveSlideCell: function (indx) {
       let currentCell = this.slideBoard.cells[indx];
@@ -2022,14 +2022,14 @@ Vue.createApp({
         isSolved = false;
       }
 
-      if (isSolved) {
+      if (isSolved && this.lastSlideAction == "scramble") {
         let newScore = {
           game: this.page,
           value: -this.slideTurns * 50 + 50000,
           user: this.currentUser._id,
         };
         this.setScore(newScore);
-
+        console.log("win!");
         this.resetSlideGame();
       }
     },

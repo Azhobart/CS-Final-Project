@@ -307,8 +307,8 @@
 
       <div class="page" v-if="page === 'Slide'">
         <div class="sectionContainer">
-          <button @click="scrambleSlideGame()">Scramble</button>
-          <button @click="resetSlideGame()">Solve</button>
+          <button @click="scrambleSlideGame()" v-if="lastSlideAction == 'solve'">Scramble</button>
+          <button @click="resetSlideGame()" v-if="lastSlideAction == 'scramble'">Solve</button>
           <p>Score: {{-slideTurns * 50 + 50000}}</p>
           <p>Moves: {{slideTurns}}</p>
           <div class="column">
