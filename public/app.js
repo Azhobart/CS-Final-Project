@@ -105,7 +105,7 @@ Vue.createApp({
           image:
             "https://th.bing.com/th/id/OIP.UVxX0_SDu_b5ryjTAvEETQHaFm?rs=1&pid=ImgDetMain",
         },
-        { name: "", image: "" },
+        { name: "Follow", image: "" },
       ],
 
       scores: [],
@@ -467,6 +467,13 @@ Vue.createApp({
         { name: "Vaccine", clr: "" },
       ],
       rpsScore: 0,
+
+      //follow game variables
+      followTop: 100,
+      followLeft: 100,
+      followGoalTop: 0,
+      followGoalLeft: 0,
+      followScore: 0,
     };
   },
 
@@ -867,7 +874,7 @@ Vue.createApp({
         this.draw = false;
 
         // display 'ready' for 2 sec
-        var stageOne = setInterval(() => {
+        let stageOne = setInterval(() => {
           this.displayReaction = false;
           this.tooSlow = false;
           this.tooEarly = false;
@@ -880,7 +887,7 @@ Vue.createApp({
         }, 1000);
 
         // display 'get set' afterwards for 3 sec
-        var stageTwo = setInterval(() => {
+        let stageTwo = setInterval(() => {
           countdownTwo++;
           if (countdownTwo === 2 && this.ready) {
             this.ready = false;
@@ -892,7 +899,7 @@ Vue.createApp({
 
         // display 'draw!' and set timer (in milliseconds)
         // record time once the user presses the space key
-        var stageThree = setInterval(() => {
+        let stageThree = setInterval(() => {
           countdownThree++;
           if (countdownThree === randomTime + 2 && this.getSet) {
             this.getSet = false;
@@ -2326,6 +2333,36 @@ Vue.createApp({
         }
         this.rpsOptions[userChoice].clr = "";
       }
+    },
+
+    //follow game methods
+    followMove: function () {
+      let moveInterval = setInterval(() => {
+        if (this.followGoalLeft > this.followLeft) {
+          this.followLeft += 1;
+        }
+        if (this.followGoalLeft < this.followLeft) {
+          this.followLeft -= 1;
+        }
+        if (this.followGoalTop > this.followTop) {
+          this.followTop += 1;
+        }
+        if (this.followGoalTop < this.followTop) {
+          this.followTop -= 1;
+        }
+
+        if (
+          this.followGoalLeft > this.followLeft - 5 &&
+          this.followGoalLeft < this.followLeft + 5 &&
+          this.followGoalTop > this.followTop - 5 &&
+          this.followGoalTop < this.followTop + 5
+        ) {
+          this.followGoalLeft = 5 + Math.random() * 450;
+          this.followGoalTop = 5 + Math.random() * 450;
+        }
+      }, 10);
+
+      this.followScore += 1;
     },
   },
 
