@@ -121,8 +121,6 @@ Vue.createApp({
       colorGameStart: false,
       cycleInterval: null,
       transitionInterval: null,
-      
-
 
       //prisoners dilemma game variables
       prisonerScores: [0, 0],
@@ -256,22 +254,21 @@ Vue.createApp({
         // secondChance - second chance to roll (if enemy previously beat you)
         // double - double dice roll value
         potion: [
-          "attack2", 
-          "attack2", 
-          "attack2", 
-          "secondChance", 
-          "attack2", 
-          "attack2", 
-          "attack2", 
-          "secondChance", 
-          "attack2", 
-          "attack2", 
-          "attack2", 
-          "double", 
-          "attack2", 
-          "attack2"
+          "attack2",
+          "attack2",
+          "attack2",
+          "secondChance",
+          "attack2",
+          "attack2",
+          "attack2",
+          "secondChance",
+          "attack2",
+          "attack2",
+          "attack2",
+          "double",
+          "attack2",
+          "attack2",
         ],
-
       },
 
       randomDice: null,
@@ -730,7 +727,6 @@ Vue.createApp({
       this.cycleInterval = setInterval(() => {
         if (this.colorGameOver) {
           this.resetColorGame();
-
         }
         this.userInput = [];
         console.log(this.colorSequence);
@@ -760,9 +756,6 @@ Vue.createApp({
           count = 0;
           clearInterval(this.cycleInterval);
         }
-
-
-       
       }, 1000);
     },
 
@@ -825,12 +818,9 @@ Vue.createApp({
       }
     },
 
-
-
-
     //reaction game methods
     countdown: function () {
-      this.startReactionGame = false; 
+      this.startReactionGame = false;
       window.addEventListener("keydown", this.getReaction);
       if (this.reactionGameOver === false) {
         let countdownOne = 0;
@@ -884,7 +874,7 @@ Vue.createApp({
         this.calculateAverageReaction();
         let newScore = {
           game: this.page,
-          value: this.averageReaction,
+          value: -this.averageReaction,
           user: this.currentUser._id,
         };
         if (this.averageReaction > 0) {
@@ -892,7 +882,6 @@ Vue.createApp({
         }
         window.removeEventListener("keydown", this.getReaction);
         this.resetReactionGame();
-        
       }
     },
 
@@ -938,7 +927,6 @@ Vue.createApp({
     },
 
     calculateAverageReaction: function () {
-  
       for (let reaction of this.userReactions) {
         this.averageReaction += reaction;
         console.log(reaction);
@@ -961,9 +949,6 @@ Vue.createApp({
       this.draw = false;
       this.startReactionGame = true;
     },
-
-
-
 
     //Minesweeper game methods
     addMinesweeperRow: function () {
