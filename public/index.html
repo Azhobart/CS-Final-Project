@@ -140,7 +140,10 @@
             <p>Username:</p> <input placeholder="username" v-show="isEditing" v-model="currentUser.username">
             <span v-show="!isEditing">{{ currentUser.username }}</span>
 
-            <p>Region:</p> <input placeholder="region" v-show="isEditing" v-model="currentUser.region">
+            <p>Region:</p>
+            <select v-show="isEditing" v-model="currentUser.region">
+              <option v-for="region in regions" :value="region.code ">{{region.code}} - {{region.name}}</option>
+            </select>
             <span v-show="!isEditing">{{ currentUser.region }}</span>
 
             <p>Authentication Question:</p> <input placeholder="question" v-show="isEditing" v-model="currentUser.authQuestion">
@@ -250,7 +253,7 @@
       <div class="page" v-if="page === 'Minesweeper'">
         <div class="sectionContainer">
           <div class="row">
-            <p>Score: {{minesweeperScore}}</p>
+            <p>Score: {{Math.round((1+minesweeperScore/(minesweeperBoardMineChance/8))*100)/100}}</p>
             <button @click="beginMinesweeperGame()">Retry</button>
             <p>Mine Chance: 1/</p>
             <input type="number" v-model="minesweeperMineChance">
@@ -280,6 +283,14 @@
             <button @click="beginMinesweeperGame()">Play Again</button>
             <button @click="setPage('home'); beginMinesweeperGame()">Home</button>
           </div>
+        </div>
+      </div>
+
+      <div class="page" v-if="page === 'Follow'">
+        
+        <div class="sectionContainer" style="width: 500px; height: 500px">
+          <p>Score: {{followScore}}</p>
+          <div @click="followMove()" style="width: 50px; height: 50px; border-radius: 100%;" :style="{position: 'relative', top: followTop +'px', left: followLeft +'px', backgroundColor: 'var(--med-green)'}"></div>
         </div>
       </div>
 
@@ -400,6 +411,18 @@
             </div>
             <button @click="addSandboxRule()">Add Rule</button>
             <button @click="console.log(sandboxRules)">Print rules to console</button>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- Rock Paper Scissors Game-->
+      <div class="page" v-if="page === 'Rock Paper Scissors'">
+        <div class="sectionContainer">
+          <p>Score: {{rpsScore}}</p>
+          <button @click="rpsScore = 0">Reset</button>
+          <div class="rpsGrid">
+            <div class="rpsOption" v-for="(option, indx) in rpsOptions" :style=" {backgroundColor: option.clr}" @click="rpsTurn(indx)" @mouseover="rpsHover(indx)">{{option.name}}</div>
           </div>
         </div>
       </div>

@@ -65,16 +65,24 @@ Vue.createApp({
         {
           name: "Battleship",
           image:
-            "https://www.hasbro.com/common/productimages/en_US/54D1C85ECFBE46259A9E53C36F4D136C/c386e8608f9409166a4409b11ace173f5f504449.jpg",
+            "https://th.bing.com/th/id/R.a8f131f7b7d24a3d990dc17fe29326c1?rik=MwYHjNCretMvcg&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fbattleship-png-hd-battleship-clipart-cartoon-4-2400.png&ehk=jSgaoZX7HRX55R8ptCa6Dv8UWnZwCh%2fh7smWn178KWo%3d&risl=&pid=ImgRaw&r=0",
         },
-        { name: "Colors", image: "" },
+        {
+          name: "Colors",
+          image:
+            "https://pluspng.com/img-png/png-paint-palette-paint-palette-icon-1600.png",
+        },
 
         {
           name: "Prisoner's Dilemma",
           image:
             "https://www.clipartkey.com/mpngs/m/324-3244570_transparent-clipart-prisoner-behind-bars-cartoon.png",
         },
-        { name: "Draw!", image: "" },
+        {
+          name: "Draw!",
+          image:
+            "https://th.bing.com/th/id/R.d1c236fa8d00b01451fff17c37d4bf22?rik=vN%2f%2fZT%2fz954HpQ&pid=ImgRaw&r=0",
+        },
         {
           name: "Minesweeper",
           image:
@@ -84,16 +92,20 @@ Vue.createApp({
         {
           name: "Sandbox",
           image:
-            "https://th.bing.com/th/id/R.dc26bf85d855a70b5bfcdcf586e78bf6?rik=tU2N%2fq3klWAb0w&pid=ImgRaw&r=0",
+            "https://th.bing.com/th/id/OIP.8dAUyYj6EphGe6XQfcLo0gHaLG?rs=1&pid=ImgDetMain",
         },
         {
           name: "Slide",
           image:
-            "https://th.bing.com/th/id/R.4308644e731c4f56b19823c863b31a76?rik=7wUsOZfliw0Itg&riu=http%3a%2f%2fstatic1.mbtfiles.co.uk%2fmedia%2fdocs%2fnewdocs%2fgcse%2fmaths%2falgebra%2fnumber_stairs_grids_and_sequences%2f29098%2fhtml%2fimages%2fimage00.png&ehk=EtnoE9LetG1PN%2bxCv2yixJmtzoPQDj3c1233DrF2QG4%3d&risl=&pid=ImgRaw&r=0",
+            "https://th.bing.com/th/id/R.c8dde0b2e84d0a550ab209772e281b0b?rik=iGwYiJWbSifRrg&pid=ImgRaw&r=0",
         },
 
-        { name: "", image: "" },
-        { name: "10", image: "" },
+        {
+          name: "Rock Paper Scissors",
+          image:
+            "https://th.bing.com/th/id/OIP.UVxX0_SDu_b5ryjTAvEETQHaFm?rs=1&pid=ImgDetMain",
+        },
+        { name: "Follow", image: "" },
       ],
 
       scores: [],
@@ -121,8 +133,6 @@ Vue.createApp({
       colorGameStart: false,
       cycleInterval: null,
       transitionInterval: null,
-      
-
 
       //prisoners dilemma game variables
       prisonerScores: [0, 0],
@@ -161,6 +171,7 @@ Vue.createApp({
 
       minesweeperScore: 0,
       minesweeperMineChance: 8,
+      minesweeperBoardMineChance: 8,
       minesweeperGameState: "playing",
 
       //Battleship game variables
@@ -257,22 +268,21 @@ Vue.createApp({
         // secondChance - second chance to roll (if enemy previously beat you)
         // double - double dice roll value
         potion: [
-          "attack2", 
-          "attack2", 
-          "attack2", 
-          "secondChance", 
-          "attack2", 
-          "attack2", 
-          "attack2", 
-          "secondChance", 
-          "attack2", 
-          "attack2", 
-          "attack2", 
-          "double", 
-          "attack2", 
-          "attack2"
+          "attack2",
+          "attack2",
+          "attack2",
+          "secondChance",
+          "attack2",
+          "attack2",
+          "attack2",
+          "secondChance",
+          "attack2",
+          "attack2",
+          "attack2",
+          "double",
+          "attack2",
+          "attack2",
         ],
-
       },
 
       randomDice: null,
@@ -448,6 +458,33 @@ Vue.createApp({
         length: 5,
         cells: [],
       },
+
+      //rock paper scissors game variables
+      rpsOptions: [
+        { name: "Rock", clr: "" },
+        { name: "Paper", clr: "" },
+        { name: "Scissors", clr: "" },
+        { name: "Programmer", clr: "" },
+        { name: "Spider", clr: "" },
+        { name: "Sheep", clr: "" },
+        { name: "Water", clr: "" },
+        { name: "Megaphone", clr: "" },
+        { name: "Squirrel", clr: "" },
+        { name: "Frog", clr: "" },
+        { name: "Hammer", clr: "" },
+        { name: "Sponge", clr: "" },
+        { name: "Hand", clr: "" },
+        { name: "Gun", clr: "" },
+        { name: "Vaccine", clr: "" },
+      ],
+      rpsScore: 0,
+
+      //follow game variables
+      followTop: 100,
+      followLeft: 100,
+      followGoalTop: 0,
+      followGoalLeft: 0,
+      followScore: 0,
     };
   },
 
@@ -666,6 +703,7 @@ Vue.createApp({
     finishGame: async function (score) {
       this.setPage("finished game");
       this.lastAchievedScore = score;
+      this.setScore(score);
     },
 
     rotate2dArrayClockwise: function (arr) {
@@ -741,7 +779,6 @@ Vue.createApp({
       this.cycleInterval = setInterval(() => {
         if (this.colorGameOver) {
           this.resetColorGame();
-
         }
         this.userInput = [];
         console.log(this.colorSequence);
@@ -771,9 +808,6 @@ Vue.createApp({
           count = 0;
           clearInterval(this.cycleInterval);
         }
-
-
-       
       }, 1000);
     },
 
@@ -836,12 +870,9 @@ Vue.createApp({
       }
     },
 
-
-
-
     //reaction game methods
     countdown: function () {
-      this.startReactionGame = false; 
+      this.startReactionGame = false;
       window.addEventListener("keydown", this.getReaction);
       if (this.reactionGameOver === false) {
         let countdownOne = 0;
@@ -854,7 +885,7 @@ Vue.createApp({
         this.draw = false;
 
         // display 'ready' for 2 sec
-        var stageOne = setInterval(() => {
+        let stageOne = setInterval(() => {
           this.displayReaction = false;
           this.tooSlow = false;
           this.tooEarly = false;
@@ -867,7 +898,7 @@ Vue.createApp({
         }, 1000);
 
         // display 'get set' afterwards for 3 sec
-        var stageTwo = setInterval(() => {
+        let stageTwo = setInterval(() => {
           countdownTwo++;
           if (countdownTwo === 2 && this.ready) {
             this.ready = false;
@@ -879,7 +910,7 @@ Vue.createApp({
 
         // display 'draw!' and set timer (in milliseconds)
         // record time once the user presses the space key
-        var stageThree = setInterval(() => {
+        let stageThree = setInterval(() => {
           countdownThree++;
           if (countdownThree === randomTime + 2 && this.getSet) {
             this.getSet = false;
@@ -895,7 +926,7 @@ Vue.createApp({
         this.calculateAverageReaction();
         let newScore = {
           game: this.page,
-          value: this.averageReaction,
+          value: -this.averageReaction,
           user: this.currentUser._id,
         };
         if (this.averageReaction > 0) {
@@ -903,7 +934,6 @@ Vue.createApp({
         }
         window.removeEventListener("keydown", this.getReaction);
         this.resetReactionGame();
-        
       }
     },
 
@@ -949,7 +979,6 @@ Vue.createApp({
     },
 
     calculateAverageReaction: function () {
-  
       for (let reaction of this.userReactions) {
         this.averageReaction += reaction;
         console.log(reaction);
@@ -973,9 +1002,6 @@ Vue.createApp({
       this.startReactionGame = true;
     },
 
-
-
-
     //Minesweeper game methods
     addMinesweeperRow: function () {
       this.minesweeperBoard.cells.push([]);
@@ -998,6 +1024,7 @@ Vue.createApp({
     resetMinesweeperBoard: function () {
       this.minesweeperBoard.cells = [];
       this.minesweeperBoard.height = 0;
+      this.minesweeperBoardMineChance = this.minesweeperMineChance;
       for (let i = 0; i < this.minesweeperBoard.width; i += 1) {
         this.addMinesweeperRow();
       }
@@ -1181,7 +1208,13 @@ Vue.createApp({
           this.minesweeperGameState = "lost";
           let newMinesweeperScore = {
             game: this.page,
-            value: this.minesweeperScore,
+            value:
+              Math.round(
+                (1 +
+                  this.minesweeperScore /
+                    (this.minesweeperBoardMineChance / 8)) *
+                  100
+              ) / 100,
             user: this.currentUser._id,
           };
           this.setScore(newMinesweeperScore);
@@ -2382,6 +2415,80 @@ Vue.createApp({
         this.slideTurns = 0;
       }
       this.lastSlideAction = "scramble";
+    },
+
+    //Rock Paper Scissors Game Methods
+    rpsTurn: function (indx) {
+      let userChoice = indx;
+      let opponentChoice = Math.round(
+        Math.random() * (this.rpsOptions.length - 1)
+      );
+
+      this.rpsHover(userChoice);
+
+      if (this.rpsOptions[opponentChoice].clr == "GREEN") {
+        this.rpsScore += 1;
+        let newScore = {
+          game: this.page,
+          value: this.rpsScore,
+          user: this.currentUser._id,
+        };
+        this.setScore(newScore);
+      }
+      if (this.rpsOptions[opponentChoice].clr == "RED") {
+        this.rpsScore -= 1;
+      }
+
+      this.rpsOptions[opponentChoice].clr = "BLUE";
+    },
+
+    rpsHover: function (indx) {
+      let userChoice = indx;
+      for (let i = 0; i < this.rpsOptions.length; i += 1) {
+        this.rpsOptions[i].clr = "";
+
+        let pos = userChoice + 1;
+        this.rpsOptions[i].clr = "RED";
+        for (let j = 0; j < (this.rpsOptions.length - 1) / 2; j += 1) {
+          if (pos > this.rpsOptions.length - 1) {
+            pos = 0;
+          }
+          this.rpsOptions[pos].clr = "GREEN";
+
+          pos += 1;
+        }
+        this.rpsOptions[userChoice].clr = "";
+      }
+    },
+
+    //follow game methods
+    followMove: function () {
+      let moveInterval = setInterval(() => {
+        if (this.followGoalLeft > this.followLeft) {
+          this.followLeft += 1;
+        }
+        if (this.followGoalLeft < this.followLeft) {
+          this.followLeft -= 1;
+        }
+        if (this.followGoalTop > this.followTop) {
+          this.followTop += 1;
+        }
+        if (this.followGoalTop < this.followTop) {
+          this.followTop -= 1;
+        }
+
+        if (
+          this.followGoalLeft > this.followLeft - 5 &&
+          this.followGoalLeft < this.followLeft + 5 &&
+          this.followGoalTop > this.followTop - 5 &&
+          this.followGoalTop < this.followTop + 5
+        ) {
+          this.followGoalLeft = 5 + Math.random() * 450;
+          this.followGoalTop = 5 + Math.random() * 450;
+        }
+      }, 10);
+
+      this.followScore += 1;
     },
   },
 
