@@ -823,6 +823,7 @@ Vue.createApp({
         }, 1000);
       } else {
         // when the game is over, display the average reaction time for the user.
+        console.log("setting score...");
         this.calculateAverageReaction();
         let newScore = {
           game: this.page,
@@ -879,8 +880,11 @@ Vue.createApp({
     calculateAverageReaction: function () {
       for (let reaction of this.userReactions) {
         this.averageReaction += reaction;
+        console.log(reaction);
       }
+      console.log("avg:" + this.averageReaction);
       this.averageReaction = this.averageReaction / 10;
+      console.log("avg after dividing: " + this.averageReaction);
     },
 
     //Minesweeper game methods
@@ -1077,7 +1081,8 @@ Vue.createApp({
     unhideMinesweeperCell: function (x, y) {
       if (
         !this.minesweeperBoard.cells[x][y].isFlagged &&
-        this.minesweeperGameState === "playing"
+        this.minesweeperGameState === "playing" &&
+        this.minesweeperBoard.cells[x][y].isHidden
       ) {
         this.minesweeperBoard.cells[x][y].isHidden = false;
 
