@@ -404,6 +404,18 @@
         </div>
       </div>
 
+      
+      <!-- Rock Paper Scissors Game-->
+      <div class="page" v-if="page === 'Rock Paper Scissors'">
+        <div class="sectionContainer">
+          <p>Score: {{rpsScore}}</p>
+          <button @click="rpsScore = 0">Reset</button>
+          <div class="rpsGrid">
+            <div class="rpsOption" v-for="(option, indx) in rpsOptions" :style=" {backgroundColor: option.clr}" @click="rpsTurn(indx)" @mouseover="rpsHover(indx)">{{option.name}}</div>
+          </div>
+        </div>
+      </div>
+
       <!-- colors game -->
       <div v-if="page === 'Colors'">
         

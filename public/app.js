@@ -92,8 +92,12 @@ Vue.createApp({
             "https://th.bing.com/th/id/R.4308644e731c4f56b19823c863b31a76?rik=7wUsOZfliw0Itg&riu=http%3a%2f%2fstatic1.mbtfiles.co.uk%2fmedia%2fdocs%2fnewdocs%2fgcse%2fmaths%2falgebra%2fnumber_stairs_grids_and_sequences%2f29098%2fhtml%2fimages%2fimage00.png&ehk=EtnoE9LetG1PN%2bxCv2yixJmtzoPQDj3c1233DrF2QG4%3d&risl=&pid=ImgRaw&r=0",
         },
 
+        {
+          name: "Rock Paper Scissors",
+          image:
+            "https://th.bing.com/th/id/OIP.UVxX0_SDu_b5ryjTAvEETQHaFm?rs=1&pid=ImgDetMain",
+        },
         { name: "", image: "" },
-        { name: "10", image: "" },
       ],
 
       scores: [],
@@ -434,6 +438,26 @@ Vue.createApp({
         length: 5,
         cells: [],
       },
+
+      //rock paper scissors game variables
+      rpsOptions: [
+        { name: "Rock", clr: "" },
+        { name: "Paper", clr: "" },
+        { name: "Scissors", clr: "" },
+        { name: "Programmer", clr: "" },
+        { name: "Spider", clr: "" },
+        { name: "Sheep", clr: "" },
+        { name: "Water", clr: "" },
+        { name: "Megaphone", clr: "" },
+        { name: "Squirrel", clr: "" },
+        { name: "Frog", clr: "" },
+        { name: "Hammer", clr: "" },
+        { name: "Sponge", clr: "" },
+        { name: "Hand", clr: "" },
+        { name: "Gun", clr: "" },
+        { name: "Vaccine", clr: "" },
+      ],
+      rpsScore: 0,
     };
   },
 
@@ -2241,6 +2265,50 @@ Vue.createApp({
         this.slideTurns = 0;
       }
       this.lastSlideAction = "scramble";
+    },
+
+    //Rock Paper Scissors Game Methods
+    rpsTurn: function (indx) {
+      let userChoice = indx;
+      let opponentChoice = Math.round(
+        Math.random() * (this.rpsOptions.length - 1)
+      );
+
+      this.rpsHover(userChoice);
+
+      if (this.rpsOptions[opponentChoice].clr == "GREEN") {
+        this.rpsScore += 1;
+        let newScore = {
+          game: this.page,
+          value: this.rpsScore,
+          user: this.currentUser._id,
+        };
+        this.setScore(newScore);
+      }
+      if (this.rpsOptions[opponentChoice].clr == "RED") {
+        this.rpsScore -= 1;
+      }
+
+      this.rpsOptions[opponentChoice].clr = "BLUE";
+    },
+
+    rpsHover: function (indx) {
+      let userChoice = indx;
+      for (let i = 0; i < this.rpsOptions.length; i += 1) {
+        this.rpsOptions[i].clr = "";
+
+        let pos = userChoice + 1;
+        this.rpsOptions[i].clr = "RED";
+        for (let j = 0; j < (this.rpsOptions.length - 1) / 2; j += 1) {
+          if (pos > this.rpsOptions.length - 1) {
+            pos = 0;
+          }
+          this.rpsOptions[pos].clr = "GREEN";
+
+          pos += 1;
+        }
+        this.rpsOptions[userChoice].clr = "";
+      }
     },
   },
 
