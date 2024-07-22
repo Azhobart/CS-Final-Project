@@ -434,7 +434,7 @@
 
         <div id="reactionWrapper">
           <div id="reactionBox" @click="countdown()">
-
+            <p v-if="startReactionGame">Start Game</p>
             <p v-if="ready">Ready</p>
             <p v-if="getSet">Get Set</p>
             <p v-if="draw">Draw!</p>

@@ -131,6 +131,7 @@ Vue.createApp({
       reactionSound: new Audio("reactionSounds/ricochet.mp3"),
 
       reactionGameOver: false,
+      startReactionGame: true,
       ready: false,
       getSet: false,
       draw: false,
@@ -808,6 +809,7 @@ Vue.createApp({
 
     //reaction game methods
     countdown: function () {
+      this.startReactionGame = false; 
       window.addEventListener("keydown", this.getReaction);
       if (this.reactionGameOver === false) {
         let countdownOne = 0;
@@ -870,6 +872,10 @@ Vue.createApp({
         window.removeEventListener("keydown", this.getReaction);
         this.userReactions = [];
         this.averageReaction = 0;
+        this.reactionGameOver = false;
+        this.draw = false;
+        this.startReactionGame = true;
+        this.timeIndex = 0;
         
         
       }
