@@ -234,13 +234,6 @@ Vue.createApp({
         // goblin - 1, 2, 3, 5, 5
         // spider - 2, 2, 2, 2, 2, 8, 8, 8
         // dragon - 0, 5, 5, 5, 10, 10
-<<<<<<< HEAD
-        enemy: ["slime", "rat", "goblin", "rat",  "slime", "goblin", "rat", "spider", "goblin", "spider", "rat", "dragon"],
-        // attack2 - +2 to your dice roll
-        // secondChance - second chance to roll (if enemy previously beat you)
-        // double - double dice roll value
-        potion: ["attack2", "attack2", "attack2", "secondChance", "attack2", "attack2", "attack2", "secondChance", "attack2", "attack2", "attack2", "double", "attack2", "attack2"]
-=======
         enemy: [
           "slime",
           "rat",
@@ -255,7 +248,26 @@ Vue.createApp({
           "rat",
           "dragon",
         ],
->>>>>>> 433783806e3e68151ef0515bdb54162a01fbc3f1
+        // attack2 - +2 to your dice roll
+        // secondChance - second chance to roll (if enemy previously beat you)
+        // double - double dice roll value
+        potion: [
+          "attack2", 
+          "attack2", 
+          "attack2", 
+          "secondChance", 
+          "attack2", 
+          "attack2", 
+          "attack2", 
+          "secondChance", 
+          "attack2", 
+          "attack2", 
+          "attack2", 
+          "double", 
+          "attack2", 
+          "attack2"
+        ],
+
       },
 
       
@@ -794,10 +806,12 @@ Vue.createApp({
       }
     },
 
+
+
+
     //reaction game methods
     countdown: function () {
       window.addEventListener("keydown", this.getReaction);
-
       if (this.reactionGameOver === false) {
         let countdownOne = 0;
         let countdownTwo = 0;
@@ -852,9 +866,14 @@ Vue.createApp({
           value: this.averageReaction,
           user: this.currentUser._id,
         };
-        this.finishGame(newScore);
+        if (this.averageReaction > 0) {
+          this.finishGame(newScore);
+        }
+        window.removeEventListener("keydown", this.getReaction);
         this.userReactions = [];
         this.averageReaction = 0;
+        
+        
       }
     },
 
@@ -900,10 +919,16 @@ Vue.createApp({
     },
 
     calculateAverageReaction: function () {
+  
       for (let reaction of this.userReactions) {
         this.averageReaction += reaction;
       }
-      this.averageReaction = this.averageReaction / 10;
+
+      if (this.averageReaction > 0) {
+        this.averageReaction = this.averageReaction / 10;
+      } else {
+        return;
+      }
     },
 
     //Minesweeper game methods
@@ -2235,7 +2260,6 @@ Vue.createApp({
   created: function () {
     this.getSession();
     this.getScores();
-    console.log(3 % 3)
 
     //minesweeper setup
     this.beginMinesweeperGame();
