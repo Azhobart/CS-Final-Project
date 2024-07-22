@@ -65,16 +65,24 @@ Vue.createApp({
         {
           name: "Battleship",
           image:
-            "https://www.hasbro.com/common/productimages/en_US/54D1C85ECFBE46259A9E53C36F4D136C/c386e8608f9409166a4409b11ace173f5f504449.jpg",
+            "https://th.bing.com/th/id/R.a8f131f7b7d24a3d990dc17fe29326c1?rik=MwYHjNCretMvcg&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fbattleship-png-hd-battleship-clipart-cartoon-4-2400.png&ehk=jSgaoZX7HRX55R8ptCa6Dv8UWnZwCh%2fh7smWn178KWo%3d&risl=&pid=ImgRaw&r=0",
         },
-        { name: "Colors", image: "" },
+        {
+          name: "Colors",
+          image:
+            "https://pluspng.com/img-png/png-paint-palette-paint-palette-icon-1600.png",
+        },
 
         {
           name: "Prisoner's Dilemma",
           image:
             "https://www.clipartkey.com/mpngs/m/324-3244570_transparent-clipart-prisoner-behind-bars-cartoon.png",
         },
-        { name: "Draw!", image: "" },
+        {
+          name: "Draw!",
+          image:
+            "https://th.bing.com/th/id/R.d1c236fa8d00b01451fff17c37d4bf22?rik=vN%2f%2fZT%2fz954HpQ&pid=ImgRaw&r=0",
+        },
         {
           name: "Minesweeper",
           image:
@@ -84,12 +92,12 @@ Vue.createApp({
         {
           name: "Sandbox",
           image:
-            "https://th.bing.com/th/id/R.dc26bf85d855a70b5bfcdcf586e78bf6?rik=tU2N%2fq3klWAb0w&pid=ImgRaw&r=0",
+            "https://th.bing.com/th/id/OIP.8dAUyYj6EphGe6XQfcLo0gHaLG?rs=1&pid=ImgDetMain",
         },
         {
           name: "Slide",
           image:
-            "https://th.bing.com/th/id/R.4308644e731c4f56b19823c863b31a76?rik=7wUsOZfliw0Itg&riu=http%3a%2f%2fstatic1.mbtfiles.co.uk%2fmedia%2fdocs%2fnewdocs%2fgcse%2fmaths%2falgebra%2fnumber_stairs_grids_and_sequences%2f29098%2fhtml%2fimages%2fimage00.png&ehk=EtnoE9LetG1PN%2bxCv2yixJmtzoPQDj3c1233DrF2QG4%3d&risl=&pid=ImgRaw&r=0",
+            "https://th.bing.com/th/id/R.c8dde0b2e84d0a550ab209772e281b0b?rik=iGwYiJWbSifRrg&pid=ImgRaw&r=0",
         },
 
         {
