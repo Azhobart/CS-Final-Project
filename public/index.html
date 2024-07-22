@@ -449,21 +449,32 @@
 
       <!-- dungeon crawler dice game -->
       <div v-if="page === 'groB'">
+        
         <div id="grobWrapper">
+          <!-- user/game info -->
           <div id="gameStats">
             <h1>Current Dice: {{ currentDice.name }}</h1>
             <h1>Floor {{ floorLevel }}</h1>
             <h1>Current Potion: {{ currentPotion.name }}</h1>
+
+            <!-- game messages -->
+            <div class="grobMessageField">
+              <h1 v-if="diceMessage">{{addedDice.name}} Dice Acquired!</h1>
+              <h1 v-if="enemyMessage">{{randomEnemy}} Encountered!</h1>
+              <h1 v-if="potionMessage">{{addedPotion.name}} Potion Obtained!</h1>
+            </div>
+
           </div>
 
 
-
+          <!-- doors -->
           <div id="doors" v-if="!isBattling">
             <div class="grobDoor" @click="getDoorItem()"></div>
             <div class="grobDoor" @click="getDoorItem()"></div>
             <div class="grobDoor" @click="getDoorItem()"></div>
           </div>
 
+          <!-- battle area -->
           <div id="battleWrapper" v-if="isBattling">
             <div id="battleField">
               <div class="spriteField">
@@ -488,6 +499,7 @@
             <h2 id="battleButton" @click="battleEnemy()">Battle!</h2>
           </div>
 
+          <!-- User items -->
           <div id="userActions">
             <div id="diceSpace">
               <h2 @click="viewDice()">Dice</h2>
@@ -511,8 +523,10 @@
           <div id="potionBag" v-if="potionBox">
             <div class="grobPotion" 
             v-for="(potion, index) in potions" 
-            @click="setCurrentPotion(index)">
-              {{ potion.name }}
+            @click="setCurrentPotion(index)"
+            @dblclick="togglePotionDescription()">
+              <div v-if="!potionDescription">{{ potion.name }}</div>
+              <div v-if="potionDescription"> {{potion.description}} </div>
             </div>
           </div>
 

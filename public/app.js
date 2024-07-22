@@ -203,6 +203,7 @@ Vue.createApp({
       floorLevel: 1,
       diceBox: false,
       potionBox: false,
+      potionDescription: false,
       isBattling: false,
 
       // first value within dice is the user's starting dice.
@@ -239,18 +240,18 @@ Vue.createApp({
         // spider - 2, 2, 2, 2, 2, 8, 8, 8
         // dragon - 0, 5, 5, 5, 10, 10
         enemy: [
-          "slime",
-          "rat",
-          "goblin",
-          "rat",
-          "slime",
-          "goblin",
-          "rat",
-          "spider",
-          "goblin",
-          "spider",
-          "rat",
-          "dragon",
+          "Slime",
+          "Rat",
+          "Goblin",
+          "Rat",
+          "Slime",
+          "Goblin",
+          "Rat",
+          "Spider",
+          "Goblin",
+          "Spider",
+          "Rat",
+          "Dragon",
         ],
         // attack2 - +2 to your dice roll
         // secondChance - second chance to roll (if enemy previously beat you)
@@ -291,6 +292,16 @@ Vue.createApp({
       currentPotion: {
         name: "None",
       },
+
+      diceMessage: false,
+      addedDice: null,
+      potionMessage: false,
+      addedPotion: null,
+      enemyMessage: false,
+
+      
+
+
 
       //Tic Tac Toe Game variable
       tictactoeBoard: [
@@ -1717,6 +1728,49 @@ Vue.createApp({
       this.diceBox = false;
     },
 
+    togglePotionDescription: function () {
+      this.potionDescription = !this.potionDescription
+    },
+
+    displayDiceMessage: function (dice) {
+      this.addedDice = dice;
+      this.diceMessage = true;
+      let count = 0;
+      var message = setInterval(() => {
+        if (count === 2) {
+          this.diceMessage = false;
+          clearInterval(message);
+        }
+        count++
+      }, 300);
+    },
+
+    displayEnemyMessage: function () {
+      this.enemyMessage = true;
+      let count = 0;
+      var message = setInterval(() => {
+        if (count === 2) {
+          this.enemyMessage = false;
+          clearInterval(message);
+        }
+        count++
+      }, 300);
+    },
+
+    displayPotionMessage: function (potion) {
+      this.addedPotion = potion
+      this.potionMessage = true;
+      let count = 0;
+      var message = setInterval(() => {
+        if (count === 2) {
+          this.potionMessage = false;
+          clearInterval(message);
+        }
+        count++
+      }, 300);
+    },
+
+
     getDoorItem: function () {
       let floorItem = ["dice", "enemy"];
       let diceIndex = Math.floor(Math.random() * this.doorItems.dice.length);
@@ -1743,6 +1797,7 @@ Vue.createApp({
         this.createDice();
       } else if (floorItem === "enemy") {
         this.randomEnemy = this.doorItems.enemy[enemyIndex];
+        this.displayEnemyMessage();
         console.log(this.randomEnemy);
         this.setUpBattle();
       } else if (floorItem === "potion") {
@@ -1761,6 +1816,7 @@ Vue.createApp({
           rollValue: 0,
         };
         this.dice.push(dice2);
+        this.displayDiceMessage(dice2);
         this.floorLevel++;
       }
 
@@ -1772,6 +1828,7 @@ Vue.createApp({
           rollValue: 0,
         };
         this.dice.push(dice6);
+        this.displayDiceMessage(dice6);
         this.floorLevel++;
       }
 
@@ -1783,6 +1840,7 @@ Vue.createApp({
           rollValue: 0,
         };
         this.dice.push(dice7);
+        this.displayDiceMessage(dice7);
         this.floorLevel++;
       }
 
@@ -1794,13 +1852,14 @@ Vue.createApp({
           rollValue: 0,
         };
         this.dice.push(dice10);
+        this.displayDiceMessage(dice10);
         this.floorLevel++;
       }
     },
 
     setUpBattle: function () {
       this.isBattling = true;
-      if (this.randomEnemy === "rat") {
+      if (this.randomEnemy === "Rat") {
         this.enemyDice = {
           name: "Rat Dice",
           sides: 3,
@@ -1810,7 +1869,7 @@ Vue.createApp({
         console.log(this.enemyDice.name);
       }
 
-      if (this.randomEnemy === "slime") {
+      if (this.randomEnemy === "Slime") {
         this.enemyDice = {
           name: "Slime Dice",
           sides: 4,
@@ -1820,7 +1879,7 @@ Vue.createApp({
         console.log(this.enemyDice.name);
       }
 
-      if (this.randomEnemy === "goblin") {
+      if (this.randomEnemy === "Goblin") {
         this.enemyDice = {
           name: "Goblin Dice",
           sides: 5,
@@ -1830,7 +1889,7 @@ Vue.createApp({
         console.log(this.enemyDice.name);
       }
 
-      if (this.randomEnemy === "spider") {
+      if (this.randomEnemy === "Spider") {
         this.enemyDice = {
           name: "Spider Dice",
           sides: 8,
@@ -1840,7 +1899,7 @@ Vue.createApp({
         console.log(this.enemyDice.name);
       }
 
-      if (this.randomEnemy === "dragon") {
+      if (this.randomEnemy === "Dragon") {
         this.enemyDice = {
           name: "Dragon Dice",
           sides: 6,
@@ -1855,24 +1914,30 @@ Vue.createApp({
       if (this.randomPotion === "attack2") {
         let attack2 = {
           name: "Attack Up",
+          description: "+2 to your roll."
         };
         this.potions.push(attack2);
+        this.displayPotionMessage(attack2);
         this.floorLevel++;
       }
 
       if (this.randomPotion === "secondChance") {
         let secondChance = {
           name: "Retake",
+          description: "Protects the user from losing their current dice for a single roll."
         };
         this.potions.push(secondChance);
+        this.displayPotionMessage(secondChance);
         this.floorLevel++;
       }
 
       if (this.randomPotion === "double") {
         let double = {
           name: "Double Up",
+          description: "Double your roll."
         };
         this.potions.push(double);
+        this.displayPotionMessage(double);
         this.floorLevel++;
       }
     },
@@ -1902,10 +1967,12 @@ Vue.createApp({
               if (count === 2) {
                 clearInterval(displayPotion);
                 this.potionEffect = false;
+                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
                 this.currentPotion = {
                   name: "None",
                 };
                 this.compareRoll();
+                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
               }
             }, 500);
           } else if (this.currentPotion.name === "Double Up") {
@@ -1918,10 +1985,12 @@ Vue.createApp({
               if (count === 2) {
                 clearInterval(displayPotion);
                 this.potionEffect = false;
+                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
                 this.currentPotion = {
                   name: "None",
                 };
                 this.compareRoll();
+                
               }
             }, 500);
           } else {
@@ -1953,19 +2022,72 @@ Vue.createApp({
           if (count === 2) {
             clearInterval(displayPotion);
             this.potionEffect = false;
+            this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
             this.currentPotion = {
               name: "None",
             };
+            
           }
         }, 500);
         return;
       }
     },
 
+    resetGrobGame: function () {
+      // reset everything back to its default value (defined in the data section of vue)
+      this.floorLevel = 1;
+      this.diceBox = false;
+      this.potionBox = false;
+      this.isBattling = false;
+
+      this.dice = [
+        {
+          name: "Dice",
+          sides: 6,
+          values: [1, 2, 3, 4, 5, 6],
+          rollValue: 0,
+        },
+      ];
+
+      this.potions = [];
+
+      this.randomDice = null;
+      this.randomEnemy = null;
+      this.randomPotion = null;
+      this.enemyDice = null;
+
+      this.currentDice = {
+        name: "Dice",
+        sides: 6,
+        values: [1, 2, 3, 4, 5, 6],
+        rollValue: 0,
+      };
+      this.potionEffect = false;
+      this.currentPotion = {
+        name: "None",
+      };
+
+      this.diceMessage = false;
+      this.addedDice = null;
+      this.potionMessage = false;
+      this.addedPotion = null;
+      this.enemyMessage = false;
+
+
+
+    },
+
     removeDice: function () {
       this.dice.splice(this.dice.indexOf(this.currentDice), 1);
       if (this.dice.length === 0) {
-        console.log("Game Over!");
+        let newScore = {
+          game: this.page,
+          value: this.floorLevel,
+          user: this.currentUser._id,
+        };
+        this.finishGame(newScore);
+        this.resetGrobGame();
+        
       } else {
         this.currentDice.rollValue = 0;
         this.enemyDice.rollValue = 0;
@@ -1981,6 +2103,10 @@ Vue.createApp({
       this.currentPotion = this.potions[index];
       console.log(`Current Potion: ${this.currentPotion.name}`);
     },
+
+
+
+
 
     //sandbox methods
     resetSandboxBoard: function () {

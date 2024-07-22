@@ -645,6 +645,16 @@ body {
   border-color: var(--extra-light-green);
 }
 
+
+.grobMessageField {
+  height: 40px;
+  grid-column: 1 / -1;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
 /* styling for the battle system (page) */
 #battlePage {
   display: flex;
