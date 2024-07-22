@@ -212,7 +212,6 @@ Vue.createApp({
 
       potions: [],
 
-
       doorItems: {
         // dice 6: 6, 2, 3, 2, 6
         // dice10: 0, 10
@@ -270,7 +269,6 @@ Vue.createApp({
 
       },
 
-      
       randomDice: null,
       randomEnemy: null,
       randomPotion: null,
@@ -282,13 +280,12 @@ Vue.createApp({
         values: [1, 2, 3, 4, 5, 6],
         rollValue: 0,
       },
-      
+
       potionEffect: false,
       // set the current potion to none when the game is opened.
       currentPotion: {
         name: "None",
       },
-      
 
       //Tic Tac Toe Game variable
       tictactoeBoard: [
@@ -860,6 +857,7 @@ Vue.createApp({
         }, 1000);
       } else {
         // when the game is over, display the average reaction time for the user.
+        console.log("setting score...");
         this.calculateAverageReaction();
         let newScore = {
           game: this.page,
@@ -922,6 +920,7 @@ Vue.createApp({
   
       for (let reaction of this.userReactions) {
         this.averageReaction += reaction;
+        console.log(reaction);
       }
 
       if (this.averageReaction > 0) {
@@ -1125,7 +1124,8 @@ Vue.createApp({
     unhideMinesweeperCell: function (x, y) {
       if (
         !this.minesweeperBoard.cells[x][y].isFlagged &&
-        this.minesweeperGameState === "playing"
+        this.minesweeperGameState === "playing" &&
+        this.minesweeperBoard.cells[x][y].isHidden
       ) {
         this.minesweeperBoard.cells[x][y].isHidden = false;
 
@@ -1587,7 +1587,6 @@ Vue.createApp({
       }
     },
 
-
     //tic tac toe methods
     resetTictactoe: function () {
       for (let i = 0; i < 3; i += 1) {
@@ -1687,32 +1686,36 @@ Vue.createApp({
       let floorItem = ["dice", "enemy"];
       let diceIndex = Math.floor(Math.random() * this.doorItems.dice.length);
       let enemyIndex = Math.floor(Math.random() * this.doorItems.enemy.length);
-      let potionIndex = Math.floor(Math.random() * this.doorItems.potion.length);
+      let potionIndex = Math.floor(
+        Math.random() * this.doorItems.potion.length
+      );
 
       if (this.floorLevel % 5 === 1) {
         floorItem = "dice";
-      } else if (this.floorLevel % 5 === 2 || this.floorLevel % 5 === 0 || this.floorLevel % 5 === 4) {
+      } else if (
+        this.floorLevel % 5 === 2 ||
+        this.floorLevel % 5 === 0 ||
+        this.floorLevel % 5 === 4
+      ) {
         floorItem = "enemy";
       } else if (this.floorLevel % 5 === 3) {
         floorItem = "potion";
       }
 
       if (floorItem === "dice") {
-        this.randomDice = this.doorItems.dice[diceIndex]
+        this.randomDice = this.doorItems.dice[diceIndex];
         console.log(this.randomDice);
         this.createDice();
       } else if (floorItem === "enemy") {
-        this.randomEnemy = this.doorItems.enemy[enemyIndex]
+        this.randomEnemy = this.doorItems.enemy[enemyIndex];
         console.log(this.randomEnemy);
         this.setUpBattle();
       } else if (floorItem === "potion") {
         this.randomPotion = this.doorItems.potion[potionIndex];
         console.log(this.randomPotion);
         this.getPotion();
-      };
-
+      }
     },
-
 
     createDice: function () {
       if (this.randomDice === "dice2") {
@@ -1817,42 +1820,37 @@ Vue.createApp({
       if (this.randomPotion === "attack2") {
         let attack2 = {
           name: "Attack Up",
-
-        }
+        };
         this.potions.push(attack2);
         this.floorLevel++;
-      };
+      }
 
       if (this.randomPotion === "secondChance") {
         let secondChance = {
           name: "Retake",
-
-        }
+        };
         this.potions.push(secondChance);
         this.floorLevel++;
-      };
+      }
 
       if (this.randomPotion === "double") {
         let double = {
           name: "Double Up",
-        }
+        };
         this.potions.push(double);
         this.floorLevel++;
       }
     },
 
     battleEnemy: function () {
-
       let userRoll = Math.floor(Math.random() * this.currentDice.values.length);
       let enemyRoll = Math.floor(Math.random() * this.enemyDice.values.length);
 
-      
       let rollCount = 0;
 
       let rollInterval = setInterval(() => {
-
-        this.currentDice.rollValue = this.currentDice.values[userRoll]
-        this.enemyDice.rollValue = this.enemyDice.values[enemyRoll]
+        this.currentDice.rollValue = this.currentDice.values[userRoll];
+        this.enemyDice.rollValue = this.enemyDice.values[enemyRoll];
 
         if (rollCount > 10) {
           clearInterval(rollInterval);
@@ -1865,44 +1863,38 @@ Vue.createApp({
             let count = 0;
 
             let displayPotion = setInterval(() => {
-              count++
+              count++;
               if (count === 2) {
                 clearInterval(displayPotion);
                 this.potionEffect = false;
                 this.currentPotion = {
                   name: "None",
-                }
+                };
                 this.compareRoll();
               }
-            }, 500)
-              
+            }, 500);
+          } else if (this.currentPotion.name === "Double Up") {
+            this.potionEffect = true;
+            this.currentDice.rollValue *= 2;
+            let count = 0;
 
-            } else if (this.currentPotion.name === "Double Up") {
-              this.potionEffect = true;
-              this.currentDice.rollValue *= 2;
-              let count = 0;
-
-              let displayPotion = setInterval(() => {
-                count++
-                if (count === 2) {
-                  clearInterval(displayPotion);
-                  this.potionEffect = false;
-                  this.currentPotion = {
-                    name: "None",
-                  }
-                  this.compareRoll();
-                }
-              }, 500)
-              
-            } else {
-              this.compareRoll();
-            }
-
-          
-        };
-          rollCount++;
+            let displayPotion = setInterval(() => {
+              count++;
+              if (count === 2) {
+                clearInterval(displayPotion);
+                this.potionEffect = false;
+                this.currentPotion = {
+                  name: "None",
+                };
+                this.compareRoll();
+              }
+            }, 500);
+          } else {
+            this.compareRoll();
+          }
+        }
+        rollCount++;
       }, 50);
-
     },
 
     compareRoll: function () {
@@ -1912,36 +1904,37 @@ Vue.createApp({
         this.enemyDice.rollValue = 0;
         this.isBattling = false;
         this.floorLevel++;
-        
-      } else if (this.enemyDice.rollValue >= this.currentDice.rollValue && this.currentPotion.name !== "Retake") {
+      } else if (
+        this.enemyDice.rollValue >= this.currentDice.rollValue &&
+        this.currentPotion.name !== "Retake"
+      ) {
         this.removeDice();
         this.currentDice = this.dice[0];
       } else {
         this.potionEffect = true;
         let count = 0;
         let displayPotion = setInterval(() => {
-          count++
+          count++;
           if (count === 2) {
             clearInterval(displayPotion);
             this.potionEffect = false;
             this.currentPotion = {
               name: "None",
-            }
+            };
           }
-        }, 500)
+        }, 500);
         return;
-      };
+      }
     },
 
     removeDice: function () {
       this.dice.splice(this.dice.indexOf(this.currentDice), 1);
       if (this.dice.length === 0) {
-        console.log("Game Over!")
+        console.log("Game Over!");
       } else {
         this.currentDice.rollValue = 0;
         this.enemyDice.rollValue = 0;
       }
-
     },
 
     setCurrentDice: function (index) {
@@ -1953,9 +1946,6 @@ Vue.createApp({
       this.currentPotion = this.potions[index];
       console.log(`Current Potion: ${this.currentPotion.name}`);
     },
-
-
-
 
     //sandbox methods
     resetSandboxBoard: function () {
