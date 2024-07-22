@@ -685,6 +685,7 @@ Vue.createApp({
     finishGame: async function (score) {
       this.setPage("finished game");
       this.lastAchievedScore = score;
+      this.setScore(score);
     },
 
     rotate2dArrayClockwise: function (arr) {
