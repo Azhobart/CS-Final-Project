@@ -119,6 +119,10 @@ Vue.createApp({
       finalColorsScore: 0,
       colorGameOver: false,
       colorGameStart: false,
+      cycleInterval: null,
+      transitionInterval: null,
+      
+
 
       //prisoners dilemma game variables
       prisonerScores: [0, 0],
@@ -439,6 +443,8 @@ Vue.createApp({
   methods: {
     setPage: function (newPage) {
       this.page = newPage;
+      this.resetReactionGame();
+      this.resetColorGame();
     },
 
     registerUser: async function () {
@@ -693,10 +699,7 @@ Vue.createApp({
           } else {
             this.finalColorsScore = this.activeColorsScore;
             this.colorGameOver = true;
-            this.userInput = [];
-            this.randomColor = "";
-            this.colorSequence = [];
-            this.activeColorsScore = 0;
+            this.resetColorGame();
 
             let newColorsScore = {
               game: this.page,
@@ -705,15 +708,30 @@ Vue.createApp({
             };
 
             this.finishGame(newColorsScore);
+            this.colorGameOver = false;
           }
         }
       }
     },
 
+    resetColorGame: function () {
+      clearInterval(this.cycleInterval);
+      clearInterval(this.transitionInterval);
+      this.colorGameStart = false;
+      this.userInput = [];
+      this.randomColor = "";
+      this.colorSequence = [];
+      this.activeColorsScore = 0;
+    },
+
     cycleColors: function () {
       this.colorGameStart = true;
       let count = 0;
-      var cycle = setInterval(() => {
+      this.cycleInterval = setInterval(() => {
+        if (this.colorGameOver) {
+          this.resetColorGame();
+
+        }
         this.userInput = [];
         console.log(this.colorSequence);
         this.randomColor = this.colorSequence[count];
@@ -730,9 +748,9 @@ Vue.createApp({
           this.greenSound.play();
         }
 
-        var transition = setInterval(() => {
+        this.transitionInterval = setInterval(() => {
           this.randomColor = "#739072";
-          clearInterval(transition);
+          clearInterval(this.transitionInterval);
         }, 500);
         console.log(this.randomColor);
 
@@ -740,8 +758,11 @@ Vue.createApp({
 
         if (count === this.colorSequence.length) {
           count = 0;
-          clearInterval(cycle);
+          clearInterval(this.cycleInterval);
         }
+
+
+       
       }, 1000);
     },
 
@@ -870,13 +891,7 @@ Vue.createApp({
           this.finishGame(newScore);
         }
         window.removeEventListener("keydown", this.getReaction);
-        this.userReactions = [];
-        this.averageReaction = 0;
-        this.reactionGameOver = false;
-        this.draw = false;
-        this.startReactionGame = true;
-        this.timeIndex = 0;
-        
+        this.resetReactionGame();
         
       }
     },
@@ -935,6 +950,20 @@ Vue.createApp({
         return;
       }
     },
+
+    resetReactionGame: function () {
+      this.userReactions = [];
+      this.averageReaction = 0;
+      this.timeIndex = 0;
+      this.reactionGameOver = false;
+      this.ready = false;
+      this.getSet = false;
+      this.draw = false;
+      this.startReactionGame = true;
+    },
+
+
+
 
     //Minesweeper game methods
     addMinesweeperRow: function () {
