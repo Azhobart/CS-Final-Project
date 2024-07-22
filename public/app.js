@@ -171,6 +171,7 @@ Vue.createApp({
 
       minesweeperScore: 0,
       minesweeperMineChance: 8,
+      minesweeperBoardMineChance: 8,
       minesweeperGameState: "playing",
 
       //Battleship game variables
@@ -1004,6 +1005,7 @@ Vue.createApp({
     resetMinesweeperBoard: function () {
       this.minesweeperBoard.cells = [];
       this.minesweeperBoard.height = 0;
+      this.minesweeperBoardMineChance = this.minesweeperMineChance;
       for (let i = 0; i < this.minesweeperBoard.width; i += 1) {
         this.addMinesweeperRow();
       }
@@ -1187,7 +1189,13 @@ Vue.createApp({
           this.minesweeperGameState = "lost";
           let newMinesweeperScore = {
             game: this.page,
-            value: this.minesweeperScore,
+            value:
+              Math.round(
+                (1 +
+                  this.minesweeperScore /
+                    (this.minesweeperBoardMineChance / 8)) *
+                  100
+              ) / 100,
             user: this.currentUser._id,
           };
           this.setScore(newMinesweeperScore);

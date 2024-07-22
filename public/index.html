@@ -250,7 +250,7 @@
       <div class="page" v-if="page === 'Minesweeper'">
         <div class="sectionContainer">
           <div class="row">
-            <p>Score: {{minesweeperScore}}</p>
+            <p>Score: {{Math.round((1+minesweeperScore/(minesweeperBoardMineChance/8))*100)/100}}</p>
             <button @click="beginMinesweeperGame()">Retry</button>
             <p>Mine Chance: 1/</p>
             <input type="number" v-model="minesweeperMineChance">
