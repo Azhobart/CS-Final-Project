@@ -43,6 +43,9 @@ const userSchema = Schema({
     required: [true, "User must have authAnswer."],
   },
   favoriteGame: String,
+  palette: {
+    type: String,
+  },
   scores: [{ type: Schema.Types.ObjectId, ref: "Score" }],
 });
 

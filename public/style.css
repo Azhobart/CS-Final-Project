@@ -692,7 +692,6 @@ body {
   border-color: var(--extra-light-green);
 }
 
-
 .grobMessageField {
   height: 40px;
   grid-column: 1 / -1;
@@ -896,5 +895,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+/* Guess The Number Game Styling */
+.gtnCell {
+  width: 250px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--light-green);
   }
 }

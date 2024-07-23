@@ -11,6 +11,7 @@
   <body class="container">
     <div id="app">
       <nav id="titleNav">
+        
         <h1>Online Arcade</h1>
       </nav>
       <nav id="subNav"
@@ -107,6 +108,7 @@
       <!-- home/game page -->
       <div class="page" v-if="page === 'home'">
         <div class="sectionContainer">
+          
           <div class="column">
             <div class="inputContainer row searchInput">
               <p>Search</p>
@@ -116,7 +118,7 @@
               <div class="row" v-for="(game, index) in filteredGames">
                 <div class="gameThumbnail column" @click="setPage(game.name)">
                   <div
-                    v-bind:style="{backgroundImage: 'url(' + game.image + ')'}"
+                  v-bind:style="{backgroundImage: 'url(\'' + game.image + '\')'}"
                   ></div>
                   <p>{{ game.name }}</p>
                 </div>
@@ -129,7 +131,10 @@
 
       <div v-if="page === 'profile'">
         <div class="sectionContainer">
+          
           <h1 class="title">{{currentUser.username}}'s Profile</h1>
+          
+         
           <h2 class="userTitle">User Data:</h2>
           <div class="profileData">
 
@@ -152,7 +157,11 @@
             <p>Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="currentUser.authAnswer">
             <span v-show="!isEditing">{{ currentUser.authAnswer }}</span>
 
-
+            <p>Color Palette:</p>
+            <select v-on:change="applyColor()" v-model="currentUser.palette"  v-show="isEditing" >
+              <option v-for="color in colorPaletteOptions" :value="color.value">{{color.name}}</option>
+            </select>
+            <span v-show="!isEditing">{{ currentUser.palette }}</span>
           </div>
           <h2 class="userTitle">Game Data:</h2>
           <div class="profileData">
@@ -165,6 +174,8 @@
               <p v-if="score.user._id == currentUser._id">{{score.game}}</p>
             </div>
           </div>
+          
+
           <div id="profileActions">
             <button @click="editProfile()">Edit</button>
             <button v-if="isEditing" @click="saveProfile()">Save</button>
@@ -290,7 +301,7 @@
         
         <div class="sectionContainer" style="width: 500px; height: 500px">
           <p>Score: {{followScore}}</p>
-          <div @click="followMove()" style="width: 50px; height: 50px; border-radius: 100%;" :style="{position: 'relative', top: followTop +'px', left: followLeft +'px', backgroundColor: 'var(--med-green)'}"></div>
+          <div @click="followClick()" style="width: 50px; height: 50px; border-radius: 100%;" :style="{position: 'relative', top: followTop +'px', left: followLeft +'px', backgroundColor: 'var(--med-green)'}"></div>
         </div>
       </div>
 
@@ -413,6 +424,25 @@
             <button @click="console.log(sandboxRules)">Print rules to console</button>
           </div>
         </div>
+      </div>
+
+      <div class="page" v-if="page === 'Guess The Number'">
+        <div class="sectionContainer column">
+          <p>Tries: {{gtnNumClicks}}</p>
+          <div class="row">
+            <div class="column">
+              <div v-for="clr in gtnDisplay" class="gtnCell" style="width: 50px;" :style="{backgroundColor: clr}"></div>
+            </div>
+            <div class="column">
+              <div v-for="num in 100" class="gtnCell" @click="gtnClick(-num+100)">{{-num+100}}</div>
+              
+            </div>
+            <div class="column">
+              <div v-for="clr in gtnDisplay" class="gtnCell" style="width: 50px;" :style="{backgroundColor: clr}"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       

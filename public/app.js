@@ -12,6 +12,7 @@ Vue.createApp({
         authAnswer: "",
         favoriteGame: "",
         scores: [],
+        palette: "",
       },
 
       currentUser: {},
@@ -23,6 +24,7 @@ Vue.createApp({
         authQuestion: "",
         authAnswer: "",
         favoriteGame: "",
+        palette: "",
       },
 
       regions: [
@@ -105,7 +107,8 @@ Vue.createApp({
           image:
             "https://th.bing.com/th/id/OIP.UVxX0_SDu_b5ryjTAvEETQHaFm?rs=1&pid=ImgDetMain",
         },
-        { name: "Follow", image: "" },
+        { name: "Follow", image: "/Images/CoolCatTMP.png" },
+        { name: "Guess The Number", image: "/Images/CoolCatTMP.png" },
       ],
 
       scores: [],
@@ -317,10 +320,6 @@ Vue.createApp({
       addedPotion: null,
       enemyMessage: false,
 
-      
-
-
-
       //Tic Tac Toe Game variable
       tictactoeBoard: [
         [" ", " ", " "],
@@ -490,9 +489,26 @@ Vue.createApp({
       //follow game variables
       followTop: 100,
       followLeft: 100,
-      followGoalTop: 0,
-      followGoalLeft: 0,
       followScore: 0,
+      followTimer: null,
+      followTime: 0,
+
+      //color palette variables
+      colorPicker: "#739072",
+      colorPaletteOptions: [
+        { name: "Original", value: "#739072" },
+        { name: "Sepia", value: "#938872" },
+        { name: "Cave", value: "#513E3E" },
+        { name: "Sea", value: "#427A65" },
+        { name: "Purple", value: "#7A4275" },
+        { name: "Deep Red", value: "#8D3535" },
+      ],
+
+      //guess the number game variables
+      gtnDisplay: [],
+      gtnNum: -1,
+      gtnGameOver: false,
+      gtnNumClicks: 0,
     };
   },
 
@@ -576,6 +592,7 @@ Vue.createApp({
         let data = await response.json();
         this.currentUser = await this.getUser(data.userID);
         this.setPage("home");
+        this.applyColor();
       } else {
         this.setPage("login");
       }
@@ -1790,7 +1807,7 @@ Vue.createApp({
           this.diceMessage = false;
           clearInterval(message);
         }
-        count++
+        count++;
       }, 300);
     },
 
@@ -1802,12 +1819,12 @@ Vue.createApp({
           this.enemyMessage = false;
           clearInterval(message);
         }
-        count++
+        count++;
       }, 300);
     },
 
     displayPotionMessage: function (potion) {
-      this.addedPotion = potion
+      this.addedPotion = potion;
       this.potionMessage = true;
       let count = 0;
       var message = setInterval(() => {
@@ -1815,10 +1832,9 @@ Vue.createApp({
           this.potionMessage = false;
           clearInterval(message);
         }
-        count++
+        count++;
       }, 300);
     },
-
 
     getDoorItem: function () {
       let floorItem = ["dice", "enemy"];
@@ -2053,12 +2069,18 @@ Vue.createApp({
               if (count === 2) {
                 clearInterval(displayPotion);
                 this.potionEffect = false;
-                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
+                this.potions.splice(
+                  this.potions.indexOf(this.currentPotion),
+                  1
+                );
                 this.currentPotion = {
                   name: "None",
                 };
                 this.compareRoll();
-                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
+                this.potions.splice(
+                  this.potions.indexOf(this.currentPotion),
+                  1
+                );
               }
             }, 500);
           } else if (this.currentPotion.name === "Double Up") {
@@ -2071,12 +2093,14 @@ Vue.createApp({
               if (count === 2) {
                 clearInterval(displayPotion);
                 this.potionEffect = false;
-                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
+                this.potions.splice(
+                  this.potions.indexOf(this.currentPotion),
+                  1
+                );
                 this.currentPotion = {
                   name: "None",
                 };
                 this.compareRoll();
-                
               }
             }, 500);
           } else {
@@ -2116,7 +2140,6 @@ Vue.createApp({
             this.currentPotion = {
               name: "None",
             };
-            
           }
         }, 500);
         return;
@@ -2165,9 +2188,6 @@ Vue.createApp({
       this.potionMessage = false;
       this.addedPotion = null;
       this.enemyMessage = false;
-
-
-
     },
 
     removeDice: function () {
@@ -2185,7 +2205,6 @@ Vue.createApp({
         this.finishGame(newScore);
         // reset values
         this.resetGrobGame();
-        
       } else {
         this.currentDice.rollValue = 0;
         this.enemyDice.rollValue = 0;
@@ -2201,10 +2220,6 @@ Vue.createApp({
       this.currentPotion = this.potions[index];
       console.log(`Current Potion: ${this.currentPotion.name}`);
     },
-
-
-
-
 
     //sandbox methods
     resetSandboxBoard: function () {
@@ -2527,33 +2542,118 @@ Vue.createApp({
     },
 
     //follow game methods
+    followClick: function () {
+      if (this.followTimer) {
+        this.followScore += 1;
+        this.followLeft = 5 + Math.random() * 450;
+        this.followTop = 5 + Math.random() * 450;
+      } else {
+        this.followTimer = setInterval(() => {
+          this.followMove();
+        }, 1000);
+      }
+    },
     followMove: function () {
-      let moveInterval = setInterval(() => {
-        if (this.followGoalLeft > this.followLeft) {
-          this.followLeft += 1;
-        }
-        if (this.followGoalLeft < this.followLeft) {
-          this.followLeft -= 1;
-        }
-        if (this.followGoalTop > this.followTop) {
-          this.followTop += 1;
-        }
-        if (this.followGoalTop < this.followTop) {
-          this.followTop -= 1;
-        }
+      this.followTime += 1;
+      if (this.followTimer) {
+        this.followLeft = 5 + Math.random() * 450;
+        this.followTop = 5 + Math.random() * 450;
 
-        if (
-          this.followGoalLeft > this.followLeft - 5 &&
-          this.followGoalLeft < this.followLeft + 5 &&
-          this.followGoalTop > this.followTop - 5 &&
-          this.followGoalTop < this.followTop + 5
-        ) {
-          this.followGoalLeft = 5 + Math.random() * 450;
-          this.followGoalTop = 5 + Math.random() * 450;
+        let newScore = {
+          game: this.page,
+          value: this.followScore,
+          user: this.currentUser._id,
+        };
+        if (this.followTime > 20) {
+          this.setScore(newScore);
+          this.followScore = 0;
+          this.followTime = 0;
+          clearInterval(this.followTimer);
+          this.followTimer = null;
         }
-      }, 10);
+      }
+    },
 
-      this.followScore += 1;
+    //color picker methods
+    applyColor: function () {
+      function splitColor(hex) {
+        return {
+          r: parseInt(hex.substr(1, 2), 16),
+          g: parseInt(hex.substr(3, 2), 16),
+          b: parseInt(hex.substr(5, 2), 16),
+        };
+      }
+
+      function concatColor(obj) {
+        return (
+          "#" + obj.r.toString(16) + obj.g.toString(16) + obj.b.toString(16)
+        );
+      }
+      let hexString = this.currentUser.palette.toString(16);
+
+      let extraLightSplit = splitColor(hexString);
+      extraLightSplit.r += 95;
+      extraLightSplit.g += 83;
+      extraLightSplit.b += 86;
+
+      let lightSplit = splitColor(hexString);
+      lightSplit.r += 19;
+      lightSplit.g += 23;
+      lightSplit.b += 23;
+
+      let medSplit = splitColor(hexString);
+
+      let darkSplit = splitColor(hexString);
+      darkSplit.r -= 36;
+      darkSplit.g -= 33;
+      darkSplit.b -= 32;
+
+      let cssRoot = document.querySelector(":root");
+      cssRoot.style.setProperty(
+        "--extra-light-green",
+        concatColor(extraLightSplit)
+      );
+      cssRoot.style.setProperty("--light-green", concatColor(lightSplit));
+      cssRoot.style.setProperty("--med-green", concatColor(medSplit));
+      cssRoot.style.setProperty("--dark-green", concatColor(darkSplit));
+    },
+
+    //guess the number methods
+    gtnClick: function (num) {
+      if (this.gtnNum == -1) {
+        this.gtnNum = Math.round(Math.random() * 99);
+        for (let i = 0; i < 100; i += 1) {
+          this.gtnDisplay[i] = "#0000";
+        }
+      } else {
+        this.gtnNumClicks += 1;
+      }
+      for (let i = 0; i < 100; i += 1) {
+        if (!this.gtnDisplay[i]) {
+          this.gtnDisplay[i] = "#0000";
+        }
+        if (num > this.gtnNum) {
+          if (i >= num) {
+            this.gtnDisplay[-i + 99] = "#d00";
+          }
+        }
+        if (num < this.gtnNum) {
+          if (i <= num) {
+            this.gtnDisplay[-i + 99] = "#d00";
+          }
+        }
+      }
+      if (num == this.gtnNum) {
+        this.gtnNum = -1;
+        let newScore = {
+          game: this.page,
+          value: -this.gtnNumClicks + 100,
+          user: this.currentUser._id,
+        };
+        this.setScore(newScore);
+        this.gtnNumClicks = 0;
+        this.gtnDisplay[-num + 99] = "#0f0";
+      }
     },
   },
 
