@@ -133,10 +133,8 @@
         <div class="sectionContainer">
           
           <h1 class="title">{{currentUser.username}}'s Profile</h1>
-          <select v-on:blur="applyColor()" v-model="currentUser.palette"  v-show="isEditing" >
-            <option v-for="color in colorPaletteOptions" :value="color.value">{{color.name}}</option>
-          </select>
-          <span v-show="!isEditing">{{ currentUser.palette }}</span>
+          
+         
           <h2 class="userTitle">User Data:</h2>
           <div class="profileData">
 
@@ -159,7 +157,11 @@
             <p>Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="currentUser.authAnswer">
             <span v-show="!isEditing">{{ currentUser.authAnswer }}</span>
 
-
+            <p>Color Palette:</p>
+            <select v-on:change="applyColor()" v-model="currentUser.palette"  v-show="isEditing" >
+              <option v-for="color in colorPaletteOptions" :value="color.value">{{color.name}}</option>
+            </select>
+            <span v-show="!isEditing">{{ currentUser.palette }}</span>
           </div>
           <h2 class="userTitle">Game Data:</h2>
           <div class="profileData">
@@ -172,6 +174,8 @@
               <p v-if="score.user._id == currentUser._id">{{score.game}}</p>
             </div>
           </div>
+          
+
           <div id="profileActions">
             <button @click="editProfile()">Edit</button>
             <button v-if="isEditing" @click="saveProfile()">Save</button>
