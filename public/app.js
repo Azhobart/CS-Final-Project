@@ -108,6 +108,7 @@ Vue.createApp({
             "https://th.bing.com/th/id/OIP.UVxX0_SDu_b5ryjTAvEETQHaFm?rs=1&pid=ImgDetMain",
         },
         { name: "Follow", image: "/Images/CoolCatTMP.png" },
+        { name: "Guess The Number", image: "/Images/CoolCatTMP.png" },
       ],
 
       scores: [],
@@ -494,6 +495,12 @@ Vue.createApp({
         { name: "Purple", value: "#7A4275" },
         { name: "Deep Red", value: "#8D3535" },
       ],
+
+      //guess the number game variables
+      gtnDisplay: [],
+      gtnNum: -1,
+      gtnGameOver: false,
+      gtnNumClicks: 0,
     };
   },
 
@@ -2545,6 +2552,44 @@ Vue.createApp({
       cssRoot.style.setProperty("--light-green", concatColor(lightSplit));
       cssRoot.style.setProperty("--med-green", concatColor(medSplit));
       cssRoot.style.setProperty("--dark-green", concatColor(darkSplit));
+    },
+
+    //guess the number methods
+    gtnClick: function (num) {
+      if (this.gtnNum == -1) {
+        this.gtnNum = Math.round(Math.random() * 99);
+        for (let i = 0; i < 100; i += 1) {
+          this.gtnDisplay[i] = "#0000";
+        }
+      } else {
+        this.gtnNumClicks += 1;
+      }
+      for (let i = 0; i < 100; i += 1) {
+        if (!this.gtnDisplay[i]) {
+          this.gtnDisplay[i] = "#0000";
+        }
+        if (num > this.gtnNum) {
+          if (i >= num) {
+            this.gtnDisplay[-i + 99] = "#d00";
+          }
+        }
+        if (num < this.gtnNum) {
+          if (i <= num) {
+            this.gtnDisplay[-i + 99] = "#d00";
+          }
+        }
+      }
+      if (num == this.gtnNum) {
+        this.gtnNum = -1;
+        let newScore = {
+          game: this.page,
+          value: -this.gtnNumClicks + 100,
+          user: this.currentUser._id,
+        };
+        this.setScore(newScore);
+        this.gtnNumClicks = 0;
+        this.gtnDisplay[-num + 99] = "#0f0";
+      }
     },
   },
 

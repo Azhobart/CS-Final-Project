@@ -422,6 +422,25 @@
         </div>
       </div>
 
+      <div class="page" v-if="page === 'Guess The Number'">
+        <div class="sectionContainer column">
+          <p>Tries: {{gtnNumClicks}}</p>
+          <div class="row">
+            <div class="column">
+              <div v-for="clr in gtnDisplay" class="gtnCell" style="width: 50px;" :style="{backgroundColor: clr}"></div>
+            </div>
+            <div class="column">
+              <div v-for="num in 100" class="gtnCell" @click="gtnClick(-num+100)">{{-num+100}}</div>
+              
+            </div>
+            <div class="column">
+              <div v-for="clr in gtnDisplay" class="gtnCell" style="width: 50px;" :style="{backgroundColor: clr}"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
       
       <!-- Rock Paper Scissors Game-->
       <div class="page" v-if="page === 'Rock Paper Scissors'">
