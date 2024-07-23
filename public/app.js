@@ -107,7 +107,7 @@ Vue.createApp({
           image:
             "https://th.bing.com/th/id/OIP.UVxX0_SDu_b5ryjTAvEETQHaFm?rs=1&pid=ImgDetMain",
         },
-        { name: "Follow", image: "" },
+        { name: "Follow", image: "/Images/CoolCatTMP.png" },
       ],
 
       scores: [],

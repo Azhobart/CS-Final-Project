@@ -118,7 +118,7 @@
               <div class="row" v-for="(game, index) in filteredGames">
                 <div class="gameThumbnail column" @click="setPage(game.name)">
                   <div
-                    v-bind:style="{backgroundImage: 'url(' + game.image + ')'}"
+                  v-bind:style="{backgroundImage: 'url(\'' + game.image + '\')'}"
                   ></div>
                   <p>{{ game.name }}</p>
                 </div>
