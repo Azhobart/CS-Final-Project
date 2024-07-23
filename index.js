@@ -113,6 +113,7 @@ app.post("/users", async function (req, res) {
       authAnswer: req.body.authAnswer,
       favoriteGame: req.body.favoriteGame,
       score: req.body.scores,
+      palette: req.body.palette,
     });
 
     const error = await newUser.validateSync();
@@ -146,6 +147,7 @@ app.put("/users/:userID", AuthMiddleware, async function (req, res) {
     user.authAnswer = req.body.authAnswer;
     user.favoriteGame = req.body.favoriteGame;
     user.scores = req.body.scores;
+    user.palette = req.body.palette;
 
     const error = await user.validateSync();
 

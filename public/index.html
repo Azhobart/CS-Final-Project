@@ -133,9 +133,10 @@
         <div class="sectionContainer">
           
           <h1 class="title">{{currentUser.username}}'s Profile</h1>
-          <select v-on:blur="applyColor()" v-model="colorPicker">
+          <select v-on:blur="applyColor()" v-model="currentUser.palette"  v-show="isEditing" >
             <option v-for="color in colorPaletteOptions" :value="color.value">{{color.name}}</option>
           </select>
+          <span v-show="!isEditing">{{ currentUser.palette }}</span>
           <h2 class="userTitle">User Data:</h2>
           <div class="profileData">
 

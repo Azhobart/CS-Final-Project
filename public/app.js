@@ -12,6 +12,7 @@ Vue.createApp({
         authAnswer: "",
         favoriteGame: "",
         scores: [],
+        palette: "",
       },
 
       currentUser: {},
@@ -23,6 +24,7 @@ Vue.createApp({
         authQuestion: "",
         authAnswer: "",
         favoriteGame: "",
+        palette: "",
       },
 
       regions: [
@@ -491,7 +493,6 @@ Vue.createApp({
         { name: "Sea", value: "#427A65" },
         { name: "Purple", value: "#7A4275" },
         { name: "Deep Red", value: "#8D3535" },
-        { name: "Random", value: "" },
       ],
     };
   },
@@ -572,6 +573,7 @@ Vue.createApp({
         let data = await response.json();
         this.currentUser = await this.getUser(data.userID);
         this.setPage("home");
+        this.applyColor();
       } else {
         this.setPage("login");
       }
@@ -2513,62 +2515,33 @@ Vue.createApp({
           "#" + obj.r.toString(16) + obj.g.toString(16) + obj.b.toString(16)
         );
       }
+      let hexString = this.currentUser.palette.toString(16);
 
-      if (this.colorPicker != "") {
-        let hexString = this.colorPicker.toString(16);
+      let extraLightSplit = splitColor(hexString);
+      extraLightSplit.r += 95;
+      extraLightSplit.g += 83;
+      extraLightSplit.b += 86;
 
-        let extraLightSplit = splitColor(hexString);
-        extraLightSplit.r += 95;
-        extraLightSplit.g += 83;
-        extraLightSplit.b += 86;
+      let lightSplit = splitColor(hexString);
+      lightSplit.r += 19;
+      lightSplit.g += 23;
+      lightSplit.b += 23;
 
-        let lightSplit = splitColor(hexString);
-        lightSplit.r += 19;
-        lightSplit.g += 23;
-        lightSplit.b += 23;
+      let medSplit = splitColor(hexString);
 
-        let medSplit = splitColor(hexString);
+      let darkSplit = splitColor(hexString);
+      darkSplit.r -= 36;
+      darkSplit.g -= 33;
+      darkSplit.b -= 32;
 
-        let darkSplit = splitColor(hexString);
-        darkSplit.r -= 36;
-        darkSplit.g -= 33;
-        darkSplit.b -= 32;
-
-        let cssRoot = document.querySelector(":root");
-        cssRoot.style.setProperty(
-          "--extra-light-green",
-          concatColor(extraLightSplit)
-        );
-        cssRoot.style.setProperty("--light-green", concatColor(lightSplit));
-        cssRoot.style.setProperty("--med-green", concatColor(medSplit));
-        cssRoot.style.setProperty("--dark-green", concatColor(darkSplit));
-      } else {
-        let clr = {
-          r: Math.round(Math.random() * 255),
-          g: Math.round(Math.random() * 255),
-          b: Math.round(Math.random() * 255),
-        };
-        let cssRoot = document.querySelector(":root");
-        cssRoot.style.setProperty("--extra-light-green", concatColor(clr));
-        clr = {
-          r: Math.round(Math.random() * 255),
-          g: Math.round(Math.random() * 255),
-          b: Math.round(Math.random() * 255),
-        };
-        cssRoot.style.setProperty("--light-green", concatColor(clr));
-        clr = {
-          r: Math.round(Math.random() * 255),
-          g: Math.round(Math.random() * 255),
-          b: Math.round(Math.random() * 255),
-        };
-        cssRoot.style.setProperty("--med-green", concatColor(clr));
-        clr = {
-          r: Math.round(Math.random() * 255),
-          g: Math.round(Math.random() * 255),
-          b: Math.round(Math.random() * 255),
-        };
-        cssRoot.style.setProperty("--dark-green", concatColor(clr));
-      }
+      let cssRoot = document.querySelector(":root");
+      cssRoot.style.setProperty(
+        "--extra-light-green",
+        concatColor(extraLightSplit)
+      );
+      cssRoot.style.setProperty("--light-green", concatColor(lightSplit));
+      cssRoot.style.setProperty("--med-green", concatColor(medSplit));
+      cssRoot.style.setProperty("--dark-green", concatColor(darkSplit));
     },
   },
 
