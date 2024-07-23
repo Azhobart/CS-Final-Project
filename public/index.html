@@ -427,8 +427,44 @@
         </div>
       </div>
 
+
+      <!-- reaction instruction page -->
+      <div class="instructions" v-if="page === 'Colors'">
+        <div class="instructionWrapper">
+          <h1>How To Play:</h1>
+          <br>
+          <p>
+            Welcome to Colors! In this game your goal is to memorize 
+            and repeat the growing pattern of colors for as long as possible!
+            <br>
+            <br>
+
+            For each round, a new color will be added to the pattern.
+            Once the pattern has been shown, your job is to repeat it! 
+            <br>
+            <br>
+
+            The more times you can repeat the pattern, the higher your score
+            will be! If you mess up the pattern, the game will end, and your 
+            score will be recorded.
+
+
+
+
+          </p>
+
+
+        </div>
+        <br>
+       
+        <div class="startButton" @click="setPage('colorsGame')">Start Game</div>
+
+      </div>
+
+
+
       <!-- colors game -->
-      <div v-if="page === 'Colors'">
+      <div v-if="page === 'colorsGame'">
         
         <div id="colorWrapper">
           
@@ -450,14 +486,55 @@
       </div>
 
 
+      <!-- reaction instruction page -->
+      <div class="instructions" v-if="page === 'Draw!'">
+        <div class="instructionWrapper">
+          <h1>How To Play:</h1>
+          <br>
+          <p>
+            Whel howdy partner, welcome ta "draw!" in this here wild west reaction game, 
+            y'all's goal is ta consecutively react as fast as possible!
+            <br>
+            <br>
+
+            Faw each round a timer will count down, soon as y'all see 
+            the keyward "draw!", mash the space bar as fast as ya ken!
+            <br>
+            <br>
+            
+            Faw each round, y'all will have a certain amount of time ta react,
+            if y'all's reaction is too slow, then ya time will be penalized.  
+            As ya move into the later rounds, the reaction window will get 
+            smaller ayn' smaller, so stay alert! 
+            <br>
+            <br>
+
+            Once y'all get through ever' round, y'all's average reaction time will
+            be calculated ayn' recorded on the leaderboard faw ever'one ta see!
+            Keep practicing ta beat y'all's own time ayn' others as whel! 
+            <br>
+            <br>
+
+            With that there beings done said: get ready, set, draw!
+            <br>
+          </p>
+
+
+        </div>
+        <br>
+       
+        <div class="startButton" @click="setPage('drawGame')">Start Game</div>
+
+      </div>
+
       
 
       <!-- reaction game -->
-      <div v-if="page === 'Draw!'">
+      <div v-if="page === 'drawGame'">
 
         <div id="reactionWrapper">
           <div id="reactionBox" @click="countdown()">
-            <p v-if="startReactionGame">Start Game</p>
+            <p v-if="startReactionGame">Start</p>
             <p v-if="ready">Ready</p>
             <p v-if="getSet">Get Set</p>
             <p v-if="draw">Draw!</p>
@@ -470,8 +547,65 @@
         
       </div>
 
+
+      
+
+      <!-- groB instruction page -->
+      <div class="instructions" v-if="page === 'groB'">
+        <div class="instructionWrapper">
+          <h1>How To Play:</h1>
+          <br>
+          <p>
+            Welcome to groB, the dungeon crawler dice game!
+            To get on with your adventure, simply click your 
+            way though the doors to encounter various items, 
+            enemies, and so much more! 
+            <br>
+            <br>
+  
+            In this game, your dice are your lifeline, collect 
+            them to use in battle against various monsters and move 
+            your way up the dungeon's floors! During battle, whoever 
+            rolls the higher number wins, however, when it comes to a tie, 
+            monsters remain victorious.
+            <br>
+            <br>
+            
+            For every enemy you defeat, their dice is instantly 
+            added to your collection. Be careful, if you lose in 
+            battle, you lose your Dice! Once all of your dice are 
+            gone, your journey ends. 
+            <br>
+            <br>
+  
+            To help you along your way, there are various potions 
+            available for you to collect and use during battle. They 
+            are one-time-use buffs that can be the difference between
+            winning a battle or losing miserably.
+            <br>
+            <br>
+  
+            Take note of what items are currently active, displayed at
+            the top of the page, these items are what will be used during
+            battle. They can always be swapped before then by clicking on 
+            an item, seperate from your current one. 
+            <br>
+            <br>
+  
+            That is all the advice I have for you traveler, use your dice 
+            wisely to make it as far up the dungeon as possible --- good luck!
+          </p>
+
+
+        </div>
+        <br>
+       
+        <div class="startButton" @click="setPage('grobGame'); grobBackgroundMusic.play(); grobBackgroundMusic.volume = 0.05; grobBackgroundMusic.loop = true" >Start Game</div>
+
+      </div>
+
       <!-- dungeon crawler dice game -->
-      <div v-if="page === 'groB'">
+      <div v-if="page === 'grobGame'">
         
         <div id="grobWrapper">
           <!-- user/game info -->
@@ -547,7 +681,8 @@
             <div class="grobPotion" 
             v-for="(potion, index) in potions" 
             @click="setCurrentPotion(index)"
-            @dblclick="togglePotionDescription()">
+            @mouseover="potionDescription = true"
+            @mouseleave="potionDescription = false">
               <div v-if="!potionDescription">{{ potion.name }}</div>
               <div v-if="potionDescription"> {{potion.description}} </div>
             </div>
