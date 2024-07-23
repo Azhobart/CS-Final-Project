@@ -480,9 +480,9 @@ Vue.createApp({
       //follow game variables
       followTop: 100,
       followLeft: 100,
-      followGoalTop: 0,
-      followGoalLeft: 0,
       followScore: 0,
+      followTimer: null,
+      followTime: 0,
 
       //color palette variables
       colorPicker: "#739072",
@@ -2471,33 +2471,36 @@ Vue.createApp({
     },
 
     //follow game methods
+    followClick: function () {
+      if (this.followTimer) {
+        this.followScore += 1;
+        this.followLeft = 5 + Math.random() * 450;
+        this.followTop = 5 + Math.random() * 450;
+      } else {
+        this.followTimer = setInterval(() => {
+          this.followMove();
+        }, 1000);
+      }
+    },
     followMove: function () {
-      let moveInterval = setInterval(() => {
-        if (this.followGoalLeft > this.followLeft) {
-          this.followLeft += 1;
-        }
-        if (this.followGoalLeft < this.followLeft) {
-          this.followLeft -= 1;
-        }
-        if (this.followGoalTop > this.followTop) {
-          this.followTop += 1;
-        }
-        if (this.followGoalTop < this.followTop) {
-          this.followTop -= 1;
-        }
+      this.followTime += 1;
+      if (this.followTimer) {
+        this.followLeft = 5 + Math.random() * 450;
+        this.followTop = 5 + Math.random() * 450;
 
-        if (
-          this.followGoalLeft > this.followLeft - 5 &&
-          this.followGoalLeft < this.followLeft + 5 &&
-          this.followGoalTop > this.followTop - 5 &&
-          this.followGoalTop < this.followTop + 5
-        ) {
-          this.followGoalLeft = 5 + Math.random() * 450;
-          this.followGoalTop = 5 + Math.random() * 450;
+        let newScore = {
+          game: this.page,
+          value: this.followScore,
+          user: this.currentUser._id,
+        };
+        if (this.followTime > 20) {
+          this.setScore(newScore);
+          this.followScore = 0;
+          this.followTime = 0;
+          clearInterval(this.followTimer);
+          this.followTimer = null;
         }
-      }, 10);
-
-      this.followScore += 1;
+      }
     },
 
     //color picker methods
