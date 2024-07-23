@@ -11,6 +11,7 @@
   <body class="container">
     <div id="app">
       <nav id="titleNav">
+        
         <h1>Online Arcade</h1>
       </nav>
       <nav id="subNav"
@@ -107,6 +108,7 @@
       <!-- home/game page -->
       <div class="page" v-if="page === 'home'">
         <div class="sectionContainer">
+          
           <div class="column">
             <div class="inputContainer row searchInput">
               <p>Search</p>
@@ -129,7 +131,11 @@
 
       <div v-if="page === 'profile'">
         <div class="sectionContainer">
+          
           <h1 class="title">{{currentUser.username}}'s Profile</h1>
+          <select v-on:blur="applyColor()" v-model="colorPicker">
+            <option v-for="color in colorPaletteOptions" :value="color.value">{{color.name}}</option>
+          </select>
           <h2 class="userTitle">User Data:</h2>
           <div class="profileData">
 

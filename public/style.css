@@ -645,7 +645,6 @@ body {
   border-color: var(--extra-light-green);
 }
 
-
 .grobMessageField {
   height: 40px;
   grid-column: 1 / -1;

@@ -309,10 +309,6 @@ Vue.createApp({
       addedPotion: null,
       enemyMessage: false,
 
-      
-
-
-
       //Tic Tac Toe Game variable
       tictactoeBoard: [
         [" ", " ", " "],
@@ -485,6 +481,18 @@ Vue.createApp({
       followGoalTop: 0,
       followGoalLeft: 0,
       followScore: 0,
+
+      //color palette variables
+      colorPicker: "#739072",
+      colorPaletteOptions: [
+        { name: "Original", value: "#739072" },
+        { name: "Sepia", value: "#938872" },
+        { name: "Cave", value: "#513E3E" },
+        { name: "Sea", value: "#427A65" },
+        { name: "Purple", value: "#7A4275" },
+        { name: "Deep Red", value: "#8D3535" },
+        { name: "Random", value: "" },
+      ],
     };
   },
 
@@ -1762,7 +1770,7 @@ Vue.createApp({
     },
 
     togglePotionDescription: function () {
-      this.potionDescription = !this.potionDescription
+      this.potionDescription = !this.potionDescription;
     },
 
     displayDiceMessage: function (dice) {
@@ -1774,7 +1782,7 @@ Vue.createApp({
           this.diceMessage = false;
           clearInterval(message);
         }
-        count++
+        count++;
       }, 300);
     },
 
@@ -1786,12 +1794,12 @@ Vue.createApp({
           this.enemyMessage = false;
           clearInterval(message);
         }
-        count++
+        count++;
       }, 300);
     },
 
     displayPotionMessage: function (potion) {
-      this.addedPotion = potion
+      this.addedPotion = potion;
       this.potionMessage = true;
       let count = 0;
       var message = setInterval(() => {
@@ -1799,10 +1807,9 @@ Vue.createApp({
           this.potionMessage = false;
           clearInterval(message);
         }
-        count++
+        count++;
       }, 300);
     },
-
 
     getDoorItem: function () {
       let floorItem = ["dice", "enemy"];
@@ -1947,7 +1954,7 @@ Vue.createApp({
       if (this.randomPotion === "attack2") {
         let attack2 = {
           name: "Attack Up",
-          description: "+2 to your roll."
+          description: "+2 to your roll.",
         };
         this.potions.push(attack2);
         this.displayPotionMessage(attack2);
@@ -1957,7 +1964,8 @@ Vue.createApp({
       if (this.randomPotion === "secondChance") {
         let secondChance = {
           name: "Retake",
-          description: "Protects the user from losing their current dice for a single roll."
+          description:
+            "Protects the user from losing their current dice for a single roll.",
         };
         this.potions.push(secondChance);
         this.displayPotionMessage(secondChance);
@@ -1967,7 +1975,7 @@ Vue.createApp({
       if (this.randomPotion === "double") {
         let double = {
           name: "Double Up",
-          description: "Double your roll."
+          description: "Double your roll.",
         };
         this.potions.push(double);
         this.displayPotionMessage(double);
@@ -2000,12 +2008,18 @@ Vue.createApp({
               if (count === 2) {
                 clearInterval(displayPotion);
                 this.potionEffect = false;
-                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
+                this.potions.splice(
+                  this.potions.indexOf(this.currentPotion),
+                  1
+                );
                 this.currentPotion = {
                   name: "None",
                 };
                 this.compareRoll();
-                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
+                this.potions.splice(
+                  this.potions.indexOf(this.currentPotion),
+                  1
+                );
               }
             }, 500);
           } else if (this.currentPotion.name === "Double Up") {
@@ -2018,12 +2032,14 @@ Vue.createApp({
               if (count === 2) {
                 clearInterval(displayPotion);
                 this.potionEffect = false;
-                this.potions.splice(this.potions.indexOf(this.currentPotion), 1);
+                this.potions.splice(
+                  this.potions.indexOf(this.currentPotion),
+                  1
+                );
                 this.currentPotion = {
                   name: "None",
                 };
                 this.compareRoll();
-                
               }
             }, 500);
           } else {
@@ -2059,7 +2075,6 @@ Vue.createApp({
             this.currentPotion = {
               name: "None",
             };
-            
           }
         }, 500);
         return;
@@ -2105,9 +2120,6 @@ Vue.createApp({
       this.potionMessage = false;
       this.addedPotion = null;
       this.enemyMessage = false;
-
-
-
     },
 
     removeDice: function () {
@@ -2120,7 +2132,6 @@ Vue.createApp({
         };
         this.finishGame(newScore);
         this.resetGrobGame();
-        
       } else {
         this.currentDice.rollValue = 0;
         this.enemyDice.rollValue = 0;
@@ -2136,10 +2147,6 @@ Vue.createApp({
       this.currentPotion = this.potions[index];
       console.log(`Current Potion: ${this.currentPotion.name}`);
     },
-
-
-
-
 
     //sandbox methods
     resetSandboxBoard: function () {
@@ -2489,6 +2496,79 @@ Vue.createApp({
       }, 10);
 
       this.followScore += 1;
+    },
+
+    //color picker methods
+    applyColor: function () {
+      function splitColor(hex) {
+        return {
+          r: parseInt(hex.substr(1, 2), 16),
+          g: parseInt(hex.substr(3, 2), 16),
+          b: parseInt(hex.substr(5, 2), 16),
+        };
+      }
+
+      function concatColor(obj) {
+        return (
+          "#" + obj.r.toString(16) + obj.g.toString(16) + obj.b.toString(16)
+        );
+      }
+
+      if (this.colorPicker != "") {
+        let hexString = this.colorPicker.toString(16);
+
+        let extraLightSplit = splitColor(hexString);
+        extraLightSplit.r += 95;
+        extraLightSplit.g += 83;
+        extraLightSplit.b += 86;
+
+        let lightSplit = splitColor(hexString);
+        lightSplit.r += 19;
+        lightSplit.g += 23;
+        lightSplit.b += 23;
+
+        let medSplit = splitColor(hexString);
+
+        let darkSplit = splitColor(hexString);
+        darkSplit.r -= 36;
+        darkSplit.g -= 33;
+        darkSplit.b -= 32;
+
+        let cssRoot = document.querySelector(":root");
+        cssRoot.style.setProperty(
+          "--extra-light-green",
+          concatColor(extraLightSplit)
+        );
+        cssRoot.style.setProperty("--light-green", concatColor(lightSplit));
+        cssRoot.style.setProperty("--med-green", concatColor(medSplit));
+        cssRoot.style.setProperty("--dark-green", concatColor(darkSplit));
+      } else {
+        let clr = {
+          r: Math.round(Math.random() * 255),
+          g: Math.round(Math.random() * 255),
+          b: Math.round(Math.random() * 255),
+        };
+        let cssRoot = document.querySelector(":root");
+        cssRoot.style.setProperty("--extra-light-green", concatColor(clr));
+        clr = {
+          r: Math.round(Math.random() * 255),
+          g: Math.round(Math.random() * 255),
+          b: Math.round(Math.random() * 255),
+        };
+        cssRoot.style.setProperty("--light-green", concatColor(clr));
+        clr = {
+          r: Math.round(Math.random() * 255),
+          g: Math.round(Math.random() * 255),
+          b: Math.round(Math.random() * 255),
+        };
+        cssRoot.style.setProperty("--med-green", concatColor(clr));
+        clr = {
+          r: Math.round(Math.random() * 255),
+          g: Math.round(Math.random() * 255),
+          b: Math.round(Math.random() * 255),
+        };
+        cssRoot.style.setProperty("--dark-green", concatColor(clr));
+      }
     },
   },
 
