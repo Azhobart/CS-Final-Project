@@ -559,7 +559,7 @@ Vue.createApp({
 
       if (response.status === 201) {
         this.currentUser = await this.getUser(data.userID);
-
+        this.applyColor();
         console.log("Succesfully logged in");
         this.setPage("home");
       } else {
@@ -600,6 +600,8 @@ Vue.createApp({
       if (response.status === 204) {
         this.isEditing = false;
         this.page = "login";
+        this.currentUser.palette = "#739072";
+        this.applyColor();
         this.currentUser = null;
       }
     },
@@ -973,10 +975,8 @@ Vue.createApp({
         this.displayReaction = true;
         this.startTime = null;
 
-
         this.compareReaction();
-      };
-
+      }
 
       if (!this.draw) {
         this.tooEarly = true;
@@ -2037,7 +2037,6 @@ Vue.createApp({
 
       let userRoll = Math.floor(Math.random() * this.currentDice.values.length);
       let enemyRoll = Math.floor(Math.random() * this.enemyDice.values.length);
-      
 
       let rollCount = 0;
 
@@ -2045,15 +2044,10 @@ Vue.createApp({
         this.currentDice.rollValue = this.currentDice.values[userRoll];
         this.enemyDice.rollValue = this.enemyDice.values[enemyRoll];
 
-
-
-
         if (rollCount > 10) {
-
           clearInterval(rollInterval);
           // check to see if the user is using any potions for their roll and apply their effects accordingly.
           console.log(`original roll: ${this.currentDice.rollValue}`);
-
 
           if (this.currentPotion.name === "Attack Up") {
             this.potionEffect = true;
@@ -2216,8 +2210,6 @@ Vue.createApp({
       this.currentPotion = this.potions[index];
       console.log(`Current Potion: ${this.currentPotion.name}`);
     },
-
-
 
     //sandbox methods
     resetSandboxBoard: function () {
