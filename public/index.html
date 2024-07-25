@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link href="https://fonts.cdnfonts.com/css/galactic-storm" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
   </head>
   <body class="container">
@@ -90,7 +91,11 @@
           <!-- user region -->
           <div class="inputContainer">
             <p>Region:</p>
-            <input v-model="user.region"/>
+
+            <select v-model="user.region">
+              <option v-for="region in regions" :value="region.code ">{{region.code}} - {{region.name}}</option>
+            </select>
+            
           </div>
           <!-- submit -->
           <div class="inputContainer">
@@ -110,14 +115,14 @@
         <div class="sectionContainer">
           
           <div class="column">
-            <div class="inputContainer row searchInput">
-              <p>Search</p>
+            <div class="row searchInput">
               <input placeholder="Search..." v-model="gameSearchInput"/>
             </div>
             <div class="gameListDiv">
               <div class="row" v-for="(game, index) in filteredGames">
                 <div class="gameThumbnail column" @click="setPage(game.name)">
                   <div
+                  class="gameThumbnailImage"
                   v-bind:style="{backgroundImage: 'url(\'' + game.image + '\')'}"
                   ></div>
                   <p>{{ game.name }}</p>
@@ -190,7 +195,7 @@
       <div class="page" v-if="page === 'leaderboard'">
         <div class="sectionContainer">
           <div class="column">
-            <div class="inputContainer row searchInput">
+            <div class="row searchInput">
               <input placeholder="Search..." v-model="scoreUserSearchInput"/>
 
               <select v-model="scoreGameSearchInput">
@@ -711,10 +716,10 @@
             <div class="grobPotion" 
             v-for="(potion, index) in potions" 
             @click="setCurrentPotion(index)"
-            @mouseover="potionDescription = true"
-            @mouseleave="potionDescription = false">
-              <div v-if="!potionDescription">{{ potion.name }}</div>
-              <div v-if="potionDescription"> {{potion.description}} </div>
+            @mouseover="potion.visibility = true"
+            @mouseleave="potion.visibility = false">
+              <div v-if="!potion.visibility">{{ potion.name }}</div>
+              <div v-if="potion.visibility"> {{potion.description}} </div>
             </div>
           </div>
 

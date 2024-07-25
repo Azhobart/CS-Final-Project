@@ -1995,7 +1995,8 @@ Vue.createApp({
       if (this.randomPotion === "attack2") {
         let attack2 = {
           name: "Attack Up",
-          description: "+2 roll."
+          description: "+2 roll.",
+          visibility: false,
         };
         this.potions.push(attack2);
         this.displayPotionMessage(attack2);
@@ -2009,7 +2010,8 @@ Vue.createApp({
       if (this.randomPotion === "secondChance") {
         let secondChance = {
           name: "Retake",
-          description: "Re-roll"
+          description: "Re-roll",
+          visibility: false,
         };
         this.potions.push(secondChance);
         this.displayPotionMessage(secondChance);
@@ -2023,7 +2025,8 @@ Vue.createApp({
       if (this.randomPotion === "double") {
         let double = {
           name: "Double Up",
-          description: "x2 roll"
+          description: "x2 roll",
+          visibility: false,
         };
         this.potions.push(double);
         this.displayPotionMessage(double);
@@ -2220,6 +2223,8 @@ Vue.createApp({
       this.currentPotion = this.potions[index];
       console.log(`Current Potion: ${this.currentPotion.name}`);
     },
+
+
 
     //sandbox methods
     resetSandboxBoard: function () {
