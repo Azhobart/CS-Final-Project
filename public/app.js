@@ -139,6 +139,8 @@ Vue.createApp({
 
       // reaction game variables
       reactionSound: new Audio("reactionSounds/ricochet.mp3"),
+      reactionBackgroundMusic: new Audio("reactionSounds/westernDuel.mp3"),
+      whipStartSound: new Audio("reactionSounds/whipCrack.mp3"),
 
       reactionGameOver: false,
       startReactionGame: true,
@@ -207,6 +209,12 @@ Vue.createApp({
       ],
 
       // dungeon crawler variables
+      grobBackgroundMusic: new Audio("grobSounds/grobHomeMusic.mp3"),
+      diceRoll: new Audio("grobSounds/diceRoll.mp3"),
+      collectItem: new Audio("grobSounds/collect.mp3"),
+      takeDamage: new Audio("grobSounds/takeDamage.mp3"),
+      beatEnemy: new Audio("grobSounds/beatEnemy.mp3"),
+
       floorLevel: 1,
       diceBox: false,
       potionBox: false,
@@ -502,6 +510,10 @@ Vue.createApp({
       this.page = newPage;
       this.resetReactionGame();
       this.resetColorGame();
+
+      // stop playing music from grob game
+      this.grobBackgroundMusic.pause();
+      this.grobBackgroundMusic.currentTime = 0;
     },
 
     registerUser: async function () {
@@ -885,6 +897,8 @@ Vue.createApp({
       this.startReactionGame = false;
       window.addEventListener("keydown", this.getReaction);
       if (this.reactionGameOver === false) {
+        this.reactionBackgroundMusic.volume = 0.5;
+        this.reactionBackgroundMusic.play();
         let countdownOne = 0;
         let countdownTwo = 0;
         let countdownThree = 0;
@@ -900,7 +914,7 @@ Vue.createApp({
           this.tooSlow = false;
           this.tooEarly = false;
           countdownOne++;
-          if (countdownOne === 1) {
+          if (countdownOne === 2) {
             this.ready = true;
             countdownOne = 0;
             clearInterval(stageOne);
@@ -910,7 +924,7 @@ Vue.createApp({
         // display 'get set' afterwards for 3 sec
         let stageTwo = setInterval(() => {
           countdownTwo++;
-          if (countdownTwo === 2 && this.ready) {
+          if (countdownTwo === 5 && this.ready) {
             this.ready = false;
             this.getSet = true;
             countdownTwo = 0;
@@ -922,7 +936,7 @@ Vue.createApp({
         // record time once the user presses the space key
         let stageThree = setInterval(() => {
           countdownThree++;
-          if (countdownThree === randomTime + 2 && this.getSet) {
+          if (countdownThree === randomTime + 6 && this.getSet) {
             this.getSet = false;
             this.draw = true;
             countdownThree = 0;
@@ -955,11 +969,15 @@ Vue.createApp({
         this.reactionTime = (endTime - this.startTime) / 1000;
         this.reactionSound.play();
         this.tooEarly = false;
+        this.draw = false;
         this.displayReaction = true;
         this.startTime = null;
 
+
         this.compareReaction();
-      }
+      };
+
+
       if (!this.draw) {
         this.tooEarly = true;
         this.countdown();
@@ -1002,6 +1020,8 @@ Vue.createApp({
     },
 
     resetReactionGame: function () {
+      this.reactionBackgroundMusic.pause();
+      this.reactionBackgroundMusic.currentTime = 0;
       this.userReactions = [];
       this.averageReaction = 0;
       this.timeIndex = 0;
@@ -1771,10 +1791,6 @@ Vue.createApp({
       this.diceBox = false;
     },
 
-    togglePotionDescription: function () {
-      this.potionDescription = !this.potionDescription;
-    },
-
     displayDiceMessage: function (dice) {
       this.addedDice = dice;
       this.diceMessage = true;
@@ -1859,6 +1875,10 @@ Vue.createApp({
         };
         this.dice.push(dice2);
         this.displayDiceMessage(dice2);
+        // play sound
+        this.collectItem.volume = 0.25;
+        this.collectItem.play();
+
         this.floorLevel++;
       }
 
@@ -1871,6 +1891,10 @@ Vue.createApp({
         };
         this.dice.push(dice6);
         this.displayDiceMessage(dice6);
+        // play sound
+        this.collectItem.volume = 0.25;
+        this.collectItem.play();
+
         this.floorLevel++;
       }
 
@@ -1883,6 +1907,10 @@ Vue.createApp({
         };
         this.dice.push(dice7);
         this.displayDiceMessage(dice7);
+        // play sound
+        this.collectItem.volume = 0.25;
+        this.collectItem.play();
+
         this.floorLevel++;
       }
 
@@ -1895,6 +1923,10 @@ Vue.createApp({
         };
         this.dice.push(dice10);
         this.displayDiceMessage(dice10);
+        // play sound
+        this.collectItem.volume = 0.25;
+        this.collectItem.play();
+
         this.floorLevel++;
       }
     },
@@ -1956,38 +1988,53 @@ Vue.createApp({
       if (this.randomPotion === "attack2") {
         let attack2 = {
           name: "Attack Up",
-          description: "+2 to your roll.",
+          description: "+2 roll."
         };
         this.potions.push(attack2);
         this.displayPotionMessage(attack2);
+        // play sound
+        this.collectItem.volume = 0.25;
+        this.collectItem.play();
+
         this.floorLevel++;
       }
 
       if (this.randomPotion === "secondChance") {
         let secondChance = {
           name: "Retake",
-          description:
-            "Protects the user from losing their current dice for a single roll.",
+          description: "Re-roll"
         };
         this.potions.push(secondChance);
         this.displayPotionMessage(secondChance);
+        // play sound
+        this.collectItem.volume = 0.25;
+        this.collectItem.play();
+
         this.floorLevel++;
       }
 
       if (this.randomPotion === "double") {
         let double = {
           name: "Double Up",
-          description: "Double your roll.",
+          description: "x2 roll"
         };
         this.potions.push(double);
         this.displayPotionMessage(double);
+        // play sound
+        this.collectItem.volume = 0.25;
+        this.collectItem.play();
+        // play sound
         this.floorLevel++;
       }
     },
 
     battleEnemy: function () {
+      this.diceRoll.volume = 0.15;
+      this.diceRoll.play();
+
       let userRoll = Math.floor(Math.random() * this.currentDice.values.length);
       let enemyRoll = Math.floor(Math.random() * this.enemyDice.values.length);
+      
 
       let rollCount = 0;
 
@@ -1995,10 +2042,15 @@ Vue.createApp({
         this.currentDice.rollValue = this.currentDice.values[userRoll];
         this.enemyDice.rollValue = this.enemyDice.values[enemyRoll];
 
+
+
+
         if (rollCount > 10) {
+
           clearInterval(rollInterval);
           // check to see if the user is using any potions for their roll and apply their effects accordingly.
           console.log(`original roll: ${this.currentDice.rollValue}`);
+
 
           if (this.currentPotion.name === "Attack Up") {
             this.potionEffect = true;
@@ -2049,11 +2101,13 @@ Vue.createApp({
           }
         }
         rollCount++;
-      }, 50);
+      }, 80);
     },
 
     compareRoll: function () {
       if (this.currentDice.rollValue > this.enemyDice.rollValue) {
+        this.beatEnemy.volume = 0.25;
+        this.beatEnemy.play();
         this.dice.push(this.enemyDice);
         this.currentDice.rollValue = 0;
         this.enemyDice.rollValue = 0;
@@ -2063,6 +2117,8 @@ Vue.createApp({
         this.enemyDice.rollValue >= this.currentDice.rollValue &&
         this.currentPotion.name !== "Retake"
       ) {
+        this.takeDamage.volume = 0.25;
+        this.takeDamage.play();
         this.removeDice();
         this.currentDice = this.dice[0];
       } else {
@@ -2084,7 +2140,10 @@ Vue.createApp({
     },
 
     resetGrobGame: function () {
-      // reset everything back to its default value (defined in the data section of vue)
+      // reset everything back to its default value (defined in the data section of vue);
+      this.grobBackgroundMusic.pause();
+      this.grobBackgroundMusic.currentTime = 0;
+
       this.floorLevel = 1;
       this.diceBox = false;
       this.potionBox = false;
@@ -2127,12 +2186,17 @@ Vue.createApp({
     removeDice: function () {
       this.dice.splice(this.dice.indexOf(this.currentDice), 1);
       if (this.dice.length === 0) {
+        // stop music
+        this.grobBackgroundMusic.pause();
+        this.grobBackgroundMusic.currentTime = 0;
+        // send score
         let newScore = {
           game: this.page,
           value: this.floorLevel,
           user: this.currentUser._id,
         };
         this.finishGame(newScore);
+        // reset values
         this.resetGrobGame();
       } else {
         this.currentDice.rollValue = 0;

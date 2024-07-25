@@ -461,6 +461,53 @@ body {
   }
 }
 
+
+/* grob (instruction page) styling */
+
+.instructions {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.instructionWrapper {
+  margin-top: 50px;
+  width: 60%;
+  color: var(--extra-light-green);
+  background-color: var(--dark-green);
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.instructionWrapper p {
+  font-size: 18px;
+}
+
+.instructionWrapper h1 {
+  font-size: 40px;
+}
+
+.startButton {
+  color: var(--extra-light-green);
+  background-color: var(--dark-green);
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  transition: padding 1s;
+}
+
+.startButton:hover {
+  padding: 15px;
+  cursor: pointer;
+}
+
+
 /* grob (dungeon crawler game) styling */
 
 #grobWrapper {
