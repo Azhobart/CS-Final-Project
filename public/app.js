@@ -559,6 +559,9 @@ Vue.createApp({
 
       if (response.status === 201) {
         this.currentUser = await this.getUser(data.userID);
+        if (this.currentUser.palette === "") {
+          this.currentUser.palette = "#739072";
+        }
         this.applyColor();
         console.log("Succesfully logged in");
         this.setPage("home");
