@@ -176,6 +176,11 @@ body {
   margin: 0px 10px;
 }
 
+.searchInput {
+  margin-top: 10px;
+  padding: 0px 0px 0px 5px;
+}
+
 .sectionContainer select,
 .sectionContainer input {
   display: inline-block;
@@ -269,7 +274,7 @@ body {
 }
 
 ::placeholder {
-  color: var(--dark-green);
+  color: var(--extra-light-green);
 }
 
 .profileData span {
@@ -335,6 +340,7 @@ body {
 }
 
 #inputField div {
+  margin: 10px;
   width: 75px;
   height: 75px;
   color: var(--dark-green);
@@ -357,7 +363,7 @@ body {
 /* styling for reaction game */
 
 #reactionWrapper {
-  margin-top: 200px;
+  margin: 200px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -516,15 +522,6 @@ body {
   align-items: center;
 }
 
-#grobWrapper h1 {
-  text-align: center;
-  color: var(--extra-light-green);
-  background-color: var(--dark-green);
-  border-radius: 10px;
-  margin: 10px 0px;
-  padding: 10px;
-}
-
 #grobWrapper h2 {
   color: var(--extra-light-green);
   background-color: var(--dark-green);
@@ -541,6 +538,13 @@ body {
   background-color: var(--dark-green);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+}
+
+#gameStats h1 {
+  text-align: center;
+  color: var(--extra-light-green);
+  margin: 10px 0px;
+  padding: 10px;
 }
 
 #doors {
@@ -914,6 +918,8 @@ body {
 
 /* resizing website */
 
+
+/* nav bar styling */
 @media only screen and (max-width: 768px) {
 
 
@@ -978,6 +984,268 @@ body {
 
 }
 
+/* grob Styling */
+@media only screen and (max-width: 720px) {
+  #grobWrapper {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #grobWrapper h2 {
+    color: var(--extra-light-green);
+    border-radius: 10px;
+    margin: 10px 0px 20px 0px;
+    padding: 10px;
+  }
+  
+  #gameStats {
+    margin: 10px;
+    padding: 15px;
+    width: 80%;
+    border-radius: 10px;
+    background-color: var(--dark-green);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #gameStats h1 {
+    text-align: center;
+    color: var(--extra-light-green);
+    font-size: 20px;
+    margin: 10px 0px;
+  }
+  
+  #doors {
+    width: 2fr;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  .grobDoor {
+    height: 100px;
+    width: 100px;
+    margin: 50px 10px;
+    border-radius: 100% 100% 0% 0%;
+    background-color: var(--light-green);
+    border-width: 8px;
+    border-style: solid;
+    border-color: var(--dark-green);
+    transition: height 1s, width 1s;
+  }
+  
+  .grobDoor:hover {
+    height: 110px;
+    width: 110px;
+  }
+  
+  #userActions {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* styling for dice field */
+  #diceSpace {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  #diceSpace h2 {
+    color: var(--extra-light-green);
+    background-color: var(--dark-green);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    transition: padding 1s;
+  }
+  
+  #diceSpace h2:hover {
+    padding: 15px;
+    cursor: pointer;
+  }
+  
+  #diceBag {
+    margin: 0px 10px;
+    background-color: var(--light-green);
+    border-color: var(--dark-green);
+    border-radius: 5px;
+    border-width: 16px;
+    border-style: solid;
+    height: 350px;
+    width: 80%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .grobDice {
+    margin: 10px;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark-green);
+    color: var(--extra-light-green);
+  }
+  
+  .grobDice:hover {
+    cursor: pointer;
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--extra-light-green);
+  }
+  
+  /* styling for potion field */
+  #potionSpace {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  #potionSpace h2 {
+    position: static;
+    color: var(--extra-light-green);
+    background-color: var(--dark-green);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    transition: padding 1s;
+  }
+  
+  #potionSpace h2:hover {
+    padding: 15px;
+    cursor: pointer;
+  }
+  
+  #potionBag {
+    margin: 0px 10px;
+    background-color: var(--light-green);
+    border-color: var(--dark-green);
+    border-radius: 5px;
+    border-width: 16px;
+    border-style: solid;
+    height: 350px;
+    width: 80%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .grobPotion {
+    margin: 10px;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark-green);
+    color: var(--extra-light-green);
+  }
+  
+  .grobPotion:hover {
+    cursor: pointer;
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--extra-light-green);
+  }
+  
+  .grobMessageField {
+    height: 40px;
+    grid-column: 1 / -1;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* styling for the battle system (page) */
+  #battlePage {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #battleField {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .spriteField {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .spriteField h1 {
+    margin: 70px 0px 10px 0px;
+    color: var(--extra-light-green);
+  }
+  
+  .spriteField p {
+    margin-top: 10px;
+    color: var(--extra-light-green);
+  }
+  
+  .battleDice {
+    width: 200px;
+    height: 200px;
+    font-size: 40px;
+    border-width: 12px;
+    border-style: solid;
+    border-color: var(--dark-green);
+    color: var(--dark-green);
+    background-color: var(--light-green);
+    margin: 0px 50px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .battleDice p {
+    font-size: 18px;
+  }
+  
+  #battleWrapper #battleButton {
+    text-align: center;
+    color: var(--extra-light-green);
+    background-color: var(--dark-green);
+    border-radius: 10px;
+    margin: 30px 0px 20px 0px;
+    padding: 10px;
+    transition: padding 1s;
+  }
+  
+  #battleWrapper #battleButton:hover {
+    padding: 15px;
+    cursor: pointer;
+  }
+
+}
+
+
+
+/* game space sizing */
 @media only screen and (max-width: 650px) {
   .gameListDiv {
     display: grid;
