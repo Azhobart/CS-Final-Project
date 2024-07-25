@@ -61,13 +61,11 @@ Vue.createApp({
       games: [
         {
           name: "Tic Tac Toe",
-          image:
-            "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcQdR5hPxiKG7MuJFuIe1lbrqandKE2QP5JzdrE4Dt6gnzu6Xnc0dCyK97yTeghVzkok",
+          image: "/Images/ticTacToeThumbnail.png",
         },
         {
           name: "Battleship",
-          image:
-            "https://th.bing.com/th/id/R.a8f131f7b7d24a3d990dc17fe29326c1?rik=MwYHjNCretMvcg&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fbattleship-png-hd-battleship-clipart-cartoon-4-2400.png&ehk=jSgaoZX7HRX55R8ptCa6Dv8UWnZwCh%2fh7smWn178KWo%3d&risl=&pid=ImgRaw&r=0",
+          image: "/Images/battleshipThumbnail.png",
         },
         {
           name: "Colors",
@@ -77,8 +75,7 @@ Vue.createApp({
 
         {
           name: "Prisoner's Dilemma",
-          image:
-            "https://www.clipartkey.com/mpngs/m/324-3244570_transparent-clipart-prisoner-behind-bars-cartoon.png",
+          image: "/Images/prisonersDilemmaThumbnail.png",
         },
         {
           name: "Draw!",
@@ -87,28 +84,24 @@ Vue.createApp({
         },
         {
           name: "Minesweeper",
-          image:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_icon_orange_4.svg/729px-Flag_icon_orange_4.svg.png",
+          image: "/Images/minesweeperFlag.png",
         },
         { name: "groB", image: "" },
         {
           name: "Sandbox",
-          image:
-            "https://th.bing.com/th/id/OIP.8dAUyYj6EphGe6XQfcLo0gHaLG?rs=1&pid=ImgDetMain",
+          image: "/Images/sandboxThumbnail.png",
         },
         {
           name: "Slide",
-          image:
-            "https://th.bing.com/th/id/R.c8dde0b2e84d0a550ab209772e281b0b?rik=iGwYiJWbSifRrg&pid=ImgRaw&r=0",
+          image: "/Images/slideThumbnail.png",
         },
 
         {
           name: "Rock Paper Scissors",
-          image:
-            "https://th.bing.com/th/id/OIP.UVxX0_SDu_b5ryjTAvEETQHaFm?rs=1&pid=ImgDetMain",
+          image: "/Images/rpsThumbnail.png",
         },
-        { name: "Follow", image: "/Images/CoolCatTMP.png" },
-        { name: "Guess The Number", image: "/Images/CoolCatTMP.png" },
+        { name: "Follow", image: "/Images/followThumbnail.png" },
+        { name: "Guess The Number", image: "/Images/gtnThumbnail.png" },
       ],
 
       scores: [],
