@@ -158,11 +158,11 @@
             </select>
             <span v-show="!isEditing">{{ profileUser.region }}</span>
 
-            <p>Authentication Question:</p> <input placeholder="question" v-show="isEditing" v-model="profileUser.authQuestion">
-            <span v-show="!isEditing">{{ profileUser.authQuestion }}</span>
+            <p v-if="profileUser._id == currentUser._id">Authentication Question:</p> <input placeholder="question" v-show="isEditing" v-model="profileUser.authQuestion">
+            <span v-if="profileUser._id == currentUser._id" v-show="!isEditing">{{ profileUser.authQuestion }}</span>
 
-            <p>Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="profileUser.authAnswer">
-            <span v-show="!isEditing">{{ profileUser.authAnswer }}</span>
+            <p v-if="profileUser._id == currentUser._id">Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="profileUser.authAnswer">
+            <span v-if="profileUser._id == currentUser._id" v-show="!isEditing">{{ profileUser.authAnswer }}</span>
 
             <p>Color Palette:</p>
             <select v-on:change="applyColor()" v-model="profileUser.palette"  v-show="isEditing" >
