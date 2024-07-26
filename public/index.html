@@ -212,7 +212,7 @@
 
             <div class="scoreTableRow" v-for="(score, indx) in filteredScores">
               <p>{{indx}}.</p>
-              <p @click="setPage('profile'); profileUser = score.user; isEditing = false;">{{score.user.username}}</p>
+              <p @click="setPage('profile'); profileUser = score.user; isEditing = false;" class="clickableUsername">{{score.user.username}}</p>
               <p>{{score.value}}</p>
               <p>{{score.game}}</p>
               <p>{{score.user.region}}</p>
