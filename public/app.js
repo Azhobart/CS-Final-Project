@@ -777,10 +777,11 @@ Vue.createApp({
             this.resetColorGame();
 
             let newColorsScore = {
-              game: this.page,
+              game: "Colors",
               value: this.finalColorsScore,
               user: this.currentUser._id,
             };
+             
 
             this.finishGame(newColorsScore);
             this.colorGameOver = false;
@@ -950,7 +951,7 @@ Vue.createApp({
         console.log("setting score...");
         this.calculateAverageReaction();
         let newScore = {
-          game: this.page,
+          game: "Draw!",
           value: -this.averageReaction,
           user: this.currentUser._id,
         };
@@ -2187,7 +2188,7 @@ Vue.createApp({
         this.grobBackgroundMusic.currentTime = 0;
         // send score
         let newScore = {
-          game: this.page,
+          game: "groB",
           value: this.floorLevel,
           user: this.currentUser._id,
         };
