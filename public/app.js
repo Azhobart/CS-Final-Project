@@ -1,4 +1,4 @@
-const URL = "http://localhost:8080";
+const URL = "https://cs-final-project-x5co.onrender.com";
 Vue.createApp({
   data() {
     return {
