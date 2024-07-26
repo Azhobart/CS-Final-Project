@@ -16,7 +16,7 @@
         <h1>Online Arcade</h1>
       </nav>
       <nav id="subNav"
-        v-if="page != 'login' && page != 'register' && page != 'authentication'"
+        v-if="page != 'login' && page != '' && page != 'register' && page != 'authentication'"
       >
         <h4>Welcome: {{currentUser.username}}</h4>
 
@@ -27,6 +27,8 @@
         </div>
 
       </nav>
+
+      <div class="page" v-if="page === ''"></div>
 
       <!-- log-in page (Username Field) -->
       <div id="loginField" v-if="page === 'login'">
