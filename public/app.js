@@ -16,6 +16,7 @@ Vue.createApp({
       },
 
       currentUser: {},
+      profileUser: {},
 
       user: {
         name: "",
@@ -822,7 +823,6 @@ Vue.createApp({
           this.randomColor = "#00000000";
           clearInterval(this.transitionInterval);
         }, 500);
-  
 
         count++;
 
@@ -1947,7 +1947,6 @@ Vue.createApp({
           values: [2, 2, 4, 4],
           rollValue: 0,
         };
-
       }
 
       if (this.randomEnemy === "Goblin") {
@@ -1957,7 +1956,6 @@ Vue.createApp({
           values: [1, 2, 3, 5, 5],
           rollValue: 0,
         };
-
       }
 
       if (this.randomEnemy === "Spider") {
@@ -1967,7 +1965,6 @@ Vue.createApp({
           values: [2, 2, 2, 2, 2, 8, 8, 8],
           rollValue: 0,
         };
-
       }
 
       if (this.randomEnemy === "Dragon") {
@@ -2044,7 +2041,6 @@ Vue.createApp({
         if (rollCount > 10) {
           clearInterval(rollInterval);
           // check to see if the user is using any potions for their roll and apply their effects accordingly.
-
 
           if (this.currentPotion.name === "Attack Up") {
             this.potionEffect = true;
@@ -2666,7 +2662,6 @@ Vue.createApp({
   },
 
   created: function () {
-
     this.getSession();
     this.getScores();
 
@@ -2681,6 +2676,5 @@ Vue.createApp({
 
     //slide game setup
     this.resetSlideGame();
-
   },
 }).mount("#app");

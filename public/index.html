@@ -23,7 +23,7 @@
         <div>
           <button @click="setPage('home')">Games</button>
           <button @click="setPage('leaderboard')">Leaderboard</button>
-          <button @click="setPage('profile')">Profile</button>
+          <button @click="setPage('profile'); profileUser = currentUser">Profile</button>
         </div>
 
       </nav>
@@ -139,53 +139,53 @@
       <div v-if="page === 'profile'">
         <div class="sectionContainer">
           
-          <h1 class="title">{{currentUser.username}}'s Profile</h1>
+          <h1 class="title">{{profileUser.username}}'s Profile</h1>
           
          
           <h2 class="userTitle">User Data:</h2>
           <div class="profileData">
 
 
-            <p>Name:</p> <input placeholder="name" v-show="isEditing" v-model="currentUser.name">
-            <span v-show="!isEditing">{{ currentUser.name }}</span>
+            <p>Name:</p> <input placeholder="name" v-show="isEditing" v-model="profileUser.name">
+            <span v-show="!isEditing">{{ profileUser.name }}</span>
 
-            <p>Username:</p> <input placeholder="username" v-show="isEditing" v-model="currentUser.username">
-            <span v-show="!isEditing">{{ currentUser.username }}</span>
+            <p>Username:</p> <input placeholder="username" v-show="isEditing" v-model="profileUser.username">
+            <span v-show="!isEditing">{{ profileUser.username }}</span>
 
             <p>Region:</p>
-            <select v-show="isEditing" v-model="currentUser.region">
+            <select v-show="isEditing" v-model="profileUser.region">
               <option v-for="region in regions" :value="region.code ">{{region.code}} - {{region.name}}</option>
             </select>
-            <span v-show="!isEditing">{{ currentUser.region }}</span>
+            <span v-show="!isEditing">{{ profileUser.region }}</span>
 
-            <p>Authentication Question:</p> <input placeholder="question" v-show="isEditing" v-model="currentUser.authQuestion">
-            <span v-show="!isEditing">{{ currentUser.authQuestion }}</span>
+            <p>Authentication Question:</p> <input placeholder="question" v-show="isEditing" v-model="profileUser.authQuestion">
+            <span v-show="!isEditing">{{ profileUser.authQuestion }}</span>
 
-            <p>Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="currentUser.authAnswer">
-            <span v-show="!isEditing">{{ currentUser.authAnswer }}</span>
+            <p>Authentication Answer:</p> <input placeholder="answer" v-show="isEditing" v-model="profileUser.authAnswer">
+            <span v-show="!isEditing">{{ profileUser.authAnswer }}</span>
 
             <p>Color Palette:</p>
-            <select v-on:change="applyColor()" v-model="currentUser.palette"  v-show="isEditing" >
+            <select v-on:change="applyColor()" v-model="profileUser.palette"  v-show="isEditing" >
               <option v-for="color in colorPaletteOptions" :value="color.value">{{color.name}}</option>
             </select>
-            <span v-show="!isEditing">{{ currentUser.palette }}</span>
+            <span v-show="!isEditing">{{ profileUser.palette }}</span>
           </div>
           <h2 class="userTitle">Game Data:</h2>
           <div class="profileData">
-            <p>Favorite Game:</p> <input placeholder="favorite game" v-show="isEditing" v-model="currentUser.favoriteGame">
-            <span v-show="!isEditing">{{ currentUser.favoriteGame }}</span>
+            <p>Favorite Game:</p> <input placeholder="favorite game" v-show="isEditing" v-model="profileUser.favoriteGame">
+            <span v-show="!isEditing">{{ profileUser.favoriteGame }}</span>
 
             <p>Highscores:</p>
             <div class="scoreTableRow" v-for="(score, indx) in scores">
-              <p v-if="score.user._id == currentUser._id">{{indx}}.</p>
-              <p v-if="score.user._id == currentUser._id">{{score.value}}</p>
-              <p v-if="score.user._id == currentUser._id">{{score.game}}</p>
+              <p>{{indx}}.</p>
+              <p>{{score.value}}</p>
+              <p>{{score.game}}</p>
             </div>
           </div>
           
 
-          <div id="profileActions">
-            <button @click="editProfile()">Edit</button>
+          <div id="profileActions" v-if="profileUser._id == currentUser._id">
+            <button  @click="editProfile()">Edit</button>
             <button v-if="isEditing" @click="saveProfile()">Save</button>
             <button @click="deleteSession()">Logout</button>
           </div>
@@ -212,7 +212,7 @@
 
             <div class="scoreTableRow" v-for="(score, indx) in filteredScores">
               <p>{{indx}}.</p>
-              <p>{{score.user.username}}</p>
+              <p @click="setPage('profile'); profileUser = score.user; isEditing = false;">{{score.user.username}}</p>
               <p>{{score.value}}</p>
               <p>{{score.game}}</p>
               <p>{{score.user.region}}</p>
