@@ -822,7 +822,7 @@ Vue.createApp({
         }
 
         this.transitionInterval = setInterval(() => {
-          this.randomColor = "#739072";
+          this.randomColor = "#73907200";
           clearInterval(this.transitionInterval);
         }, 500);
         console.log(this.randomColor);
