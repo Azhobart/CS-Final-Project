@@ -69,8 +69,7 @@ Vue.createApp({
         },
         {
           name: "Colors",
-          image:
-            "https://pluspng.com/img-png/png-paint-palette-paint-palette-icon-1600.png",
+          image: "/Images/colorsThumbnail.png",
         },
 
         {
@@ -79,14 +78,13 @@ Vue.createApp({
         },
         {
           name: "Draw!",
-          image:
-            "https://th.bing.com/th/id/R.d1c236fa8d00b01451fff17c37d4bf22?rik=vN%2f%2fZT%2fz954HpQ&pid=ImgRaw&r=0",
+          image: "/Images/drawThumbnail.png",
         },
         {
           name: "Minesweeper",
           image: "/Images/minesweeperFlag.png",
         },
-        { name: "groB", image: "" },
+        { name: "groB", image: "/Images/groBThumbnail.png" },
         {
           name: "Sandbox",
           image: "/Images/sandboxThumbnail.png",
