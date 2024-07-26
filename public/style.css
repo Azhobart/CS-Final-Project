@@ -959,6 +959,15 @@ body {
 /* nav bar styling */
 @media only screen and (max-width: 768px) {
 
+  .scoreTableRow {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0px 10px;
+  }
+
   #minesweeperWrapper {
     margin: 10px 0px;
   }
@@ -1047,6 +1056,7 @@ body {
 
 /* grob Styling */
 @media only screen and (max-width: 720px) {
+
 
   .sandboxGridRow {
     display: grid;
@@ -1413,6 +1423,8 @@ body {
 }
 
 @media only screen and (max-width: 420px) {
+
+  
 
   .instructionWrapper p {
     font-size: 12px;
