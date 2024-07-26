@@ -1940,7 +1940,7 @@ Vue.createApp({
           values: [1, 2, 3],
           rollValue: 0,
         };
-        this.encounterEnemy.volume = 0.5;
+        this.encounterEnemy.volume = 0.1;
         this.encounterEnemy.play();
       }
 
@@ -1951,7 +1951,7 @@ Vue.createApp({
           values: [2, 2, 4, 4],
           rollValue: 0,
         };
-        this.encounterEnemy.volume = 0.5;
+        this.encounterEnemy.volume = 0.1;
         this.encounterEnemy.play();
       }
 
@@ -1962,7 +1962,7 @@ Vue.createApp({
           values: [1, 2, 3, 5, 5],
           rollValue: 0,
         };
-        this.encounterEnemy.volume = 0.5;
+        this.encounterEnemy.volume = 0.1;
         this.encounterEnemy.play();
       }
 
@@ -1973,7 +1973,7 @@ Vue.createApp({
           values: [2, 2, 2, 2, 2, 8, 8, 8],
           rollValue: 0,
         };
-        this.encounterEnemy.volume = 0.5;
+        this.encounterEnemy.volume = 0.1;
         this.encounterEnemy.play();
       }
 
@@ -1984,7 +1984,7 @@ Vue.createApp({
           values: [0, 5, 5, 5, 10, 10],
           rollValue: 0,
         };
-        this.encounterEnemy.volume = 0.5;
+        this.encounterEnemy.volume = 0.1;
         this.encounterEnemy.play();
       }
     },
