@@ -177,9 +177,9 @@
 
             <p>Highscores:</p>
             <div class="scoreTableRow" v-for="(score, indx) in scores">
-              <p>{{indx}}.</p>
-              <p>{{score.value}}</p>
-              <p>{{score.game}}</p>
+              <p v-if="score.user._id === profileUser._id">{{indx}}.</p>
+              <p v-if="score.user._id === profileUser._id">{{score.value}}</p>
+              <p v-if="score.user._id === profileUser._id">{{score.game}}</p>
             </div>
           </div>
           
@@ -212,7 +212,7 @@
 
             <div class="scoreTableRow" v-for="(score, indx) in filteredScores">
               <p>{{indx}}.</p>
-              <p @click="setPage('profile'); profileUser = score.user; isEditing = false;">{{score.user.username}}</p>
+              <p @click="setPage('profile'); profileUser = score.user; isEditing = false;" class="clickableUsername">{{score.user.username}}</p>
               <p>{{score.value}}</p>
               <p>{{score.game}}</p>
               <p>{{score.user.region}}</p>
