@@ -5,6 +5,17 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
-    "mongoose": "^8.4.4"
-  }
+    "express-static": "^1.2.6",
+    "mongoose": "^8.5.0",
+    "node": "^18.20.4"
+  },
+  "name": "cs-final-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

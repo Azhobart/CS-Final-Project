@@ -479,7 +479,7 @@ body {
 
 .instructionWrapper {
   margin-top: 50px;
-  width: 60%;
+  width: 80%;
   color: var(--extra-light-green);
   background-color: var(--dark-green);
   padding: 20px;
@@ -1414,6 +1414,14 @@ body {
 
 @media only screen and (max-width: 420px) {
 
+  .instructionWrapper p {
+    font-size: 12px;
+  }
+  
+  .instructionWrapper h1 {
+    font-size: 20px;
+  }
+
   .row {
     font-size: 15px;;
   }
@@ -1474,14 +1482,4 @@ body {
     font-size: 15px;
     margin: 10px 0px;
   }
-}
-
-@media only screen and (max-width: 380px) {
-
-
-
-
-
-
-
 }
