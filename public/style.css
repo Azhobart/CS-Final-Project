@@ -190,6 +190,8 @@ body {
   height: 25px;
   border: none;
   margin: 10px;
+  /* add just a little space between the seach box and what the user types */
+  padding-left: 5px;
 }
 
 .gameThumbnail {
@@ -842,6 +844,7 @@ body {
 }
 
 .sandboxRule {
+  margin: 10px;
   background-color: var(--dark-green);
   border-radius: 10px;
   display: flex;
@@ -913,6 +916,29 @@ body {
   }
 }
 
+#followBox {
+  height: 500px;
+  width: 500px;
+}
+
+#followBall {
+  width: 50px; 
+  height: 50px; 
+  border-radius: 100%; 
+  position: relative;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -921,6 +947,30 @@ body {
 
 /* nav bar styling */
 @media only screen and (max-width: 768px) {
+
+  #minesweeperWrapper {
+    margin: 10px 0px;
+  }
+
+  .minesweeperGridRow {
+    & .minesweeperCell {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .minesweeperGridRow {
+    display: grid;
+    grid-template-columns: repeat(16, 20px);
+}
+
+  .row {
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px;
+
+  }
 
 
   #titleNav {
@@ -986,6 +1036,18 @@ body {
 
 /* grob Styling */
 @media only screen and (max-width: 720px) {
+
+  .sandboxGridRow {
+    display: grid;
+    grid-template-columns: repeat(16, 20px) 
+  }
+
+  .sandboxRuleGrid {
+    display: grid;
+    grid-template-columns: 150px 150px;
+}
+
+
   #grobWrapper {
     width: 100%;
     display: flex;
@@ -995,6 +1057,7 @@ body {
   }
   
   #grobWrapper h2 {
+    font-size: 15px;
     color: var(--extra-light-green);
     border-radius: 10px;
     margin: 10px 0px 20px 0px;
@@ -1090,9 +1153,10 @@ body {
   }
   
   .grobDice {
+    font-size: 10px;
     margin: 10px;
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1102,7 +1166,7 @@ body {
   
   .grobDice:hover {
     cursor: pointer;
-    border-width: 6px;
+    border-width: 3px;
     border-style: solid;
     border-color: var(--extra-light-green);
   }
@@ -1148,9 +1212,10 @@ body {
   }
   
   .grobPotion {
+    font-size: 10px;
     margin: 10px;
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1160,7 +1225,7 @@ body {
   
   .grobPotion:hover {
     cursor: pointer;
-    border-width: 6px;
+    border-width: 3px;
     border-style: solid;
     border-color: var(--extra-light-green);
   }
@@ -1198,19 +1263,21 @@ body {
   
   .spriteField h1 {
     margin: 70px 0px 10px 0px;
+    font-size: 15px;
     color: var(--extra-light-green);
   }
   
   .spriteField p {
     margin-top: 10px;
+    font-size: 12px;
     color: var(--extra-light-green);
   }
   
   .battleDice {
-    width: 200px;
-    height: 200px;
-    font-size: 40px;
-    border-width: 12px;
+    width: 100px;
+    height: 100px;
+    font-size: 20px;
+    border-width: 6px;
     border-style: solid;
     border-color: var(--dark-green);
     color: var(--dark-green);
@@ -1223,11 +1290,19 @@ body {
   }
   
   .battleDice p {
-    font-size: 18px;
+    font-size: 10px;
+  }
+
+  #battleWrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
   }
   
   #battleWrapper #battleButton {
     text-align: center;
+    width: 50%;
     color: var(--extra-light-green);
     background-color: var(--dark-green);
     border-radius: 10px;
@@ -1245,8 +1320,9 @@ body {
 
 
 
-/* game space sizing */
+
 @media only screen and (max-width: 650px) {
+  /* games page sizing */
   .gameListDiv {
     display: grid;
     background-color: RGBA(0, 0, 0, 0);
@@ -1282,9 +1358,72 @@ body {
   .gameThumbnailImage {
     display: none;
   }
+
+
+  /* tic-tac-toe sizing */
+  .tictactoeCell {
+    width: 75px;
+    height: 75px;
+    font-size: 75px;
+  }
+
+
+
+}
+
+@media only screen and (max-width: 530px) {
+  #followBox {
+    width: 350px;
+    height: 350px;
+  }
+
+  #followBall {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+
+@media only screen and (max-width: 480px) {
+  .rpsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 10px;
+  }
+
+  .rpsGrid {
+    .rpsOption {
+        font-size: 15px;
+        width: 100px;
+        height: 30px;
+        margin: 0px;
+    }   
+  }
 }
 
 @media only screen and (max-width: 420px) {
+
+  .row {
+    font-size: 15px;;
+  }
+  
+  .row button {
+    width: 60px;
+    height: 25px;
+  }
+
+  .battleshipGridRow {
+    & .battleshipCell {
+    width: 20px;
+    height: 20px
+    }
+  }
+
+  .battleshipGridRow {
+    grid-template-columns: 20px 20px 20px 20px 20px 20px 20px 20px;
+  }
+
+
   .gameListDiv {
     display: grid;
     background-color: RGBA(0, 0, 0, 0);
@@ -1317,4 +1456,21 @@ body {
       border-radius: 10px 10px 0px 0px;
     }
   }
+
+  #gameStats h1 {
+    text-align: center;
+    color: var(--extra-light-green);
+    font-size: 15px;
+    margin: 10px 0px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+
+
+
+
+
+
+
 }

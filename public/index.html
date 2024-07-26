@@ -275,6 +275,7 @@
             <input type="number" v-model="minesweeperMineChance">
             <button @click="minesweeperMineChance = 8;">reset</button>
           </div >
+          <div id="minesweeperWrapper">
             <div class="minesweeperGridRow" v-for="(row, indx_x) in minesweeperBoard.cells" oncontextmenu="return false;">
               <div class="minesweeperCell" v-for="(cell, indx_y) in row" :style="[cell.isHidden ? {backgroundColor: '#aaa'} : {backgroundColor: '#ddd'}]" v-on:click.right="toggleFlagMinesweeperCell(indx_x,indx_y)" @click.left="unhideMinesweeperCell(indx_x,indx_y)" oncontextmenu="return false;">
                 <div v-if="!cell.isHidden">
@@ -290,6 +291,7 @@
                 </div>
               </div>
             </div>
+          </div>
         </div>
 
         <div class="sectionContainer modal" v-if="minesweeperGameState != 'playing'">
@@ -304,9 +306,9 @@
 
       <div class="page" v-if="page === 'Follow'">
         
-        <div class="sectionContainer" style="width: 500px; height: 500px">
+        <div id="followBox" class="sectionContainer">
           <p>Score: {{followScore}}</p>
-          <div @click="followClick()" style="width: 50px; height: 50px; border-radius: 100%;" :style="{position: 'relative', top: followTop +'px', left: followLeft +'px', backgroundColor: 'var(--med-green)'}"></div>
+          <div id="followBall" @click="followClick()" :style="{position: 'relative', top: followTop +'px', left: followLeft +'px', backgroundColor: 'var(--med-green)'}"></div>
         </div>
       </div>
 

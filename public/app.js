@@ -766,7 +766,6 @@ Vue.createApp({
             this.activeColorsScore++;
             this.getColor();
             this.cycleColors();
-            console.log(this.activeColorsScore);
           } else {
             this.finalColorsScore = this.activeColorsScore;
             this.colorGameOver = true;
@@ -803,7 +802,6 @@ Vue.createApp({
           this.resetColorGame();
         }
         this.userInput = [];
-        console.log(this.colorSequence);
         this.randomColor = this.colorSequence[count];
         if (this.randomColor === "#FF0000") {
           this.redSound.play();
@@ -817,12 +815,11 @@ Vue.createApp({
         if (this.randomColor === "#00FF00") {
           this.greenSound.play();
         }
-
         this.transitionInterval = setInterval(() => {
-          this.randomColor = "#739072";
+          this.randomColor = "#00000000";
           clearInterval(this.transitionInterval);
         }, 500);
-        console.log(this.randomColor);
+  
 
         count++;
 
@@ -1851,16 +1848,16 @@ Vue.createApp({
 
       if (floorItem === "dice") {
         this.randomDice = this.doorItems.dice[diceIndex];
-        console.log(this.randomDice);
+
         this.createDice();
       } else if (floorItem === "enemy") {
         this.randomEnemy = this.doorItems.enemy[enemyIndex];
         this.displayEnemyMessage();
-        console.log(this.randomEnemy);
+
         this.setUpBattle();
       } else if (floorItem === "potion") {
         this.randomPotion = this.doorItems.potion[potionIndex];
-        console.log(this.randomPotion);
+
         this.getPotion();
       }
     },
@@ -1940,7 +1937,6 @@ Vue.createApp({
           values: [1, 2, 3],
           rollValue: 0,
         };
-        console.log(this.enemyDice.name);
       }
 
       if (this.randomEnemy === "Slime") {
@@ -1950,7 +1946,7 @@ Vue.createApp({
           values: [2, 2, 4, 4],
           rollValue: 0,
         };
-        console.log(this.enemyDice.name);
+
       }
 
       if (this.randomEnemy === "Goblin") {
@@ -1960,7 +1956,7 @@ Vue.createApp({
           values: [1, 2, 3, 5, 5],
           rollValue: 0,
         };
-        console.log(this.enemyDice.name);
+
       }
 
       if (this.randomEnemy === "Spider") {
@@ -1970,7 +1966,7 @@ Vue.createApp({
           values: [2, 2, 2, 2, 2, 8, 8, 8],
           rollValue: 0,
         };
-        console.log(this.enemyDice.name);
+
       }
 
       if (this.randomEnemy === "Dragon") {
@@ -2052,7 +2048,7 @@ Vue.createApp({
 
           clearInterval(rollInterval);
           // check to see if the user is using any potions for their roll and apply their effects accordingly.
-          console.log(`original roll: ${this.currentDice.rollValue}`);
+
 
 
           if (this.currentPotion.name === "Attack Up") {
@@ -2209,12 +2205,10 @@ Vue.createApp({
 
     setCurrentDice: function (index) {
       this.currentDice = this.dice[index];
-      console.log(this.currentDice);
     },
 
     setCurrentPotion: function (index) {
       this.currentPotion = this.potions[index];
-      console.log(`Current Potion: ${this.currentPotion.name}`);
     },
 
 
@@ -2679,6 +2673,7 @@ Vue.createApp({
   },
 
   created: function () {
+
     this.getSession();
     this.getScores();
 
@@ -2693,5 +2688,6 @@ Vue.createApp({
 
     //slide game setup
     this.resetSlideGame();
+
   },
 }).mount("#app");
