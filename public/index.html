@@ -212,7 +212,7 @@
 
             <div class="scoreTableRow" v-for="(score, indx) in filteredScores">
               <p>{{indx}}.</p>
-              <p @click="setPage('profile'); profileUser = score.user; isEditing = false;" class="clickableUsername">{{score.user.username}}</p>
+              <p @click="setPage('profile'); profileUser = score.user; isEditing = false;">{{score.user.username}}</p>
               <p>{{score.value}}</p>
               <p>{{score.game}}</p>
               <p>{{score.user.region}}</p>
@@ -673,7 +673,7 @@
 
           <!-- battle area -->
           <div id="battleWrapper" v-if="isBattling">
-            <div id="battleField" >
+            <div id="battleField">
               <div class="spriteField">
                 <h1>User:</h1>
                 <div class="battleDice">
