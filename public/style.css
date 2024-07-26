@@ -1376,12 +1376,9 @@ body {
 }
 
 @media only screen and (max-width: 420px) {
-<<<<<<< HEAD
 
   
 
-=======
->>>>>>> 5fa50c7ce641f3035d6152e505480075e1fa98b7
   .instructionWrapper p {
     font-size: 12px;
   }

@@ -213,7 +213,7 @@ Vue.createApp({
       collectItem: new Audio("grobSounds/collect.mp3"),
       takeDamage: new Audio("grobSounds/takeDamage.mp3"),
       beatEnemy: new Audio("grobSounds/beatEnemy.mp3"),
-      encounterEnemy: new Audio("grobSounds/enemyEncounter.mp3"),
+      encounterEnemy: new Audio("grobSounds/enemyAlert.wav"),
 
       floorLevel: 1,
       diceBox: false,
