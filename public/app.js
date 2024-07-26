@@ -2,7 +2,7 @@ const URL = "http://localhost:8080";
 Vue.createApp({
   data() {
     return {
-      page: "login",
+      page: "",
       isEditing: false,
       newUser: {
         name: "",
@@ -69,8 +69,7 @@ Vue.createApp({
         },
         {
           name: "Colors",
-          image:
-            "https://pluspng.com/img-png/png-paint-palette-paint-palette-icon-1600.png",
+          image: "/Images/colorsThumbnail.png",
         },
 
         {
@@ -79,14 +78,13 @@ Vue.createApp({
         },
         {
           name: "Draw!",
-          image:
-            "https://th.bing.com/th/id/R.d1c236fa8d00b01451fff17c37d4bf22?rik=vN%2f%2fZT%2fz954HpQ&pid=ImgRaw&r=0",
+          image: "/Images/drawThumbnail.png",
         },
         {
           name: "Minesweeper",
           image: "/Images/minesweeperFlag.png",
         },
-        { name: "groB", image: "" },
+        { name: "groB", image: "/Images/groBThumbnail.png" },
         {
           name: "Sandbox",
           image: "/Images/sandboxThumbnail.png",
@@ -559,7 +557,10 @@ Vue.createApp({
 
       if (response.status === 201) {
         this.currentUser = await this.getUser(data.userID);
-
+        if (this.currentUser.palette === "") {
+          this.currentUser.palette = "#739072";
+        }
+        this.applyColor();
         console.log("Succesfully logged in");
         this.setPage("home");
       } else {
@@ -600,6 +601,8 @@ Vue.createApp({
       if (response.status === 204) {
         this.isEditing = false;
         this.page = "login";
+        this.currentUser.palette = "#739072";
+        this.applyColor();
         this.currentUser = null;
       }
     },
@@ -970,10 +973,8 @@ Vue.createApp({
         this.displayReaction = true;
         this.startTime = null;
 
-
         this.compareReaction();
-      };
-
+      }
 
       if (!this.draw) {
         this.tooEarly = true;
@@ -2033,7 +2034,6 @@ Vue.createApp({
 
       let userRoll = Math.floor(Math.random() * this.currentDice.values.length);
       let enemyRoll = Math.floor(Math.random() * this.enemyDice.values.length);
-      
 
       let rollCount = 0;
 
@@ -2041,14 +2041,9 @@ Vue.createApp({
         this.currentDice.rollValue = this.currentDice.values[userRoll];
         this.enemyDice.rollValue = this.enemyDice.values[enemyRoll];
 
-
-
-
         if (rollCount > 10) {
-
           clearInterval(rollInterval);
           // check to see if the user is using any potions for their roll and apply their effects accordingly.
-
 
 
           if (this.currentPotion.name === "Attack Up") {
@@ -2210,8 +2205,6 @@ Vue.createApp({
     setCurrentPotion: function (index) {
       this.currentPotion = this.potions[index];
     },
-
-
 
     //sandbox methods
     resetSandboxBoard: function () {
