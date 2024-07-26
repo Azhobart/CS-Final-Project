@@ -213,6 +213,7 @@ Vue.createApp({
       collectItem: new Audio("grobSounds/collect.mp3"),
       takeDamage: new Audio("grobSounds/takeDamage.mp3"),
       beatEnemy: new Audio("grobSounds/beatEnemy.mp3"),
+      encounterEnemy: new Audio("grobSounds/enemyAlert.wav"),
 
       floorLevel: 1,
       diceBox: false,
@@ -1938,6 +1939,7 @@ Vue.createApp({
           values: [1, 2, 3],
           rollValue: 0,
         };
+        this.encounterEnemy.play();
       }
 
       if (this.randomEnemy === "Slime") {
@@ -1947,6 +1949,7 @@ Vue.createApp({
           values: [2, 2, 4, 4],
           rollValue: 0,
         };
+        this.encounterEnemy.play();
       }
 
       if (this.randomEnemy === "Goblin") {
@@ -1956,6 +1959,7 @@ Vue.createApp({
           values: [1, 2, 3, 5, 5],
           rollValue: 0,
         };
+        this.encounterEnemy.play();
       }
 
       if (this.randomEnemy === "Spider") {
@@ -1965,6 +1969,7 @@ Vue.createApp({
           values: [2, 2, 2, 2, 2, 8, 8, 8],
           rollValue: 0,
         };
+        this.encounterEnemy.play();
       }
 
       if (this.randomEnemy === "Dragon") {
@@ -1974,6 +1979,7 @@ Vue.createApp({
           values: [0, 5, 5, 5, 10, 10],
           rollValue: 0,
         };
+        this.encounterEnemy.play();
       }
     },
 
